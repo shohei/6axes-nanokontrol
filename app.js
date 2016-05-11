@@ -15,6 +15,22 @@ port.on('data', function (data) {
   console.log('Received: ' + data);
 });
 
+var COMMAND = {
+  UP1   : 1, 
+  DOWN1 : 2, 
+  UP2   : 3, 
+  DOWN2 : 4, 
+  UP3   : 5, 
+  DOWN3 : 6, 
+  UP4   : 7, 
+  DOWN4 : 8, 
+  UP5   : 9, 
+  DOWN5 : 10, 
+  UP6   : 11, 
+  DOWN6 : 12
+};
+
+
 function sendDestination(printer){
   dest1 = printer.dest1;
   dest2 = printer.dest2;
@@ -27,7 +43,15 @@ function sendDestination(printer){
     if(err){
       return console.log('Error: ',err.message);
     }
-    // console.log(bytesWritten, 'bytes written');
+  });
+}
+
+function sendJog(jog_command){
+  sentence = "{\"jog\":\""+jog_command+"\"}\n"
+  port.write(sentence, function(err,bytesWritten){
+    if(err){
+      return console.log('Error: ',err.message);
+    }
   });
 }
 
@@ -77,36 +101,108 @@ nanoKONTROL.connect()
     printer.dest6 = value;
     sendDestination(printer);
   });
-  
-  // device.on('knob:1', function(value){
-  //   console.log("knob:1 >>> "+value);
-  // });
-  //
-  // device.on('button:play', function(value){
-  //   console.log("button:play >>> "+value);
-  // });
-
-  device.on('button:stop', function(value){
-    console.log("button:stop >>> "+value);
-    if(value === false){
-      console.log('exit!!');
-      device.close();
+  device.on('button:s:1', function(value){
+    if(value){
+      console.log("button:s:1>>> "+value);
+      sendJog(COMMAND.UP1);
+    }
+  });
+  device.on('button:r:1', function(value){
+    if(value){
+      console.log("button:r:1>>> "+value);
+      sendJog(COMMAND.DOWN1);
+    }
+  });
+  device.on('button:s:2', function(value){
+    if(value){
+      console.log("button:s:2>>> "+value);
+      sendJog(COMMAND.UP2);
+    }
+  });
+  device.on('button:r:2', function(value){
+    if(value){
+      console.log("button:r:2>>> "+value);
+      sendJog(COMMAND.DOWN2);
+    }
+  });
+  device.on('button:s:3', function(value){
+    if(value){
+      console.log("button:s:3>>> "+value);
+      sendJog(COMMAND.UP3);
+    }
+  });
+  device.on('button:r:3', function(value){
+    if(value){
+      console.log("button:r:3>>> "+value);
+      sendJog(COMMAND.DOWN3);
+    }
+  });
+  device.on('button:s:4', function(value){
+    if(value){
+      console.log("button:s:4>>> "+value);
+      sendJog(COMMAND.UP4);
+    }
+  });
+  device.on('button:r:4', function(value){
+    if(value){
+      console.log("button:r:4>>> "+value);
+      sendJog(COMMAND.DOWN4);
+    }
+  });
+  device.on('button:s:5', function(value){
+    if(value){
+      console.log("button:s:5>>> "+value);
+      sendJog(COMMAND.UP5);
+    }
+  });
+  device.on('button:r:5', function(value){
+    if(value){
+      console.log("button:r:5>>> "+value);
+      sendJog(COMMAND.DOWN5);
+    }
+  });
+  device.on('button:s:6', function(value){
+    if(value){
+      console.log("button:s:6>>> "+value);
+      sendJog(COMMAND.UP6);
+    }
+  });
+  device.on('button:r:6', function(value){
+    if(value){
+      console.log("button:r:6>>> "+value);
+      sendJog(COMMAND.DOWN6);
     }
   });
 
-  // catch all slider/knob/button event
-  // device.on('slider:*', function(value){
-  //   console.log(this.event+' => '+value);
-  //
-  // });
+  // device.on('knob:1', function(value){
+    //   console.log("knob:1 >>> "+value);
+// });
+    //
+    // device.on('button:play', function(value){
+      //   console.log("button:play >>> "+value);
+// });
 
-  // device.on('knob:*', function(value){
-  //   console.log(this.event+' => '+value);
-  // });
-  //
-  // device.on('button:**', function(value){
-  //   console.log(this.event+' => '+value);
-  // });
+      device.on('button:stop', function(value){
+        console.log("button:stop >>> "+value);
+        if(value === false){
+          console.log('exit!!');
+          device.close();
+        }
+      });
+
+      // catch all slider/knob/button event
+      // device.on('slider:*', function(value){
+        //   console.log(this.event+' => '+value);
+        //
+// });
+        //
+        // device.on('knob:*', function(value){
+          //   console.log(this.event+' => '+value);
+// });
+          //
+          // device.on('button:**', function(value){
+            //   console.log(this.event+' => '+value);
+// });
 
 })
 .catch(function(err){
