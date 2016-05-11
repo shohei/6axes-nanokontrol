@@ -16,13 +16,13 @@ port.on('data', function (data) {
 });
 
 function sendDestination(printer){
-  dist1 = printer.dist1;
-  dist2 = printer.dist2;
-  dist3 = printer.dist3;
-  dist4 = printer.dist4;
-  dist5 = printer.dist5;
-  dist6 = printer.dist6;
-  sentence = "{\"dist1\":\""+dist1+"\",\"dist2\":\""+dist2+"\",\"dist3\":\""+dist3+"\",\"dist4\":\""+dist4+"\",\"dist5\":\""+dist5+"\",\"dist6\":\""+dist6+"\"}\n"
+  dest1 = printer.dest1;
+  dest2 = printer.dest2;
+  dest3 = printer.dest3;
+  dest4 = printer.dest4;
+  dest5 = printer.dest5;
+  dest6 = printer.dest6;
+  sentence = "{\"dest1\":\""+dest1+"\",\"dest2\":\""+dest2+"\",\"dest3\":\""+dest3+"\",\"dest4\":\""+dest4+"\",\"dest5\":\""+dest5+"\",\"dest6\":\""+dest6+"\"}\n"
   port.write(sentence, function(err,bytesWritten){
     if(err){
       return console.log('Error: ',err.message);
@@ -49,32 +49,32 @@ nanoKONTROL.connect()
   // register specific slider/knob/button event
   device.on('slider:1', function(value){
     console.log("slider:1 >>> "+value);
-    printer.dist1 = value;
+    printer.dest1 = value;
     sendDestination(printer);
   });
   device.on('slider:2', function(value){
     console.log("slider:2 >>> "+value);
-    printer.dist2 = value;
+    printer.dest2 = value;
     sendDestination(printer);
   });
   device.on('slider:3', function(value){
     console.log("slider:3 >>> "+value);
-    printer.dist3 = value;
+    printer.dest3 = value;
     sendDestination(printer);
   });
   device.on('slider:4', function(value){
     console.log("slider:4 >>> "+value);
-    printer.dist4 = value;
+    printer.dest4 = value;
     sendDestination(printer);
   });
   device.on('slider:5', function(value){
     console.log("slider:5 >>> "+value);
-    printer.dist5 = value;
+    printer.dest5 = value;
     sendDestination(printer);
   });
   device.on('slider:6', function(value){
     console.log("slider:6 >>> "+value);
-    printer.dist6 = value;
+    printer.dest6 = value;
     sendDestination(printer);
   });
   
