@@ -4,13 +4,13 @@
 #include "DRV8825.h"
 #include "position.h"
 #include "Command.h"
-
+#include "Configuration.h"
 
 DRV8825 stepper1(200, 62, 63);//X
-DRV8825 stepper2(200, 64, 65);//Y
-DRV8825 stepper3(200, 66, 67);//Z
-DRV8825 stepper4(200, 28, 36);//XX
-DRV8825 stepper5(200, 41, 43);//YY
+DRV8825 stepper2(200, 28, 36);//XX
+DRV8825 stepper3(200, 64, 65);//Y
+DRV8825 stepper4(200, 41, 43);//YY
+DRV8825 stepper5(200, 66, 67);//Z
 DRV8825 stepper6(200, 47, 32);//ZZ
 int enablePins[] = {48,46,44,42,39,45};
 
@@ -26,12 +26,12 @@ void enableAllStepper(){
 
 void setupSteppers(){
   enableAllStepper();
-  stepper1.setRPM(60);
-  stepper2.setRPM(60);
-  stepper3.setRPM(60);
-  stepper4.setRPM(60);
-  stepper5.setRPM(60);
-  stepper6.setRPM(60);
+  stepper1.setRPM(300);
+  stepper2.setRPM(300);
+  stepper3.setRPM(300);
+  stepper4.setRPM(300);
+  stepper5.setRPM(300);
+  stepper6.setRPM(300);
   stepper1.setMicrostep(32);
   stepper2.setMicrostep(32);
   stepper3.setMicrostep(32);
@@ -76,7 +76,6 @@ void loop()
   }
   const char* jog_command = root["jog"];
   if(!jog_command==NULL){
-     // Serial.println(jog_command); 
      int jog_command_number = atoi(jog_command);
      doJog(jog_command_number);
      return;
@@ -102,9 +101,9 @@ void loop()
    pos->dest5 = atoi(dest5);
    pos->dest6 = atoi(dest6);
 
-   debugPrint();
+   // debugPrint();
 
-   // relativeMove();
+   relativeMove();
  }
 
 // void moveStepper1(int dest){
@@ -130,46 +129,101 @@ void debugPrint(){
 }
 
 void relativeMove(){
+  //TODO: distance = dest - cur;
+  //distance * coeff = rotationDegree;
   Position *pos = Position::getInstance();
+  int dist1 = GAIN*(pos->dest1 - pos->cur1);
+  int dist2 = GAIN*(pos->dest2 - pos->cur2);
+  int dist3 = GAIN*(pos->dest3 - pos->cur3);
+  int dist4 = GAIN*(pos->dest4 - pos->cur4);
+  int dist5 = GAIN*(pos->dest5 - pos->cur5);
+  int dist6 = GAIN*(pos->dest6 - pos->cur6);
+
+
+  Serial.println("dist1: ");
+  Serial.println(dist1);
+  Serial.println("dist2: ");
+  Serial.println(dist2);
+  Serial.println("dist3: ");
+  Serial.println(dist3);
+  Serial.println("dist4: ");
+  Serial.println(dist4);
+  Serial.println("dist5: ");
+  Serial.println(dist5);
+  Serial.println("dist6: ");
+  Serial.println(dist6);
+
+  // TODO: should use interrupt, or timer.
+  // This DRV8825 library seems to lock whole process.
+  // stepper1.rotate(dist1);
+  // stepper2.rotate(dist2);
+  // stepper3.rotate(dist3);
+  // stepper4.rotate(dist4);
+  // stepper5.rotate(dist5);
+  // stepper6.rotate(dist6);
 }
 
 void doJog(int jog_command_number){
  switch(jog_command_number){
+
   case UP1:
   Serial.println("UP1");
+  stepper1.rotate(JOG_CW);
   break;
+
   case DOWN1:
   Serial.println("DOWN1");
+  stepper1.rotate(JOG_CCW);
   break;
+
   case UP2:
   Serial.println("UP2");
+  stepper2.rotate(JOG_CW);
   break;
+
   case DOWN2:
   Serial.println("DOWN2");
+  stepper2.rotate(JOG_CCW);
   break;
+
   case UP3:
   Serial.println("UP3");
+  stepper3.rotate(JOG_CW);
   break;
+
   case DOWN3:
   Serial.println("DOWN3");
+  stepper3.rotate(JOG_CCW);
   break;
+
   case UP4:
   Serial.println("UP4");
+  stepper4.rotate(JOG_CCW);
   break;
+
   case DOWN4:
   Serial.println("DOWN4");
+  stepper4.rotate(JOG_CCW);
   break;
+
   case UP5:
   Serial.println("UP5");
+  stepper5.rotate(JOG_CW);
   break;
+
   case DOWN5:
   Serial.println("DOWN5");
+  stepper5.rotate(JOG_CCW);
   break;
+
   case UP6:
   Serial.println("UP6");
+  stepper6.rotate(JOG_CW);
   break;
+
   case DOWN6:
   Serial.println("DOWN6");
+  stepper6.rotate(JOG_CCW);
   break;
 }
 }
