@@ -7,11 +7,11 @@
 #include "Configuration.h"
 
 DRV8825 stepper1(200, 62, 63);//X
-DRV8825 stepper2(200, 28, 36);//XX
-DRV8825 stepper3(200, 64, 65);//Y
-DRV8825 stepper4(200, 41, 43);//YY
-DRV8825 stepper5(200, 66, 67);//Z
-DRV8825 stepper6(200, 47, 32);//ZZ
+DRV8825 stepper2(200, 64, 65);//Y -> XX
+DRV8825 stepper3(200, 66, 67);//Z -> Y
+DRV8825 stepper4(200, 28, 36);//E0 -> YY
+DRV8825 stepper5(200, 41, 43);//E1 -> Z
+DRV8825 stepper6(200, 47, 32);//E2 -> ZZ
 int enablePins[] = {48,46,44,42,39,45};
 
 void enableAllStepper(){
@@ -198,7 +198,7 @@ void doJog(int jog_command_number){
 
   case UP4:
   Serial.println("UP4");
-  stepper4.rotate(JOG_CCW);
+  stepper4.rotate(JOG_CW);
   break;
 
   case DOWN4:
