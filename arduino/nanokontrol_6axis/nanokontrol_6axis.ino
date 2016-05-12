@@ -5,39 +5,57 @@
 #include "position.h"
 #include "Command.h"
 #include "Configuration.h"
+#include "nanokontrol_6axis.h"
 
-DRV8825 stepper1(200, 62, 63);//X
-DRV8825 stepper2(200, 64, 65);//Y -> XX
-DRV8825 stepper3(200, 66, 67);//Z -> Y
-DRV8825 stepper4(200, 28, 36);//E0 -> YY
-DRV8825 stepper5(200, 41, 43);//E1 -> Z
-DRV8825 stepper6(200, 47, 32);//E2 -> ZZ
-int enablePins[] = {48,46,44,42,39,45};
+// DRV8825 stepper1(200, 62, 63);//X
+// DRV8825 stepper2(200, 64, 65);//Y -> XX
+// DRV8825 stepper3(200, 66, 67);//Z -> Y
+// DRV8825 stepper4(200, 28, 36);//E0 -> YY
+// DRV8825 stepper5(200, 41, 43);//E1 -> Z
+// DRV8825 stepper6(200, 47, 32);//E2 -> ZZ
+// int enablePins[] = {48,46,44,42,39,45};
 
-void enableAllStepper(){
-  for(int i=0;i<6;i++){
-    pinMode(enablePins[i],OUTPUT);
-    digitalWrite(enablePins[i],LOW);
-    Serial.print("stepper");
-    Serial.print(i+1);
-    Serial.println(" enabled");
-  }
+
+// void enableAllStepper(){
+//   for(int i=0;i<6;i++){
+//     pinMode(enablePins[i],OUTPUT);
+//     digitalWrite(enablePins[i],LOW);
+//     Serial.print("stepper");
+//     Serial.print(i+1);
+//     Serial.println(" enabled");
+//   }
+// }
+
+void setupSteppperPin(Preference* pref, int motorNumber, int step, int dirPin, int stepPin, int enablePin){
+  pref.motor[motorNumber-1].dirPin = dirpin;
+  pref.motor[motorNumber-1].stepPin = stepPin;
+  pref.motor[motorNumber-1].enablePin = enablePin;
+  pinMode(enablePin,OUTPUT);
+  digitalWrite(enablePin,LOW);
 }
 
 void setupSteppers(){
-  enableAllStepper();
-  stepper1.setRPM(300);
-  stepper2.setRPM(300);
-  stepper3.setRPM(300);
-  stepper4.setRPM(300);
-  stepper5.setRPM(300);
-  stepper6.setRPM(300);
-  stepper1.setMicrostep(32);
-  stepper2.setMicrostep(32);
-  stepper3.setMicrostep(32);
-  stepper4.setMicrostep(32);
-  stepper5.setMicrostep(32);
-  stepper6.setMicrostep(32);
+  Preference* Preference::pref = Preference::getInstance();
+  setupStepperPin(pref,1,200,62,63,48);//X
+  setupStepperPin(pref,2,200,64,65,46);//Y->XX
+  setupStepperPin(pref,3,200,66,67,44);//Z->Y
+  setupStepperPin(pref,4,200,28,36,42);//E0->YY
+  setupStepperPin(pref,5,200,41,43,39);//E1->Z
+  setupStepperPin(pref,6,200,47,32,45);//E2->ZZ
+
+  // enableAllStepper();
+  // stepper1.setRPM(300);
+  // stepper2.setRPM(300);
+  // stepper3.setRPM(300);
+  // stepper4.setRPM(300);
+  // stepper5.setRPM(300);
+  // stepper6.setRPM(300);
+  // stepper1.setMicrostep(32);
+  // stepper2.setMicrostep(32);
+  // stepper3.setMicrostep(32);
+  // stepper4.setMicrostep(32);
+  // stepper5.setMicrostep(32);
+  // stepper6.setMicrostep(32);
 }
 
 void setup()
