@@ -51,18 +51,18 @@ void HAL::startTimer(void){
 }
 
 void HAL::CWStep(int dir, int step){
-  _WRITE(dir,false);
-  _WRITE(step,true);
+  // _WRITE(dir,false);
+  // _WRITE(step,true);
   _DELAY_1_9_US;
-  _WRITE(step,false);
+  // _WRITE(step,false);
   _DELAY_1_9_US;
 };
 
 void HAL::CCWStep(int dir, int step){
-  _WRITE(dir,true);
-  _WRITE(step,true);
+  // _WRITE(dir,true);
+  // _WRITE(step,true);
   _DELAY_1_9_US;
-  _WRITE(step,false);
+  // _WRITE(step,false);
   _DELAY_1_9_US;
 };
 

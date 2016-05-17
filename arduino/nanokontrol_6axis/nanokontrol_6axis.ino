@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include <String.h>
 #include <ArduinoJson.h>
-#include "Command.h"
 #include "Configuration.h"
 #include "Preference.h"
 #include "HAL.h"
