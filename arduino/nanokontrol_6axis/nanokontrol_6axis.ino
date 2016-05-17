@@ -5,7 +5,7 @@
 #include "position.h"
 #include "Command.h"
 #include "Configuration.h"
-#include "nanokontrol_6axis.h"
+#include "Preference.h"
 #include "HAL.h"
 
 // DRV8825 stepper1(200, 62, 63);//X

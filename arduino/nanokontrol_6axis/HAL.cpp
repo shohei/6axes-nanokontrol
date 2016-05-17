@@ -1,5 +1,6 @@
 #include "HAL.h"
 #include "Arduino.h"
+#include "Preference.h"
 
 #define _WRITE(port, v) do { if (v) {DIO ##  port ## _PORT -> PIO_SODR = DIO ## port ## _PIN; } else {DIO ##  port ## _PORT->PIO_CODR = DIO ## port ## _PIN; }; } while (0)
 

@@ -25,6 +25,5 @@ public:
 	int cur6;
 };
 
-Position *Position::pos = new Position();
 
 #endif
