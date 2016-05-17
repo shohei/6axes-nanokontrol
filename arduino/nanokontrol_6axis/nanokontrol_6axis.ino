@@ -71,12 +71,6 @@ void loop()
    const char* dest6 = root["dest6"];
 
    Position *pos = Position::getInstance();
-   pos->cur1 = pos->dest1;
-   pos->cur2 = pos->dest2;
-   pos->cur3 = pos->dest3;
-   pos->cur4 = pos->dest4;
-   pos->cur5 = pos->dest5;
-   pos->cur6 = pos->dest6;
    pos->dest1 = atoi(dest1);
    pos->dest2 = atoi(dest2);
    pos->dest3 = atoi(dest3);
