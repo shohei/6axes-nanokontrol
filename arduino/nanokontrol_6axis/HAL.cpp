@@ -20,5 +20,27 @@ void HAL::setupTimer(){
 }
 
 void HAL::startTimer(){
+  TC2->TC_CHANNEL[1].TC_IER=TC_IER_CPCS;   // IER = interrupt enable register
+  TC2->TC_CHANNEL[1].TC_IDR=~TC_IER_CPCS;  // IDR = interrupt disable register
+  /* Enable the interrupt in the nested vector interrupt controller */
+  /* TC4_IRQn where 4 is the timer number * timer channels (3) + the channel number (=(1*3)+1) for timer1 channel1 */
+  NVIC_EnableIRQ(TC7_IRQn);
+}
 
+void TC7_Handler()
+{
+  // TC_GetStatus(TC2, 1);
+
+  // state = !state;
+  // digitalWrite(led_pin, state);
+
+  // if( interruptCtr++ >= 6 )
+  //   {
+  //    interruptCtr = 1;
+  //    S = !S; // are we flashing S or O
+  //    if( S ) // set time till next interrupt
+  //       TC_SetRC(TC2, 1, 131200); // 131200 / 656000 = .2 seconds
+  //    else
+  //       TC_SetRC(TC2, 1, 656000); // 656000/ 656000 = 1 second
+  //   }
 }

@@ -6,6 +6,7 @@
 #include "Command.h"
 #include "Configuration.h"
 #include "nanokontrol_6axis.h"
+#include "HAL.h"
 
 // DRV8825 stepper1(200, 62, 63);//X
 // DRV8825 stepper2(200, 64, 65);//Y -> XX
@@ -67,6 +68,8 @@ void setup()
   Serial.println("Serial initialized.");
   delay(500);
   setupSteppers();
+  HAL::setupTimer();
+  HAL::startTimer();
 }
 
 void loop()
