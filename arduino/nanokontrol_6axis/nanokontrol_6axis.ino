@@ -84,30 +84,22 @@ void loop()
    pos->dest5 = atoi(dest5);
    pos->dest6 = atoi(dest6);
 
-   updateLocation();
+   //dump destination when received command
+   showDestination();
  }
 
-void updateLocation(){
-  //TODO: distance = dest - cur;
-  //distance * coeff = rotationDegree;
+void showDestination(){
   Position *pos = Position::getInstance();
-  int dist1 = GAIN*(pos->dest1 - pos->cur1);
-  int dist2 = GAIN*(pos->dest2 - pos->cur2);
-  int dist3 = GAIN*(pos->dest3 - pos->cur3);
-  int dist4 = GAIN*(pos->dest4 - pos->cur4);
-  int dist5 = GAIN*(pos->dest5 - pos->cur5);
-  int dist6 = GAIN*(pos->dest6 - pos->cur6);
-
-  Serial.print("dist1: ");
-  Serial.println(dist1);
-  Serial.print("dist2: ");
-  Serial.println(dist2);
-  Serial.print("dist3: ");
-  Serial.println(dist3);
-  Serial.print("dist4: ");
-  Serial.println(dist4);
-  Serial.print("dist5: ");
-  Serial.println(dist5);
-  Serial.print("dist6: ");
-  Serial.println(dist6);
+  Serial.print("destination1: ");
+  Serial.println(pos->dest1);
+  Serial.print("destination2: ");
+  Serial.println(pos->dest2);
+  Serial.print("destination3: ");
+  Serial.println(pos->dest3);
+  Serial.print("destination4: ");
+  Serial.println(pos->dest4);
+  Serial.print("destination5: ");
+  Serial.println(pos->dest5);
+  Serial.print("destination6: ");
+  Serial.println(pos->dest6);
 }
