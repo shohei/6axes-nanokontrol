@@ -12,13 +12,14 @@ class Preference
 {
 private:
 	Preference(){};
-	virtual ~Preference(){};	
+	virtual ~Preference(){this->state=false;};	
 	static Preference* pref;
 public:	
 	static Preference* getInstance(void){
 		return pref;
 	};
 	Motor motor[6];
+	int state;
 };
 
 
