@@ -26,16 +26,16 @@
 //   }
 // }
 
-void setupSteppperPin(Preference* pref, int motorNumber, int step, int dirPin, int stepPin, int enablePin){
-  pref.motor[motorNumber-1].dirPin = dirpin;
-  pref.motor[motorNumber-1].stepPin = stepPin;
-  pref.motor[motorNumber-1].enablePin = enablePin;
+void setupStepperPin(Preference* pref, int motorNumber, int step, int dirPin, int stepPin, int enablePin){
+  pref->motor[motorNumber-1].dirPin = dirPin;
+  pref->motor[motorNumber-1].stepPin = stepPin;
+  pref->motor[motorNumber-1].enablePin = enablePin;
   pinMode(enablePin,OUTPUT);
   digitalWrite(enablePin,LOW);
 }
 
 void setupSteppers(){
-  Preference* Preference::pref = Preference::getInstance();
+  Preference *pref = Preference::getInstance();
   setupStepperPin(pref,1,200,62,63,48);//X
   setupStepperPin(pref,2,200,64,65,46);//Y->XX
   setupStepperPin(pref,3,200,66,67,44);//Z->Y
@@ -95,7 +95,7 @@ void loop()
   const char* jog_command = root["jog"];
   if(!jog_command==NULL){
      int jog_command_number = atoi(jog_command);
-     doJog(jog_command_number);
+     // doJog(jog_command_number);
      return;
    }
    const char* dest1 = root["dest1"];
@@ -181,67 +181,67 @@ void relativeMove(){
   // stepper6.rotate(dist6);
 }
 
-void doJog(int jog_command_number){
- switch(jog_command_number){
+// void doJog(int jog_command_number){
+//  switch(jog_command_number){
 
-  case UP1:
-  Serial.println("UP1");
-  stepper1.rotate(JOG_CW);
-  break;
+//   case UP1:
+//   Serial.println("UP1");
+//   stepper1.rotate(JOG_CW);
+//   break;
 
-  case DOWN1:
-  Serial.println("DOWN1");
-  stepper1.rotate(JOG_CCW);
-  break;
+//   case DOWN1:
+//   Serial.println("DOWN1");
+//   stepper1.rotate(JOG_CCW);
+//   break;
 
-  case UP2:
-  Serial.println("UP2");
-  stepper2.rotate(JOG_CW);
-  break;
+//   case UP2:
+//   Serial.println("UP2");
+//   stepper2.rotate(JOG_CW);
+//   break;
 
-  case DOWN2:
-  Serial.println("DOWN2");
-  stepper2.rotate(JOG_CCW);
-  break;
+//   case DOWN2:
+//   Serial.println("DOWN2");
+//   stepper2.rotate(JOG_CCW);
+//   break;
 
-  case UP3:
-  Serial.println("UP3");
-  stepper3.rotate(JOG_CW);
-  break;
+//   case UP3:
+//   Serial.println("UP3");
+//   stepper3.rotate(JOG_CW);
+//   break;
 
-  case DOWN3:
-  Serial.println("DOWN3");
-  stepper3.rotate(JOG_CCW);
-  break;
+//   case DOWN3:
+//   Serial.println("DOWN3");
+//   stepper3.rotate(JOG_CCW);
+//   break;
 
-  case UP4:
-  Serial.println("UP4");
-  stepper4.rotate(JOG_CW);
-  break;
+//   case UP4:
+//   Serial.println("UP4");
+//   stepper4.rotate(JOG_CW);
+//   break;
 
-  case DOWN4:
-  Serial.println("DOWN4");
-  stepper4.rotate(JOG_CCW);
-  break;
+//   case DOWN4:
+//   Serial.println("DOWN4");
+//   stepper4.rotate(JOG_CCW);
+//   break;
 
-  case UP5:
-  Serial.println("UP5");
-  stepper5.rotate(JOG_CW);
-  break;
+//   case UP5:
+//   Serial.println("UP5");
+//   stepper5.rotate(JOG_CW);
+//   break;
 
-  case DOWN5:
-  Serial.println("DOWN5");
-  stepper5.rotate(JOG_CCW);
-  break;
+//   case DOWN5:
+//   Serial.println("DOWN5");
+//   stepper5.rotate(JOG_CCW);
+//   break;
 
-  case UP6:
-  Serial.println("UP6");
-  stepper6.rotate(JOG_CW);
-  break;
+//   case UP6:
+//   Serial.println("UP6");
+//   stepper6.rotate(JOG_CW);
+//   break;
 
-  case DOWN6:
-  Serial.println("DOWN6");
-  stepper6.rotate(JOG_CCW);
-  break;
-}
-}
+//   case DOWN6:
+//   Serial.println("DOWN6");
+//   stepper6.rotate(JOG_CCW);
+//   break;
+// }
+// }
