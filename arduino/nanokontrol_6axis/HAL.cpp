@@ -16,7 +16,8 @@ void HAL::setupTimer(){
   // TIMER_CLOCK5: SLCK ( slow clock )
   TC_Configure(/* clock */TC2,/* channel */1, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK4); 
   //652.25 * 0.2(sec) = 131250
-  TC_SetRC(TC2, 1, 131200);
+  // TC_SetRC(TC2, 1, 131200);
+  TC_SetRC(TC2, 1, 656250);
   TC_Start(TC2, 1);
 }
 
@@ -30,10 +31,12 @@ void HAL::startTimer(){
 
 void TC7_Handler()
 {
-  // TC_GetStatus(TC2, 1);
-
-  // state = !state;
-  // digitalWrite(led_pin, state);
+  TC_GetStatus(TC2, 1);
+  Preference *pref = Preference::getInstance();
+  pref->state = !pref->state;
+  digitalWrite(13, pref->state);
+  Serial.println("toggle 13 LED");
+  TC_SetRC(TC2, 1, 656250);
 
   // if( interruptCtr++ >= 6 )
   //   {
