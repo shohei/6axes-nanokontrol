@@ -14,13 +14,13 @@ void setupStepperPin(Preference* pref, int motorNumber, int step, int dirPin, in
 }
 
 void setupSteppers(){
-  Preference *pref = Preference::getInstance();
-  setupStepperPin(pref,1,200,62,63,48);//X
-  setupStepperPin(pref,2,200,64,65,46);//Y->XX
-  setupStepperPin(pref,3,200,66,67,44);//Z->Y
-  setupStepperPin(pref,4,200,28,36,42);//E0->YY
-  setupStepperPin(pref,5,200,41,43,39);//E1->Z
-  setupStepperPin(pref,6,200,47,32,45);//E2->ZZ
+  Preference *state = Preference::getInstance();
+  setupStepperPin(state,1,200,62,63,48);//X
+  setupStepperPin(state,2,200,64,65,46);//Y->XX
+  setupStepperPin(state,3,200,66,67,44);//Z->Y
+  setupStepperPin(state,4,200,28,36,42);//E0->YY
+  setupStepperPin(state,5,200,41,43,39);//E1->Z
+  setupStepperPin(state,6,200,47,32,45);//E2->ZZ
 }
 
 void setup()
