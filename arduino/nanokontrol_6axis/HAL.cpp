@@ -16,8 +16,10 @@ void HAL::setupTimer(){
   // TIMER_CLOCK5: SLCK ( slow clock )
   TC_Configure(/* clock */TC2,/* channel */1, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK4); 
   //652.25 * 0.2(sec) = 131250
+  //652.25 * 0.01(sec) = 131250
   // TC_SetRC(TC2, 1, 131200);
-  TC_SetRC(TC2, 1, 656250);
+  // TC_SetRC(TC2, 1, 656250);//1sec
+  TC_SetRC(TC2, 1, 6563);//0.01sec: 1000Hz
   TC_Start(TC2, 1);
 }
 
@@ -36,15 +38,10 @@ void TC7_Handler()
   pref->state = !pref->state;
   digitalWrite(13, pref->state);
   Serial.println("toggle 13 LED");
-  TC_SetRC(TC2, 1, 656250);
-
-  // if( interruptCtr++ >= 6 )
-  //   {
-  //    interruptCtr = 1;
-  //    S = !S; // are we flashing S or O
-  //    if( S ) // set time till next interrupt
-  //       TC_SetRC(TC2, 1, 131200); // 131200 / 656000 = .2 seconds
-  //    else
-  //       TC_SetRC(TC2, 1, 656000); // 656000/ 656000 = 1 second
-  //   }
+  TC_SetRC(TC2, 1, 6563);
 }
+
+
+
+
+
