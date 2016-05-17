@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include <String.h>
 #include <ArduinoJson.h>
-#include "position.h"
 #include "Command.h"
 #include "Configuration.h"
 #include "Preference.h"
@@ -63,37 +62,29 @@ void loop()
     return;
   }
 
-   const char* dest1 = root["dest1"];
-   const char* dest2 = root["dest2"];
-   const char* dest3 = root["dest3"];
-   const char* dest4 = root["dest4"];
-   const char* dest5 = root["dest5"];
-   const char* dest6 = root["dest6"];
+  const char* dest1 = root["dest1"];
+  const char* dest2 = root["dest2"];
+  const char* dest3 = root["dest3"];
+  const char* dest4 = root["dest4"];
+  const char* dest5 = root["dest5"];
+  const char* dest6 = root["dest6"];
 
-   Position *pos = Position::getInstance();
-   pos->dest1 = atoi(dest1);
-   pos->dest2 = atoi(dest2);
-   pos->dest3 = atoi(dest3);
-   pos->dest4 = atoi(dest4);
-   pos->dest5 = atoi(dest5);
-   pos->dest6 = atoi(dest6);
+  const char* dests[] = {dest1,dest2,dest3,dest4,dest5,dest6};
 
+  Preference *state = Preference::getInstance(); 
+  for(int i=0;i<6;i++){
+    state->motor[i].dest = atoi(dests[i]);
+  }
    //dump destination when received command
    showDestination();
  }
 
-void showDestination(){
-  Position *pos = Position::getInstance();
-  Serial.print("destination1: ");
-  Serial.println(pos->dest1);
-  Serial.print("destination2: ");
-  Serial.println(pos->dest2);
-  Serial.print("destination3: ");
-  Serial.println(pos->dest3);
-  Serial.print("destination4: ");
-  Serial.println(pos->dest4);
-  Serial.print("destination5: ");
-  Serial.println(pos->dest5);
-  Serial.print("destination6: ");
-  Serial.println(pos->dest6);
+ void showDestination(){
+  Preference *state = Preference::getInstance();
+  for(int i=0;i<6;i++){
+    Serial.print("destination");
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.println(state->motor[i].dest);
+  }
 }

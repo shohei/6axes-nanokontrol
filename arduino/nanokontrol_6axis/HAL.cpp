@@ -31,15 +31,24 @@ void HAL::startTimer(){
   NVIC_EnableIRQ(TC7_IRQn);
 }
 
+//main loop
 void TC7_Handler()
 {
   TC_GetStatus(TC2, 1);
-  Preference *pref = Preference::getInstance();
-  pref->state = !pref->state;
-  digitalWrite(13, pref->state);
-  Serial.println("toggle 13 LED");
+  for(int i=0;i<6;i++){
+
+  }
   TC_SetRC(TC2, 1, 6563);
 }
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,3 +1,3 @@
 #include "Preference.h"
 
-Preference *Preference::pref = new Preference();
+Preference *Preference::state = new Preference();

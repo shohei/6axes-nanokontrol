@@ -6,20 +6,21 @@ typedef struct {
 	int dirPin;
 	int stepPin;
 	int enablePin;
+	int dest;
+	int cur;
 } Motor;
 
 class Preference 
 {
 private:
 	Preference(){};
-	virtual ~Preference(){this->state=false;};	
-	static Preference* pref;
+	virtual ~Preference(){};	
+	static Preference* state;
 public:	
 	static Preference* getInstance(void){
-		return pref;
+		return state;
 	};
 	Motor motor[6];
-	int state;
 };
 
 #endif
