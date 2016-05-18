@@ -15,8 +15,8 @@ public:
     virtual ~HAL();
     static void setupTimer();
     static void startTimer();
-    static void CWStep(int dir, int step);
-    static void CCWStep(int dir, int step);
+    static void doSendDirection(int motorNumber, bool isClockWise);
+    static void doSendPulse(int motorNumber);
 };
 
 

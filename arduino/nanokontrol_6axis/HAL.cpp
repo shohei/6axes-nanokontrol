@@ -1,27 +1,25 @@
 #include "HAL.h"
 #include "Arduino.h"
 #include "Preference.h"
+#include "Configuration.h"
+#include "fastio.h"
 
 //increment current position
 #define STEP_RESOLUTION 0.0001
 
-// #define _WRITE(port, v) do { if (v) {DIO ##  port ## _PORT -> PIO_SODR = DIO ## port ## _PIN; } else {DIO ##  port ## _PORT->PIO_CODR = DIO ## port ## _PIN; }; } while (0)
-#define _WRITE_NC(IO, v)  do { if (v) {DIO ##  IO ## _WPORT |= MASK(DIO ## IO ## _PIN); } else {DIO ##  IO ## _WPORT &= ~MASK(DIO ## IO ## _PIN); }; } while (0)
+#define _WRITE(port, v)     do { if (v) {DIO ##  port ## _PORT -> PIO_SODR = DIO ## port ## _PIN; } else {DIO ##  port ## _PORT->PIO_CODR = DIO ## port ## _PIN; }; } while (0)
+#define WRITE(pin,v) _WRITE(pin,v)
+#define _READ(pin) (DIO ##  pin ## _PORT->PIO_PDSR & DIO ##  pin ## _PIN ? 1 : 0) // does return 0 or pin value
+#define READ(pin) _READ(pin)
 
-#define _WRITE_C(IO, v)   do { if (v) { \
-                                         CRITICAL_SECTION_START; \
-                                         {DIO ##  IO ## _WPORT |= MASK(DIO ## IO ## _PIN); }\
-                                         CRITICAL_SECTION_END; \
-                                       }\
-                                       else {\
-                                         CRITICAL_SECTION_START; \
-                                         {DIO ##  IO ## _WPORT &= ~MASK(DIO ## IO ## _PIN); }\
-                                         CRITICAL_SECTION_END; \
-                                       }\
-                                     }\
-                                     while (0)
-#define _WRITE(IO, v)  do {  if (&(DIO ##  IO ## _RPORT) >= (uint8_t *)0x100) {_WRITE_C(IO, v); } else {_WRITE_NC(IO, v); }; } while (0)
-#define _READ(IO) ((bool)(DIO ## IO ## _RPORT & MASK(DIO ## IO ## _PIN)))
+#define _GET_STEP_PIN(pin) M ## pin ## _STEP_PIN
+#define GET_STEP_PIN(pin) _GET_STEP_PIN(pin)
+
+#define _GET_DIR_PIN(pin) M ## pin ## _DIR_PIN
+#define GET_DIR_PIN(pin) _GET_DIR_PIN(pin)
+
+#define CW  true
+#define CCW false
 
 void HAL::setupTimer(void){
   /* turn on the timer clock in the power management controller */
@@ -50,21 +48,92 @@ void HAL::startTimer(void){
   NVIC_EnableIRQ(TC7_IRQn);
 }
 
-void HAL::CWStep(int dir, int step){
-  // _WRITE(dir,false);
-  // _WRITE(step,true);
-  _DELAY_1_9_US;
-  // _WRITE(step,false);
-  _DELAY_1_9_US;
-};
+void HAL::doSendDirection(int motorNumber, bool isClockWise){
+  if(isClockWise){
+    switch(motorNumber){
+      case 1:
+      WRITE(GET_DIR_PIN(1),true);
+      break;    
+      case 2:
+      WRITE(GET_DIR_PIN(2),true);
+      break;    
+      case 3:
+      WRITE(GET_DIR_PIN(3),true);
+      break;    
+      case 4:
+      WRITE(GET_DIR_PIN(4),true);
+      break;    
+      case 5:
+      WRITE(GET_DIR_PIN(5),true);
+      break;    
+      case 6:
+      WRITE(GET_DIR_PIN(6),true);
+      break;    
+    }
+  }else {
+    switch(motorNumber){
+      case 1:
+      WRITE(GET_DIR_PIN(1),true);
+      break;    
+      case 2:
+      WRITE(GET_DIR_PIN(2),true);
+      break;    
+      case 3:
+      WRITE(GET_DIR_PIN(3),true);
+      break;    
+      case 4:
+      WRITE(GET_DIR_PIN(4),true);
+      break;    
+      case 5:
+      WRITE(GET_DIR_PIN(5),true);
+      break;    
+      case 6:
+      WRITE(GET_DIR_PIN(6),true);
+      break;    
+    }
+  }
+}
 
-void HAL::CCWStep(int dir, int step){
-  // _WRITE(dir,true);
-  // _WRITE(step,true);
-  _DELAY_1_9_US;
-  // _WRITE(step,false);
-  _DELAY_1_9_US;
-};
+void HAL::doSendPulse(int motorNumber){
+  switch(motorNumber){
+    case 1:
+    WRITE(GET_STEP_PIN(1),true);
+    _DELAY_1_9_US;
+    WRITE(GET_STEP_PIN(1),false);
+    _DELAY_1_9_US;
+    break;    
+    case 2:
+    WRITE(GET_STEP_PIN(2),true);
+    _DELAY_1_9_US;
+    WRITE(GET_STEP_PIN(2),false);
+    _DELAY_1_9_US;
+    break;    
+    case 3:
+    WRITE(GET_STEP_PIN(3),true);
+    _DELAY_1_9_US;
+    WRITE(GET_STEP_PIN(3),false);
+    _DELAY_1_9_US;
+    break;    
+    case 4:
+    WRITE(GET_STEP_PIN(4),true);
+    _DELAY_1_9_US;
+    WRITE(GET_STEP_PIN(4),false);
+    _DELAY_1_9_US;
+    break;    
+    case 5:
+    WRITE(GET_STEP_PIN(5),true);
+    _DELAY_1_9_US;
+    WRITE(GET_STEP_PIN(5),false);
+    _DELAY_1_9_US;
+    break;    
+    case 6:
+    WRITE(GET_STEP_PIN(6),true);
+    _DELAY_1_9_US;
+    WRITE(GET_STEP_PIN(6),false);
+    _DELAY_1_9_US;
+    break;    
+  }
+}
 
 //main loop
 void TC7_Handler()
@@ -77,9 +146,11 @@ void TC7_Handler()
       int _dir = state->motor[i].dirPin;
       int _step = state->motor[i].stepPin;
       if(_cur <_dest){
-          HAL::CCWStep(_dir,_step);
+          HAL::doSendDirection(i,CW);
+          HAL::doSendPulse(i);
       }else if(_cur > _dest){
-          HAL::CWStep(_dir,_step);
+          HAL::doSendDirection(i,CCW);
+          HAL::doSendPulse(i);
       }
       state->motor[i].cur += STEP_RESOLUTION;
   }
