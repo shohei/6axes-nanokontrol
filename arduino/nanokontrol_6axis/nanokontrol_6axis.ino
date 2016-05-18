@@ -16,6 +16,7 @@ void initState(){
 void setup()
 {
   Serial.begin(115200);    // the GPRS baud rate
+  // Serial.begin(9600);    // the GPRS baud rate
   while (!Serial) {
     // wait serial port initialization
   }

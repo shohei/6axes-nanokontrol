@@ -1,8 +1,11 @@
+//todo: setTimeout and send location in every 1sec
+
 var nanoKONTROL = require('korg-nano-kontrol');
 var serialport = require("serialport");
 var SerialPort = serialport.SerialPort
 var port = new SerialPort("/dev/tty.usbmodem1411", {
   baudrate: 115200,
+  // baudrate: 9600,
   parser: serialport.parsers.readline('\n')
 }
 );
