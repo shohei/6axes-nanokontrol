@@ -4,8 +4,8 @@
 #define JOG_CW -1000
 #define JOG_CCW 1000
 
-#define LENGTH_MAGNIFIER 100L
-#define JOG_WIDTH 1000
+#define LENGTH_MAGNIFIER 1000L
+#define JOG_WIDTH 10000
 
 // #define GAIN 10
 
