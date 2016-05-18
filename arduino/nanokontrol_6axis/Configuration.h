@@ -4,7 +4,10 @@
 #define JOG_CW -1000
 #define JOG_CCW 1000
 
-#define GAIN 10
+#define LENGTH_MAGNIFIER 100L
+#define JOG_WIDTH 10
+
+// #define GAIN 10
 
 ////////////////////////////////////////////////
 //MOTOR PIN SETTINGS

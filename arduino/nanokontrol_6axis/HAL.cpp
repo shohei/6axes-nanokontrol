@@ -5,7 +5,7 @@
 #include "fastio.h"
 
 //increment current position
-#define STEP_RESOLUTION 0.0001
+#define STEP_RESOLUTION 1 
 
 #define _WRITE(port, v)     do { if (v) {DIO ##  port ## _PORT -> PIO_SODR = DIO ## port ## _PIN; } else {DIO ##  port ## _PORT->PIO_CODR = DIO ## port ## _PIN; }; } while (0)
 #define WRITE(pin,v) _WRITE(pin,v)
@@ -178,11 +178,12 @@ void TC7_Handler()
       if(_cur <_dest){
           HAL::doSendDirection(i,CW);
           HAL::doSendPulse(i);
+          state->motor[i].cur += STEP_RESOLUTION;
       }else if(_cur > _dest){
           HAL::doSendDirection(i,CCW);
           HAL::doSendPulse(i);
+          state->motor[i].cur -= STEP_RESOLUTION;
       }
-      state->motor[i].cur += STEP_RESOLUTION;
   }
   // TC_SetRC(TC2, 1, 656250);//1sec//debug
   TC_SetRC(TC2, 1, 6563);

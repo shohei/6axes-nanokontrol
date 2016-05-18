@@ -5,6 +5,14 @@
 #include "Preference.h"
 #include "HAL.h"
 
+void initState(){
+  Preference *state = Preference::getInstance(); 
+  for(int i=0;i<6;i++){
+    state->motor[i].dest = 0;
+    state->motor[i].cur = 0;
+  }
+}
+
 void setup()
 {
   Serial.begin(115200);    // the GPRS baud rate
@@ -14,6 +22,7 @@ void setup()
   Serial.println("Serial initialized.");
   delay(500);
   pinMode(13,OUTPUT);//for debug
+  initState();
   for(int i=0;i<6;i++){
     HAL::enableStepperMotor(i);
   }
@@ -45,6 +54,15 @@ void loop()
     return;
   }
 
+  const char* jog_command = root["jog"];
+  if(!jog_command==NULL){
+    Serial.println(jog_command);    
+    int jog_command_number = atoi(jog_command);
+    doJog(jog_command_number);
+    showStatus();
+    return;
+  }
+
   const char* dest1 = root["dest1"];
   const char* dest2 = root["dest2"];
   const char* dest3 = root["dest3"];
@@ -56,18 +74,88 @@ void loop()
 
   Preference *state = Preference::getInstance(); 
   for(int i=0;i<6;i++){
-    state->motor[i].dest = atoi(dests[i]);
+    if(dests[i]!=NULL){
+      state->motor[i].dest = atoi(dests[i]) * LENGTH_MAGNIFIER;
+    }
   }
    //dump destination when received command
-   showDestination();
+   showStatus();
  }
 
- void showDestination(){
+ void showStatus(){
   Preference *state = Preference::getInstance();
   for(int i=0;i<6;i++){
     Serial.print("destination");
     Serial.print(i);
     Serial.print(": ");
-    Serial.println(state->motor[i].dest);
+    Serial.print(state->motor[i].dest);
+    Serial.print(", current pos: ");
+    Serial.println(state->motor[i].cur);
+  }
+}
+
+void doJog(int jog_command_number){
+  Preference *state = Preference::getInstance();
+  switch(jog_command_number){
+
+    case UP1:
+    Serial.println("UP1");
+    state->motor[0].dest += JOG_WIDTH;
+    break;
+
+    case DOWN1:
+    Serial.println("DOWN1");
+    state->motor[0].dest -= JOG_WIDTH;
+    break;
+
+    case UP2:
+    Serial.println("UP2");
+    state->motor[1].dest += JOG_WIDTH;
+    break;
+
+    case DOWN2:
+    Serial.println("DOWN2");
+    state->motor[1].dest -= JOG_WIDTH;
+    break;
+
+    case UP3:
+    Serial.println("UP3");
+    state->motor[2].dest += JOG_WIDTH;
+    break;
+
+    case DOWN3:
+    Serial.println("DOWN3");
+    state->motor[2].dest -= JOG_WIDTH;
+    break;
+
+    case UP4:
+    Serial.println("UP4");
+    state->motor[3].dest += JOG_WIDTH;
+    break;
+
+    case DOWN4:
+    Serial.println("DOWN4");
+    state->motor[3].dest -= JOG_WIDTH;
+    break;
+
+    case UP5:
+    Serial.println("UP5");
+    state->motor[4].dest += JOG_WIDTH;
+    break;
+
+    case DOWN5:
+    Serial.println("DOWN5");
+    state->motor[4].dest -= JOG_WIDTH;
+    break;
+
+    case UP6:
+    Serial.println("UP6");
+    state->motor[5].dest += JOG_WIDTH;
+    break;
+
+    case DOWN6:
+    Serial.println("DOWN6");
+    state->motor[5].dest -= JOG_WIDTH;
+    break;
   }
 }

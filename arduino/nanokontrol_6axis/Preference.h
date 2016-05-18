@@ -2,8 +2,8 @@
 #define _PREFERENCE_H
 
 typedef struct {
-	int dest;
-	int cur;
+	long dest;
+	long cur;
 } Motor;
 
 class Preference 
