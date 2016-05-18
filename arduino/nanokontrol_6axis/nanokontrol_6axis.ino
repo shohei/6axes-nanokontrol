@@ -21,7 +21,7 @@ void setup()
   }
   Serial.println("Serial initialized.");
   delay(500);
-  pinMode(13,OUTPUT);//for debug
+  // pinMode(13,OUTPUT);//for debug
   initState();
   HAL::setupStepperMotor();
   HAL::setupTimer();

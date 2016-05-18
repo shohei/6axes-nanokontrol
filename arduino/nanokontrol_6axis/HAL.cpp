@@ -21,8 +21,13 @@
 #define _GET_ENABLE_PIN(pin) M ## pin ## _ENABLE_PIN
 #define GET_ENABLE_PIN(pin) _GET_ENABLE_PIN(pin)
 
-#define CW  true
-#define CCW false
+#define SET_INPUT(pin) pmc_enable_periph_clk(g_APinDescription[pin].ulPeripheralId); \
+  PIO_Configure(g_APinDescription[pin].pPort, PIO_INPUT, g_APinDescription[pin].ulPin, 0)
+#define SET_OUTPUT(pin) PIO_Configure(g_APinDescription[pin].pPort, PIO_OUTPUT_1, \
+                                      g_APinDescription[pin].ulPin, g_APinDescription[pin].ulPinConfiguration)
+
+#define CW  false
+#define CCW true
 
 void HAL::setupTimer(void){
   /* turn on the timer clock in the power management controller */
@@ -144,32 +149,33 @@ void HAL::setupStepperMotor(){
       pinMode(GET_DIR_PIN(1),OUTPUT);
       pinMode(GET_STEP_PIN(1),OUTPUT);
       pinMode(GET_ENABLE_PIN(1),OUTPUT);
-      digitalWrite(GET_ENABLE_PIN(1),LOW);
+      WRITE(GET_ENABLE_PIN(1),false);
 
       pinMode(GET_DIR_PIN(2),OUTPUT);
       pinMode(GET_STEP_PIN(2),OUTPUT);
       pinMode(GET_ENABLE_PIN(2),OUTPUT);
-      digitalWrite(GET_ENABLE_PIN(2),LOW);
+      // SET_OUTPUT(GET_ENABLE_PIN(2));
+      WRITE(GET_ENABLE_PIN(2),false);
 
       pinMode(GET_DIR_PIN(3),OUTPUT);
       pinMode(GET_STEP_PIN(3),OUTPUT);
       pinMode(GET_ENABLE_PIN(3),OUTPUT);
-      digitalWrite(GET_ENABLE_PIN(3),LOW);
+      WRITE(GET_ENABLE_PIN(3),false);
 
       pinMode(GET_DIR_PIN(4),OUTPUT);
       pinMode(GET_STEP_PIN(4),OUTPUT);
       pinMode(GET_ENABLE_PIN(4),OUTPUT);
-      digitalWrite(GET_ENABLE_PIN(4),LOW);
+      WRITE(GET_ENABLE_PIN(4),false);
 
       pinMode(GET_DIR_PIN(5),OUTPUT);
       pinMode(GET_STEP_PIN(5),OUTPUT);
       pinMode(GET_ENABLE_PIN(5),OUTPUT);
-      digitalWrite(GET_ENABLE_PIN(5),LOW);
+      WRITE(GET_ENABLE_PIN(5),false);
 
       pinMode(GET_DIR_PIN(6),OUTPUT);
       pinMode(GET_STEP_PIN(6),OUTPUT);
       pinMode(GET_ENABLE_PIN(6),OUTPUT);
-      digitalWrite(GET_ENABLE_PIN(6),LOW);
+      WRITE(GET_ENABLE_PIN(6),false);
 }
 
 //main loop
