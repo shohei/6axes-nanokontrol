@@ -77,22 +77,22 @@ void HAL::doSendDirection(int motorNumber, bool isClockWise){
   }else {
     switch(motorNumber){
       case 0:
-      WRITE(GET_DIR_PIN(1),true);
+      WRITE(GET_DIR_PIN(1),false);
       break;    
       case 1:
-      WRITE(GET_DIR_PIN(2),true);
+      WRITE(GET_DIR_PIN(2),false);
       break;    
       case 2:
-      WRITE(GET_DIR_PIN(3),true);
+      WRITE(GET_DIR_PIN(3),false);
       break;    
       case 3:
-      WRITE(GET_DIR_PIN(4),true);
+      WRITE(GET_DIR_PIN(4),false);
       break;    
       case 4:
-      WRITE(GET_DIR_PIN(5),true);
+      WRITE(GET_DIR_PIN(5),false);
       break;    
       case 5:
-      WRITE(GET_DIR_PIN(6),true);
+      WRITE(GET_DIR_PIN(6),false);
       break;    
     }
   }
