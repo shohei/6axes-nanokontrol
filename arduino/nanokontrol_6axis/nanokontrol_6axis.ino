@@ -23,9 +23,7 @@ void setup()
   delay(500);
   pinMode(13,OUTPUT);//for debug
   initState();
-  for(int i=0;i<6;i++){
-    HAL::enableStepperMotor(i);
-  }
+  HAL::setupStepperMotor();
   HAL::setupTimer();
   HAL::startTimer();
 }

@@ -39,7 +39,8 @@ void HAL::setupTimer(void){
   //652.25 * 0.01(sec) = 131250
   // TC_SetRC(TC2, 1, 131200);
   // TC_SetRC(TC2, 1, 656250);//1sec
-  TC_SetRC(TC2, 1, 6563);//0.01sec: 1000Hz
+  // TC_SetRC(TC2, 1, 6563);//0.01sec: 100Hz
+  TC_SetRC(TC2, 1, 656);//0.001sec: 1000Hz
   TC_Start(TC2, 1);
 }
 
@@ -54,43 +55,43 @@ void HAL::startTimer(void){
 void HAL::doSendDirection(int motorNumber, bool isClockWise){
   if(isClockWise){
     switch(motorNumber){
-      case 1:
+      case 0:
       WRITE(GET_DIR_PIN(1),true);
       break;    
-      case 2:
+      case 1:
       WRITE(GET_DIR_PIN(2),true);
       break;    
-      case 3:
+      case 2:
       WRITE(GET_DIR_PIN(3),true);
       break;    
-      case 4:
+      case 3:
       WRITE(GET_DIR_PIN(4),true);
       break;    
-      case 5:
+      case 4:
       WRITE(GET_DIR_PIN(5),true);
       break;    
-      case 6:
+      case 5:
       WRITE(GET_DIR_PIN(6),true);
       break;    
     }
   }else {
     switch(motorNumber){
-      case 1:
+      case 0:
       WRITE(GET_DIR_PIN(1),true);
       break;    
-      case 2:
+      case 1:
       WRITE(GET_DIR_PIN(2),true);
       break;    
-      case 3:
+      case 2:
       WRITE(GET_DIR_PIN(3),true);
       break;    
-      case 4:
+      case 3:
       WRITE(GET_DIR_PIN(4),true);
       break;    
-      case 5:
+      case 4:
       WRITE(GET_DIR_PIN(5),true);
       break;    
-      case 6:
+      case 5:
       WRITE(GET_DIR_PIN(6),true);
       break;    
     }
@@ -99,37 +100,37 @@ void HAL::doSendDirection(int motorNumber, bool isClockWise){
 
 void HAL::doSendPulse(int motorNumber){
   switch(motorNumber){
-    case 1:
+    case 0:
     WRITE(GET_STEP_PIN(1),true);
     _DELAY_1_9_US;
     WRITE(GET_STEP_PIN(1),false);
     _DELAY_1_9_US;
     break;    
-    case 2:
+    case 1:
     WRITE(GET_STEP_PIN(2),true);
     _DELAY_1_9_US;
     WRITE(GET_STEP_PIN(2),false);
     _DELAY_1_9_US;
     break;    
-    case 3:
+    case 2:
     WRITE(GET_STEP_PIN(3),true);
     _DELAY_1_9_US;
     WRITE(GET_STEP_PIN(3),false);
     _DELAY_1_9_US;
     break;    
-    case 4:
+    case 3:
     WRITE(GET_STEP_PIN(4),true);
     _DELAY_1_9_US;
     WRITE(GET_STEP_PIN(4),false);
     _DELAY_1_9_US;
     break;    
-    case 5:
+    case 4:
     WRITE(GET_STEP_PIN(5),true);
     _DELAY_1_9_US;
     WRITE(GET_STEP_PIN(5),false);
     _DELAY_1_9_US;
     break;    
-    case 6:
+    case 5:
     WRITE(GET_STEP_PIN(6),true);
     _DELAY_1_9_US;
     WRITE(GET_STEP_PIN(6),false);
@@ -138,33 +139,36 @@ void HAL::doSendPulse(int motorNumber){
   }
 }
 
-void HAL::enableStepperMotor(int motorNumber){
-  switch(motorNumber){
-    case 1:
+void HAL::setupStepperMotor(){
+      pinMode(GET_DIR_PIN(1),OUTPUT);
+      pinMode(GET_STEP_PIN(1),OUTPUT);
       pinMode(GET_ENABLE_PIN(1),OUTPUT);
       digitalWrite(GET_ENABLE_PIN(1),LOW);
-    break;
-    case 2:
+
+      pinMode(GET_DIR_PIN(2),OUTPUT);
+      pinMode(GET_STEP_PIN(2),OUTPUT);
       pinMode(GET_ENABLE_PIN(2),OUTPUT);
       digitalWrite(GET_ENABLE_PIN(2),LOW);
-    break;
-    case 3:
+
+      pinMode(GET_DIR_PIN(3),OUTPUT);
+      pinMode(GET_STEP_PIN(3),OUTPUT);
       pinMode(GET_ENABLE_PIN(3),OUTPUT);
       digitalWrite(GET_ENABLE_PIN(3),LOW);
-    break;
-    case 4:
+
+      pinMode(GET_DIR_PIN(4),OUTPUT);
+      pinMode(GET_STEP_PIN(4),OUTPUT);
       pinMode(GET_ENABLE_PIN(4),OUTPUT);
       digitalWrite(GET_ENABLE_PIN(4),LOW);
-    break;
-    case 5:
+
+      pinMode(GET_DIR_PIN(5),OUTPUT);
+      pinMode(GET_STEP_PIN(5),OUTPUT);
       pinMode(GET_ENABLE_PIN(5),OUTPUT);
       digitalWrite(GET_ENABLE_PIN(5),LOW);
-    break;
-    case 6:
+
+      pinMode(GET_DIR_PIN(6),OUTPUT);
+      pinMode(GET_STEP_PIN(6),OUTPUT);
       pinMode(GET_ENABLE_PIN(6),OUTPUT);
       digitalWrite(GET_ENABLE_PIN(6),LOW);
-    break;
-  }
 }
 
 //main loop
@@ -186,6 +190,7 @@ void TC7_Handler()
       }
   }
   // TC_SetRC(TC2, 1, 656250);//1sec//debug
-  TC_SetRC(TC2, 1, 6563);
+  // TC_SetRC(TC2, 1, 6563);
+  TC_SetRC(TC2, 1, 656);//0.001sec: 1000Hz
 }
 
