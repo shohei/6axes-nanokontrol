@@ -17,6 +17,7 @@ public:
     static void startTimer();
     static void doSendDirection(int motorNumber, bool isClockWise);
     static void doSendPulse(int motorNumber);
+    static void enableStepperMotor(int motorNumber);
 };
 
 

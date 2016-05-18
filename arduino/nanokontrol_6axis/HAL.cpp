@@ -18,6 +18,9 @@
 #define _GET_DIR_PIN(pin) M ## pin ## _DIR_PIN
 #define GET_DIR_PIN(pin) _GET_DIR_PIN(pin)
 
+#define _GET_ENABLE_PIN(pin) M ## pin ## _ENABLE_PIN
+#define GET_ENABLE_PIN(pin) _GET_ENABLE_PIN(pin)
+
 #define CW  true
 #define CCW false
 
@@ -135,6 +138,35 @@ void HAL::doSendPulse(int motorNumber){
   }
 }
 
+void HAL::enableStepperMotor(int motorNumber){
+  switch(motorNumber){
+    case 1:
+      pinMode(GET_ENABLE_PIN(1),OUTPUT);
+      digitalWrite(GET_ENABLE_PIN(1),LOW);
+    break;
+    case 2:
+      pinMode(GET_ENABLE_PIN(2),OUTPUT);
+      digitalWrite(GET_ENABLE_PIN(2),LOW);
+    break;
+    case 3:
+      pinMode(GET_ENABLE_PIN(3),OUTPUT);
+      digitalWrite(GET_ENABLE_PIN(3),LOW);
+    break;
+    case 4:
+      pinMode(GET_ENABLE_PIN(4),OUTPUT);
+      digitalWrite(GET_ENABLE_PIN(4),LOW);
+    break;
+    case 5:
+      pinMode(GET_ENABLE_PIN(5),OUTPUT);
+      digitalWrite(GET_ENABLE_PIN(5),LOW);
+    break;
+    case 6:
+      pinMode(GET_ENABLE_PIN(6),OUTPUT);
+      digitalWrite(GET_ENABLE_PIN(6),LOW);
+    break;
+  }
+}
+
 //main loop
 void TC7_Handler()
 {
@@ -143,8 +175,6 @@ void TC7_Handler()
   for(int i=0;i<6;i++){
       int _dest = state->motor[i].dest;
       int _cur = state->motor[i].cur;
-      int _dir = state->motor[i].dirPin;
-      int _step = state->motor[i].stepPin;
       if(_cur <_dest){
           HAL::doSendDirection(i,CW);
           HAL::doSendPulse(i);

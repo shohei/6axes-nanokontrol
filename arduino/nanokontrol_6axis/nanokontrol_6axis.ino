@@ -5,24 +5,6 @@
 #include "Preference.h"
 #include "HAL.h"
 
-void setupStepperPin(Preference* pref, int motorNumber, int step, int dirPin, int stepPin, int enablePin){
-  pref->motor[motorNumber-1].dirPin = dirPin;
-  pref->motor[motorNumber-1].stepPin = stepPin;
-  pref->motor[motorNumber-1].enablePin = enablePin;
-  pinMode(enablePin,OUTPUT);
-  digitalWrite(enablePin,LOW);
-}
-
-void setupSteppers(){
-  Preference *state = Preference::getInstance();
-  setupStepperPin(state,1,200,62,63,48);//X
-  setupStepperPin(state,2,200,64,65,46);//Y->XX
-  setupStepperPin(state,3,200,66,67,44);//Z->Y
-  setupStepperPin(state,4,200,28,36,42);//E0->YY
-  setupStepperPin(state,5,200,41,43,39);//E1->Z
-  setupStepperPin(state,6,200,47,32,45);//E2->ZZ
-}
-
 void setup()
 {
   Serial.begin(115200);    // the GPRS baud rate
@@ -32,7 +14,9 @@ void setup()
   Serial.println("Serial initialized.");
   delay(500);
   pinMode(13,OUTPUT);//for debug
-  setupSteppers();
+  for(int i=0;i<6;i++){
+    HAL::enableStepperMotor(i);
+  }
   HAL::setupTimer();
   HAL::startTimer();
 }

@@ -2,10 +2,6 @@
 #define _PREFERENCE_H
 
 typedef struct {
-	int step;
-	int dirPin;
-	int stepPin;
-	int enablePin;
 	int dest;
 	int cur;
 } Motor;
