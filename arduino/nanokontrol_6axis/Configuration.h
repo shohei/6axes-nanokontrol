@@ -3,6 +3,7 @@
 
 #define LENGTH_MAGNIFIER 100L
 #define JOG_WIDTH 10000
+#define STEP_RESOLUTION 2
 
 // #define GAIN 10
 

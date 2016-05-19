@@ -49,16 +49,16 @@ void loop()
   DynamicJsonBuffer jsonBuffer;
   JsonObject& root = jsonBuffer.parseObject(charBuf);
   if (!root.success()) {
-    Serial.println("parseObject() failed");
+    // Serial.println("parseObject() failed");
     return;
   }
 
   const char* jog_command = root["jog"];
   if(!jog_command==NULL){
-    Serial.println(jog_command);    
+    // Serial.println(jog_command);    
     int jog_command_number = atoi(jog_command);
     doJog(jog_command_number);
-    showStatus();
+    // showStatus();
     return;
   }
 
@@ -78,7 +78,7 @@ void loop()
     }
   }
    //dump destination when received command
-   showStatus();
+   // showStatus();
  }
 
  void showStatus(){

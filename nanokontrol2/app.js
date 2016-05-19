@@ -10,6 +10,8 @@ var port = new SerialPort("/dev/tty.usbmodem1411", {
 }
 );
 
+var step = 20;
+
 port.on('open', function () {
   console.log("serial port open");
 });
@@ -75,34 +77,46 @@ nanoKONTROL.connect()
 
   // register specific slider/knob/button event
   device.on('slider:1', function(value){
-    console.log("slider:1 >>> "+value);
     printer.dest1 = value;
-    sendDestination(printer);
+    if(printer.dest1 % step ==1){
+      console.log("slider:1 >>> "+value);
+      sendDestination(printer);
+    }
   });
   device.on('slider:2', function(value){
-    console.log("slider:2 >>> "+value);
     printer.dest2 = value;
-    sendDestination(printer);
+    if(printer.dest2 % step ==1){
+      console.log("slider:2 >>> "+value);
+      sendDestination(printer);
+    }
   });
   device.on('slider:3', function(value){
-    console.log("slider:3 >>> "+value);
     printer.dest3 = value;
-    sendDestination(printer);
+    if(printer.dest3 % step ==1){
+      console.log("slider:3 >>> "+value);
+      sendDestination(printer);
+    }
   });
   device.on('slider:4', function(value){
-    console.log("slider:4 >>> "+value);
     printer.dest4 = value;
-    sendDestination(printer);
+    if(printer.dest4 % step ==1){
+      console.log("slider:4 >>> "+value);
+      sendDestination(printer);
+    }
   });
   device.on('slider:5', function(value){
-    console.log("slider:5 >>> "+value);
     printer.dest5 = value;
-    sendDestination(printer);
+    if(printer.dest5 % step ==1){
+      console.log("slider:5 >>> "+value);
+      sendDestination(printer);
+    }
   });
   device.on('slider:6', function(value){
-    console.log("slider:6 >>> "+value);
     printer.dest6 = value;
-    sendDestination(printer);
+    if(printer.dest6 % step ==1){
+      console.log("slider:6 >>> "+value);
+      sendDestination(printer);
+    }
   });
   device.on('button:s:1', function(value){
     if(value){
