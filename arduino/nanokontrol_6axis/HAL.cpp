@@ -5,7 +5,6 @@
 #include "fastio.h"
 
 //increment current position
-#define STEP_RESOLUTION 1 
 
 #define _WRITE(port, v)     do { if (v) {DIO ##  port ## _PORT -> PIO_SODR = DIO ## port ## _PIN; } else {DIO ##  port ## _PORT->PIO_CODR = DIO ## port ## _PIN; }; } while (0)
 #define WRITE(pin,v) _WRITE(pin,v)
