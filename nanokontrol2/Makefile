@@ -10,4 +10,4 @@ all:
 
 .PHONY: clean
 clean:
-	rm $(SRC)
+	rm $(PROGRAM)
