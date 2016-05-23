@@ -2,8 +2,7 @@ CXX = g++
 LIBSRC = solve_inverse_mechanism.cpp
 SRC = $(LIBSRC) test.cpp
 TARGET = test 
-CPPFLAGS = -std=c++11 -Wno-c++11-extensions \
-	-I/usr/local/opt/eigen/include/eigen3/ 
+CPPFLAGS = -std=c++11 -Wno-c++11-extensions 
 LIB = mysolver
 
 lib:
