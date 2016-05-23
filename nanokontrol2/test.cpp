@@ -26,8 +26,10 @@ int main(void){
   float yd = 50;
   float zd = Pz;
 
-  MatrixXf C(1,6);
-  C << computeSliderControl(re,rb,lc,D,Pz,xd,yd,zd,phi,theta,psi);
-  cout << "*** C:  " << endl << C << endl;
 
+  float arrayf[6];
+  solveInverseMechanism(arrayf,re,rb,lc,D,Pz,xd,yd,zd,phi,theta,psi);
+  for(int i=0;i<6;i++){
+     cout << arrayf[i] << endl;
+  }
 }

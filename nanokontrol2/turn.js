@@ -4,12 +4,9 @@ var ref = require('ref');
 var ffi = require('ffi');
 
 var ArrayType = require('ref-array');
-var int = ref.types.int;
 var float = ref.types.float;
-var double = ref.types.double;
-var IntArray = ArrayType(int);
 var FloatArray = ArrayType(float);
-var ArrayArray = ArrayType(IntArray);
+var result = new FloatArray(6);
 
 //declare constant
 var re = 90;
@@ -27,15 +24,10 @@ var yd = 50;
 var zd = Pz;
 
 var MySolver = ffi.Library('./mysolver', {
-  // 'hello': [ 'void', [] ]
-  'solveInverseMechanism': [FloatArray, ['float','float','float','float','float','float','float','float','float','float','float']]
-  // "computeSliderControl": [ 'pointer', ['float','float','float','float','float','float','float','float','float','float','float'] ]
-  // "computeLinkPos": ['pointer', ['pointer', 'pointer', 'pointer', 'pointer', 'pointer']],
-  // "computeActuation" : ['pointer',['pointer', 'float']]
+  'solveInverseMechanism': ['void', [FloatArray,'float','float','float','float','float','float','float','float','float','float','float']]
 });
 
-// MySolver.hello();
-// MySolver.computeSliderControl(re,rb,lc,D,Pz,xd,yd,zd,phi,theta,psi);
-var C = MySolver.solveInverseMechanism(re,rb,lc,D,Pz,xd,yd,zd,phi,theta,psi);
-console.log(C);
-
+MySolver.solveInverseMechanism(result,re,rb,lc,D,Pz,xd,yd,zd,phi,theta,psi);
+for(var i=0;i<result.length;i++){
+	console.log(result[i]);
+}

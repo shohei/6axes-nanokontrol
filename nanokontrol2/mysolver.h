@@ -8,4 +8,8 @@ using namespace Eigen;
 
 MatrixXf computeSliderControl(float re,float rb,float lc,float D,float Pz,float xd, float yd, float zd,float phi,float theta,float psi); 
 
+extern "C" {
+  void solveInverseMechanism(float* arrayf, float re,float rb,float lc,float D,float Pz,float xd, float yd, float zd,float phi,float theta,float psi);
+}
+
 #endif

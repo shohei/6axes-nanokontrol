@@ -9,6 +9,7 @@ MatrixXf computeLinkPos(MatrixXf L, MatrixXf P, Matrix3f R, MatrixXf s, MatrixXf
 MatrixXf computeActuation(MatrixXf L, float lc);
 
 MatrixXf computeSliderControl(float re,float rb,float lc,float D,float Pz,float xd, float yd, float zd,float phi,float theta,float psi) {
+// float* computeSliderControl(float re,float rb,float lc,float D,float Pz,float xd, float yd, float zd,float phi,float theta,float psi) {
   // void computeSliderControl(float re,float rb,float lc,float D,float Pz,float xd, float yd, float zd,float phi,float theta,float psi) {
   // - スライダー間距離D[mm]        : 56+(12/2)*2=68mm
   // - ロッド長さlc[mm]                  : 262+(8/2)*2=268mm
@@ -82,9 +83,10 @@ MatrixXf computeSliderControl(float re,float rb,float lc,float D,float Pz,float 
 
   MatrixXf C(1,6);
   C << computeActuation(L,lc);
-  // cout << "*** C:  " << endl << C << endl;
+  cout << "*** C:  " << endl << C << endl;
 
   return C;
+  // float* arrayf = C.data();
 }  
 
 // %% compute position vector of rod end of end effector
@@ -109,9 +111,9 @@ MatrixXf computeActuation(MatrixXf L, float lc){
 
 
 extern "C" {
-
-  void hello(){
-    cout << "hello" << endl; 
+  void solveInverseMechanism(float* arrayf, float re,float rb,float lc,float D,float Pz,float xd, float yd, float zd,float phi,float theta,float psi){
+    MatrixXf C(1,6);
+    C << computeSliderControl(re,rb,lc,D,Pz,xd,yd,zd,phi,theta,psi);
+    memcpy(arrayf,C.data(),C.size()*sizeof(float));
   }
-
 }
