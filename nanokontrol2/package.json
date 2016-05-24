@@ -1,0 +1,15 @@
+{
+  "name": "6axes-nanokontrol",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "author": "",
+  "license": "ISC",
+  { "dependencies" :
+    { "ffi" : "latest",
+      "ref" : "latest",
+      "ref-array" : "latest",
+      "korg-nano-kontrol" : "latest"
+    }
+  }
+}
