@@ -161,7 +161,7 @@ void doJog(int jog_command_number){
 
     case DOWN6:
     Serial.println("DOWN6");
-    state->buffer[6][state->writeIndex[6]] -= JOG_WIDTH;
+    state->buffer[5][state->writeIndex[5]] -= JOG_WIDTH;
     break;
   }
 }
