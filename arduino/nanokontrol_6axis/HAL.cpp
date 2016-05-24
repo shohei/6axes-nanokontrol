@@ -151,7 +151,6 @@ void HAL::setupStepperMotor(){
   pinMode(GET_DIR_PIN(2),OUTPUT);
   pinMode(GET_STEP_PIN(2),OUTPUT);
   pinMode(GET_ENABLE_PIN(2),OUTPUT);
-      // SET_OUTPUT(GET_ENABLE_PIN(2));
   WRITE(GET_ENABLE_PIN(2),false);
 
   pinMode(GET_DIR_PIN(3),OUTPUT);
@@ -176,6 +175,7 @@ void HAL::setupStepperMotor(){
 }
 
 
+//TODO: refer repetier-firmware
 void HAL::homing(){
   while(!XMIN || !XXMIN || !YMIN || !YYMIN || !ZMIN || !ZZMIN){
     if(!XMIN){
