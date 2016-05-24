@@ -1,17 +1,19 @@
 #ifndef _CONFIGURATION_H
 #define _CONFIGURATION_H
 
-// #define LENGTH_MAGNIFIER 100L
+////////////////////////////////////////////////
+//MOTOR AND SLIDER SETTINTS 
 #define SLIDER_PITCH 12
 #define MICROSTEP 32
 #define PULSE_PER_REVOLUTION 200
 #define REQUIRED_PULSE (MICROSTEP*PULSE_PER_REVOLUTION/SLIDER_PITCH)
 #define JOG_DISTANCE 10
 #define JOG_WIDTH (JOG_DISTANCE*REQUIRED_PULSE)
-// #define JOG_WIDTH 21333
 #define STEP_RESOLUTION 1
 
-// #define GAIN 10
+////////////////////////////////////////////////
+//RING BUFFER
+#define BUF_NUM 1024
 
 ////////////////////////////////////////////////
 //MOTOR PIN SETTINGS

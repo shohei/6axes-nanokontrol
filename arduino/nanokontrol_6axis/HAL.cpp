@@ -21,9 +21,9 @@
 #define GET_ENABLE_PIN(pin) _GET_ENABLE_PIN(pin)
 
 #define SET_INPUT(pin) pmc_enable_periph_clk(g_APinDescription[pin].ulPeripheralId); \
-  PIO_Configure(g_APinDescription[pin].pPort, PIO_INPUT, g_APinDescription[pin].ulPin, 0)
+PIO_Configure(g_APinDescription[pin].pPort, PIO_INPUT, g_APinDescription[pin].ulPin, 0)
 #define SET_OUTPUT(pin) PIO_Configure(g_APinDescription[pin].pPort, PIO_OUTPUT_1, \
-                                      g_APinDescription[pin].ulPin, g_APinDescription[pin].ulPinConfiguration)
+g_APinDescription[pin].ulPin, g_APinDescription[pin].ulPinConfiguration)
 
 #define CW  false
 #define CCW true
@@ -145,36 +145,36 @@ void HAL::doSendPulse(int motorNumber){
 }
 
 void HAL::setupStepperMotor(){
-      pinMode(GET_DIR_PIN(1),OUTPUT);
-      pinMode(GET_STEP_PIN(1),OUTPUT);
-      pinMode(GET_ENABLE_PIN(1),OUTPUT);
-      WRITE(GET_ENABLE_PIN(1),false);
+  pinMode(GET_DIR_PIN(1),OUTPUT);
+  pinMode(GET_STEP_PIN(1),OUTPUT);
+  pinMode(GET_ENABLE_PIN(1),OUTPUT);
+  WRITE(GET_ENABLE_PIN(1),false);
 
-      pinMode(GET_DIR_PIN(2),OUTPUT);
-      pinMode(GET_STEP_PIN(2),OUTPUT);
-      pinMode(GET_ENABLE_PIN(2),OUTPUT);
+  pinMode(GET_DIR_PIN(2),OUTPUT);
+  pinMode(GET_STEP_PIN(2),OUTPUT);
+  pinMode(GET_ENABLE_PIN(2),OUTPUT);
       // SET_OUTPUT(GET_ENABLE_PIN(2));
-      WRITE(GET_ENABLE_PIN(2),false);
+  WRITE(GET_ENABLE_PIN(2),false);
 
-      pinMode(GET_DIR_PIN(3),OUTPUT);
-      pinMode(GET_STEP_PIN(3),OUTPUT);
-      pinMode(GET_ENABLE_PIN(3),OUTPUT);
-      WRITE(GET_ENABLE_PIN(3),false);
+  pinMode(GET_DIR_PIN(3),OUTPUT);
+  pinMode(GET_STEP_PIN(3),OUTPUT);
+  pinMode(GET_ENABLE_PIN(3),OUTPUT);
+  WRITE(GET_ENABLE_PIN(3),false);
 
-      pinMode(GET_DIR_PIN(4),OUTPUT);
-      pinMode(GET_STEP_PIN(4),OUTPUT);
-      pinMode(GET_ENABLE_PIN(4),OUTPUT);
-      WRITE(GET_ENABLE_PIN(4),false);
+  pinMode(GET_DIR_PIN(4),OUTPUT);
+  pinMode(GET_STEP_PIN(4),OUTPUT);
+  pinMode(GET_ENABLE_PIN(4),OUTPUT);
+  WRITE(GET_ENABLE_PIN(4),false);
 
-      pinMode(GET_DIR_PIN(5),OUTPUT);
-      pinMode(GET_STEP_PIN(5),OUTPUT);
-      pinMode(GET_ENABLE_PIN(5),OUTPUT);
-      WRITE(GET_ENABLE_PIN(5),false);
+  pinMode(GET_DIR_PIN(5),OUTPUT);
+  pinMode(GET_STEP_PIN(5),OUTPUT);
+  pinMode(GET_ENABLE_PIN(5),OUTPUT);
+  WRITE(GET_ENABLE_PIN(5),false);
 
-      pinMode(GET_DIR_PIN(6),OUTPUT);
-      pinMode(GET_STEP_PIN(6),OUTPUT);
-      pinMode(GET_ENABLE_PIN(6),OUTPUT);
-      WRITE(GET_ENABLE_PIN(6),false);
+  pinMode(GET_DIR_PIN(6),OUTPUT);
+  pinMode(GET_STEP_PIN(6),OUTPUT);
+  pinMode(GET_ENABLE_PIN(6),OUTPUT);
+  WRITE(GET_ENABLE_PIN(6),false);
 }
 
 //main loop
@@ -183,17 +183,24 @@ void TC7_Handler()
   TC_GetStatus(TC2, 1);
   Preference *state = Preference::getInstance();
   for(int i=0;i<6;i++){
-      int _dest = state->motor[i].dest;
-      int _cur = state->motor[i].cur;
-      if(_cur <_dest){
-          HAL::doSendDirection(i,CW);
-          HAL::doSendPulse(i);
-          state->motor[i].cur += STEP_RESOLUTION;
-      }else if(_cur > _dest){
-          HAL::doSendDirection(i,CCW);
-          HAL::doSendPulse(i);
-          state->motor[i].cur -= STEP_RESOLUTION;
+    int _dest = state->motor[i].dest;
+    int _cur = state->motor[i].cur;
+    if(_cur <_dest){
+      HAL::doSendDirection(i,CW);
+      HAL::doSendPulse(i);
+      state->motor[i].cur += STEP_RESOLUTION;
+    }else if(_cur > _dest){
+      HAL::doSendDirection(i,CCW);
+      HAL::doSendPulse(i);
+      state->motor[i].cur -= STEP_RESOLUTION;
+    }else if(_cur == _dest){
+        //update readIndex (but only once!)
+      if(state->readIndex[i] < state->writeIndex[i]){
+          //update dest
+        state->motor[i].dest = state->buffer[i][state->readIndex[i]];
+        state->readIndex[i] = state->readIndex[i] + 1;
       }
+    }
   }
   // TC_SetRC(TC2, 1, 656250);//1sec//debug
   // TC_SetRC(TC2, 1, 6563);

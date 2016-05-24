@@ -1,6 +1,8 @@
 #ifndef _PREFERENCE_H
 #define _PREFERENCE_H
 
+#include "Configuration.h"
+
 typedef struct {
 	long dest;
 	long cur;
@@ -17,9 +19,9 @@ public:
 		return state;
 	};
 	Motor motor[6];
-	float buffer[1024];
-	int readIndex;
-	int writeIndex;
+	float buffer[6][BUF_NUM];
+	int readIndex[6];
+	int writeIndex[6];
 };
 
 #endif

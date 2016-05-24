@@ -10,8 +10,11 @@ void initState(){
   for(int i=0;i<6;i++){
     state->motor[i].dest = 0;
     state->motor[i].cur = 0;
-    state->readIndex = 0;
-    state->writeIndex = 0;
+    state->readIndex[i] = 0;
+    state->writeIndex[i] = 0;
+    for(int j=0;j<BUF_NUM;j++){
+      state->buffer[i][j]=0;
+    }
   }
 }
 
@@ -76,7 +79,9 @@ void loop()
   Preference *state = Preference::getInstance(); 
   for(int i=0;i<6;i++){
     if(dests[i]!=NULL){
-      state->motor[i].dest = atoi(dests[i])*REQUIRED_PULSE;
+      // state->motor[i].dest = atoi(dests[i])*REQUIRED_PULSE;
+      state->buffer[i][state->writeIndex[i]] = atoi(dests[i])*REQUIRED_PULSE;
+      state->writeIndex[i] = state->writeIndex[i] + 1;
     }
   }
    //dump destination when received command

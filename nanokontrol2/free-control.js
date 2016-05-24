@@ -33,14 +33,14 @@ var COMMAND = {
   DOWN6 : 12
 };
 
-
+const divider = 5;
 function sendDestination(printer){
-  dest1 = printer.dest1;
-  dest2 = printer.dest2;
-  dest3 = printer.dest3;
-  dest4 = printer.dest4;
-  dest5 = printer.dest5;
-  dest6 = printer.dest6;
+  dest1 = printer.dest1/divider;
+  dest2 = printer.dest2/divider;
+  dest3 = printer.dest3/divider;
+  dest4 = printer.dest4/divider;
+  dest5 = printer.dest5/divider;
+  dest6 = printer.dest6/divider;
   sentence = "{\"dest1\":\""+dest1+"\",\"dest2\":\""+dest2+"\",\"dest3\":\""+dest3+"\",\"dest4\":\""+dest4+"\",\"dest5\":\""+dest5+"\",\"dest6\":\""+dest6+"\"}\n"
   port.write(sentence, function(err,bytesWritten){
     if(err){
