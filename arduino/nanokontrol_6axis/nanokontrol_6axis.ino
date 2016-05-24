@@ -106,62 +106,62 @@ void doJog(int jog_command_number){
 
     case UP1:
     Serial.println("UP1");
-    state->motor[0].dest += JOG_WIDTH;
+    state->buffer[0][state->writeIndex[0]] += JOG_WIDTH;
     break;
 
     case DOWN1:
     Serial.println("DOWN1");
-    state->motor[0].dest -= JOG_WIDTH;
+    state->buffer[0][state->writeIndex[0]] -= JOG_WIDTH;
     break;
 
     case UP2:
     Serial.println("UP2");
-    state->motor[1].dest += JOG_WIDTH;
+    state->buffer[1][state->writeIndex[1]] += JOG_WIDTH;
     break;
 
     case DOWN2:
     Serial.println("DOWN2");
-    state->motor[1].dest -= JOG_WIDTH;
+    state->buffer[1][state->writeIndex[1]] -= JOG_WIDTH;
     break;
 
     case UP3:
     Serial.println("UP3");
-    state->motor[2].dest += JOG_WIDTH;
+    state->buffer[2][state->writeIndex[2]] += JOG_WIDTH;
     break;
 
     case DOWN3:
     Serial.println("DOWN3");
-    state->motor[2].dest -= JOG_WIDTH;
+    state->buffer[2][state->writeIndex[2]] -= JOG_WIDTH;
     break;
 
     case UP4:
     Serial.println("UP4");
-    state->motor[3].dest += JOG_WIDTH;
+    state->buffer[3][state->writeIndex[3]] += JOG_WIDTH;
     break;
 
     case DOWN4:
     Serial.println("DOWN4");
-    state->motor[3].dest -= JOG_WIDTH;
+    state->buffer[3][state->writeIndex[3]] -= JOG_WIDTH;
     break;
 
     case UP5:
     Serial.println("UP5");
-    state->motor[4].dest += JOG_WIDTH;
+    state->buffer[4][state->writeIndex[4]] += JOG_WIDTH;
     break;
 
     case DOWN5:
     Serial.println("DOWN5");
-    state->motor[4].dest -= JOG_WIDTH;
+    state->buffer[4][state->writeIndex[4]] -= JOG_WIDTH;
     break;
 
     case UP6:
     Serial.println("UP6");
-    state->motor[5].dest += JOG_WIDTH;
+    state->buffer[5][state->writeIndex[5]] += JOG_WIDTH;
     break;
 
     case DOWN6:
     Serial.println("DOWN6");
-    state->motor[5].dest -= JOG_WIDTH;
+    state->buffer[6][state->writeIndex[6]] -= JOG_WIDTH;
     break;
   }
 }
