@@ -76,7 +76,7 @@ void loop()
   Preference *state = Preference::getInstance(); 
   for(int i=0;i<6;i++){
     if(dests[i]!=NULL){
-      state->motor[i].dest = atoi(dests[i]) * LENGTH_MAGNIFIER;
+      state->motor[i].dest = atoi(dests[i])*32*200/6;
     }
   }
    //dump destination when received command
