@@ -59,6 +59,12 @@ void loop()
     return;
   }
 
+  const char* dump_command = root["dump"];
+  if(!dump_command==NULL){
+    dumpAll();
+    return;
+  }
+
   const char* jog_command = root["jog"];
   if(!jog_command==NULL){
     // Serial.println(jog_command);    
@@ -93,10 +99,44 @@ void loop()
           }
         }
       }
-  }
+    }
    //dump destination when received command
    // showStatus();
  }
+
+ void dumpAll(){
+  Preference *state = Preference::getInstance();
+  for(int i=0;i<6;i++){
+    Serial.print("destination");
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.print(state->motor[i].dest);
+    Serial.print(", current pos: ");
+    Serial.println(state->motor[i].cur);
+    for(int j=0;j<BUF_NUM;j++){
+      Serial.print("buffer");
+      Serial.print("[");
+      Serial.print(i);
+      Serial.print("]");
+      Serial.print("[");
+      Serial.print(j);
+      Serial.print("]");
+      Serial.println(state->buffer[i][j]);
+    }
+    Serial.print("ringState ");
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.println(state->ringState);
+    Serial.print("writeIndex ");
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.println(state->writeIndex[i]);
+    Serial.print("readIndex ");
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.println(state->readIndex[i]);
+  }
+}
 
 //  void showStatus(){
 //   Preference *state = Preference::getInstance();
@@ -110,6 +150,19 @@ void loop()
 //   }
 // }
 
+void updateRingBufferIndex(Preference* state, int i){
+  if(state->ringState==WR_LEAD&&(state->writeIndex[i] > state->readIndex[i]) 
+    || (state->ringState==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
+    if(state->writeIndex[i]+1 > BUF_NUM){
+      state->writeIndex[i] = 0;
+      state->ringState = RD_LEAD;
+      }else {
+        state->writeIndex[i] = state->writeIndex[i] + 1;
+      }
+    }
+}
+
+
 void doJog(int jog_command_number){
   Preference *state = Preference::getInstance();
   switch(jog_command_number){
@@ -117,61 +170,73 @@ void doJog(int jog_command_number){
     case UP1:
     Serial.println("UP1");
     state->buffer[0][state->writeIndex[0]] += JOG_WIDTH;
+    updateRingBufferIndex(state,0);
     break;
 
     case DOWN1:
     Serial.println("DOWN1");
     state->buffer[0][state->writeIndex[0]] -= JOG_WIDTH;
+    updateRingBufferIndex(state,0);
     break;
 
     case UP2:
     Serial.println("UP2");
     state->buffer[1][state->writeIndex[1]] += JOG_WIDTH;
+    updateRingBufferIndex(state,1);
     break;
 
     case DOWN2:
     Serial.println("DOWN2");
     state->buffer[1][state->writeIndex[1]] -= JOG_WIDTH;
+    updateRingBufferIndex(state,1);
     break;
 
     case UP3:
     Serial.println("UP3");
     state->buffer[2][state->writeIndex[2]] += JOG_WIDTH;
+    updateRingBufferIndex(state,2);
     break;
 
     case DOWN3:
     Serial.println("DOWN3");
     state->buffer[2][state->writeIndex[2]] -= JOG_WIDTH;
+    updateRingBufferIndex(state,2);
     break;
 
     case UP4:
     Serial.println("UP4");
     state->buffer[3][state->writeIndex[3]] += JOG_WIDTH;
+    updateRingBufferIndex(state,3);
     break;
 
     case DOWN4:
     Serial.println("DOWN4");
     state->buffer[3][state->writeIndex[3]] -= JOG_WIDTH;
+    updateRingBufferIndex(state,3);
     break;
 
     case UP5:
     Serial.println("UP5");
     state->buffer[4][state->writeIndex[4]] += JOG_WIDTH;
+    updateRingBufferIndex(state,4);
     break;
 
     case DOWN5:
     Serial.println("DOWN5");
     state->buffer[4][state->writeIndex[4]] -= JOG_WIDTH;
+    updateRingBufferIndex(state,4);
     break;
 
     case UP6:
     Serial.println("UP6");
     state->buffer[5][state->writeIndex[5]] += JOG_WIDTH;
+    updateRingBufferIndex(state,5);
     break;
 
     case DOWN6:
     Serial.println("DOWN6");
     state->buffer[5][state->writeIndex[5]] -= JOG_WIDTH;
+    updateRingBufferIndex(state,5);
     break;
   }
 }

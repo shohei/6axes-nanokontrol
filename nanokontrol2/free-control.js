@@ -49,6 +49,15 @@ function sendDestination(printer){
   });
 }
 
+function sendDump(){
+  sentence = "{\"dump\":\""+"all"+"\"}\n"
+  port.write(sentence, function(err,bytesWritten){
+    if(err){
+      return console.log('Error: ',err.message);
+    }
+  });
+}
+
 function sendJog(jog_command){
   sentence = "{\"jog\":\""+jog_command+"\"}\n"
   port.write(sentence, function(err,bytesWritten){
@@ -193,9 +202,13 @@ nanoKONTROL.connect()
     //   console.log("knob:1 >>> "+value);
 // });
     //
-    // device.on('button:play', function(value){
-      //   console.log("button:play >>> "+value);
-// });
+    device.on('button:play', function(value){
+        if(value){
+        console.log("button:play >>> "+value);
+        console.log("dumpAll()");
+        sendDump();      
+        }
+    });
 
       device.on('button:stop', function(value){
         console.log("button:stop >>> "+value);
