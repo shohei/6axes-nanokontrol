@@ -16,7 +16,8 @@ int main(void){
   float D = 68;
   float lc = 268;
   float rb = 180.38;
-  float Pz = 438.17;
+  // float Pz = 438.17;
+  float Pz = 300;
 
   float phi = M_PI/24; //% rotation around X axis
   float theta = M_PI/12; //% rotation around Y axis
