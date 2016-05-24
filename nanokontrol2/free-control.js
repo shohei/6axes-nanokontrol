@@ -1,5 +1,3 @@
-//todo: setTimeout and send location in every 1sec
-
 var nanoKONTROL = require('korg-nano-kontrol');
 var serialport = require("serialport");
 var SerialPort = serialport.SerialPort

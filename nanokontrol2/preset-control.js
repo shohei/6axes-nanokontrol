@@ -9,6 +9,10 @@ var port = new SerialPort("/dev/tty.usbmodem1411", {
 }
 );
 
+var turn = require('./turn');
+var tilt = require('./tilt');
+var turn_and_tilt = require('./turn_and_tilt');
+
 var step = 20;
 
 port.on('open', function () {
@@ -24,18 +28,6 @@ var COMMAND = {
   TILT : 2, 
   TURN_TILT : 3, 
 };
-
-function turn(){
-
-}
-
-function tilt(){
-
-}
-
-function turn_and_tilt(){
-
-}
 
 function sendDestination(printer){
   dest1 = printer.dest1;
@@ -80,22 +72,19 @@ nanoKONTROL.connect()
   device.on('button:m:1', function(value){
     if(value){
       console.log("TURN");
-      turn();
-      console.log("TURN ended");
+      turn(port);
     }
   });
   device.on('button:m:2', function(value){
     if(value){
       console.log("TILT");
-      tilt();
-      console.log("TILT ended");
+      tilt(port);
     }
   });
   device.on('button:m:3', function(value){
     if(value){
       console.log("TURN WITH TILT");
-      turn_and_tilt();
-      console.log("TURN WITH TILT ended");
+      turn_and_tilt(port);
     }
   });
 
