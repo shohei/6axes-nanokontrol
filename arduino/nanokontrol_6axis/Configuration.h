@@ -13,7 +13,10 @@
 
 ////////////////////////////////////////////////
 //RING BUFFER
-#define BUF_NUM 1024
+#define BUF_NUM  128 
+// #define BUF_NUM 1024
+#define WR_LEAD 1
+#define RD_LEAD 2
 
 ////////////////////////////////////////////////
 //MOTOR PIN SETTINGS

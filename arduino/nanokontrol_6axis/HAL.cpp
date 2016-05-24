@@ -196,11 +196,13 @@ void TC7_Handler()
     }else if(_cur == _dest){
       //update readIndex (but only once!)
       //check if readIndex is behind writeIndex
-      if(state->readIndex[i] < state->writeIndex[i] || state->readIndex[i] < (state->writeIndex[i]+BUF_NUM) ){
+      if((state->ringState==WR_LEAD)&&(state->readIndex[i] < state->writeIndex[i])
+        || (state->ringState==RD_LEAD)&&(state->readIndex[i] > (state->writeIndex[i]))){
           //update dest
         state->motor[i].dest = state->buffer[i][state->readIndex[i]];
         if(state->readIndex[i]+1 > BUF_NUM) {
           state->readIndex[i] = 0;
+          state->ringState = WR_LEAD;
         } else {
           state->readIndex[i] = state->readIndex[i] + 1;
         }

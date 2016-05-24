@@ -22,6 +22,7 @@ public:
 	float buffer[6][BUF_NUM];
 	int readIndex[6];
 	int writeIndex[6];
+	int ringState;
 };
 
 #endif

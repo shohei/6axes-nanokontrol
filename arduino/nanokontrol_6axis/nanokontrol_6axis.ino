@@ -15,6 +15,7 @@ void initState(){
     for(int j=0;j<BUF_NUM;j++){
       state->buffer[i][j]=0;
     }
+    state->ringState = WR_LEAD;
   }
 }
 
@@ -81,10 +82,12 @@ void loop()
     if(dests[i]!=NULL){
       // state->motor[i].dest = atoi(dests[i])*REQUIRED_PULSE;
       //check if writeIndex does not go one lap beyond readIndex
-      if(state->writeIndex[i] > state->readIndex[i] || (state->writeIndex[i]+BUF_NUM) > state->readIndex[i]) {
+      if(state->ringState==WR_LEAD&&(state->writeIndex[i] > state->readIndex[i]) 
+        || (state->ringState==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
         state->buffer[i][state->writeIndex[i]] = atoi(dests[i])*REQUIRED_PULSE;
         if(state->writeIndex[i]+1 > BUF_NUM){
           state->writeIndex[i] = 0;
+          state->ringState = RD_LEAD;
           }else {
             state->writeIndex[i] = state->writeIndex[i] + 1;
           }
