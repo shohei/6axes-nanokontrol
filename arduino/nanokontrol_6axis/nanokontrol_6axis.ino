@@ -76,7 +76,7 @@ void loop()
   Preference *state = Preference::getInstance(); 
   for(int i=0;i<6;i++){
     if(dests[i]!=NULL){
-      state->motor[i].dest = atoi(dests[i])*32*200/6;
+      state->motor[i].dest = atoi(dests[i])*REQUIRED_PULSE;
     }
   }
    //dump destination when received command
