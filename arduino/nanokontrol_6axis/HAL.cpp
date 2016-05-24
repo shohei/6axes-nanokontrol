@@ -198,7 +198,7 @@ void TC7_Handler()
         || (state->ringState[i]==RD_LEAD)&&(state->readIndex[i] > (state->writeIndex[i]))){
           //update dest
         state->motor[i].dest = state->buffer[i][state->readIndex[i]];
-        if(state->readIndex[i]+1 > BUF_NUM) {
+        if(state->readIndex[i]+1 > BUF_NUM-1) {
           state->readIndex[i] = 0;
           state->ringState[i] = WR_LEAD;
         } else {

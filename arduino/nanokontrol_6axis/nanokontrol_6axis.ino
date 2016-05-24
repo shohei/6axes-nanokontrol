@@ -89,13 +89,13 @@ void loop()
       // state->motor[i].dest = atoi(dests[i])*REQUIRED_PULSE;
       //check if writeIndex does not go one lap beyond readIndex
       if(state->ringState[i]==RING_INIT){
-        state->buffer[i][state->writeIndex[i]] = atoi(dests[i])*REQUIRED_PULSE;
-        state->writeIndex[i] = state->writeIndex[i] + 1;
+        state->buffer[i][0] = atoi(dests[i])*REQUIRED_PULSE;
+        state->writeIndex[i] = 1;
         state->ringState[i] = WR_LEAD;
-      } else if( state->ringState[i]==WR_LEAD&&(state->writeIndex[i] > state->readIndex[i])
+      } else if( state->ringState[i]==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i])
           || (state->ringState[i]==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
         state->buffer[i][state->writeIndex[i]] = atoi(dests[i])*REQUIRED_PULSE;
-        if(state->writeIndex[i]+1 > BUF_NUM){
+        if(state->writeIndex[i]+1 > BUF_NUM-1){
           state->writeIndex[i] = 0;
           state->ringState[i] = RD_LEAD;
         }else {
@@ -157,20 +157,20 @@ void dumpAll(){
 void updateRingBufferIndex(Preference* state, int i, bool direction){
   if(state->ringState[i]==RING_INIT){
     if(direction==CW){
-      state->buffer[i][state->writeIndex[i]] += JOG_WIDTH;
+      state->buffer[i][0] += JOG_WIDTH;
     }else if(direction==CCW){
-      state->buffer[i][state->writeIndex[i]] -= JOG_WIDTH;
+      state->buffer[i][0] -= JOG_WIDTH;
     }
-    state->writeIndex[i] = state->writeIndex[i] + 1;
+    state->writeIndex[i] = 1;
     state->ringState[i] = WR_LEAD;
-  } else if(state->ringState[i]==WR_LEAD&&(state->writeIndex[i] > state->readIndex[i]) 
+  } else if(state->ringState[i]==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i]) 
       || (state->ringState[i]==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
     if(direction==CW){
       state->buffer[i][state->writeIndex[i]] += JOG_WIDTH;
     }else if(direction==CCW){
       state->buffer[i][state->writeIndex[i]] -= JOG_WIDTH;
     }
-    if(state->writeIndex[i]+1 > BUF_NUM){
+    if(state->writeIndex[i]+1 > BUF_NUM-1){
       state->writeIndex[i] = 0;
       state->ringState[i] = RD_LEAD;
     }else {
