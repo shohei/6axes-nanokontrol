@@ -5,11 +5,10 @@
   "main": "",
   "author": "",
   "license": "ISC",
-  { "dependencies" :
-    { "ffi" : "latest",
-      "ref" : "latest",
-      "ref-array" : "latest",
-      "korg-nano-kontrol" : "latest"
-    }
+  "dependencies" :
+  { "ffi" : "latest",
+    "ref" : "latest",
+    "ref-array" : "latest",
+    "korg-nano-kontrol" : "latest"
   }
 }
