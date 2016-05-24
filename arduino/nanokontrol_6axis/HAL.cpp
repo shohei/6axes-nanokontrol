@@ -194,12 +194,17 @@ void TC7_Handler()
       HAL::doSendPulse(i);
       state->motor[i].cur -= STEP_RESOLUTION;
     }else if(_cur == _dest){
-        //update readIndex (but only once!)
-      if(state->readIndex[i] < state->writeIndex[i]){
+      //update readIndex (but only once!)
+      //check if readIndex is behind writeIndex
+      if(state->readIndex[i] < state->writeIndex[i] || state->readIndex[i] < (state->writeIndex[i]+BUF_NUM) ){
           //update dest
         state->motor[i].dest = state->buffer[i][state->readIndex[i]];
-        state->readIndex[i] = state->readIndex[i] + 1;
-      }
+        if(state->readIndex[i]+1 > BUF_NUM) {
+          state->readIndex[i] = 0;
+        } else {
+          state->readIndex[i] = state->readIndex[i] + 1;
+        }
+      } 
     }
   }
   // TC_SetRC(TC2, 1, 656250);//1sec//debug
