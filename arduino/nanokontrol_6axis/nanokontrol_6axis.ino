@@ -19,11 +19,6 @@ void initState(){
   }
 }
 
-void homing(){
-
-
-}
-
 void setup()
 {
   Serial.begin(115200);    
@@ -34,11 +29,13 @@ void setup()
   Serial.println("Serial initialized.");
   delay(500);
   // pinMode(13,OUTPUT);//for debug
-  initState();
   HAL::setupStepperMotor();
+
+  HAL::homing();
+  initState();
+
   HAL::setupTimer();
   HAL::startTimer();
-  homing();
 }
 
 void loop()

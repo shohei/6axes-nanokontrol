@@ -175,7 +175,37 @@ void HAL::setupStepperMotor(){
   WRITE(GET_ENABLE_PIN(6),false);
 }
 
-//main loop
+
+void HAL::homing(){
+  while(!XMIN || !XXMIN || !YMIN || !YYMIN || !ZMIN || !ZZMIN){
+    if(!XMIN){
+      HAL::doSendDirection(0,CCW);
+      HAL::doSendPulse(0);
+    }
+    if(!XXMIN){
+      HAL::doSendDirection(1,CCW);
+      HAL::doSendPulse(1);
+    }
+    if(!YMIN){
+      HAL::doSendDirection(2,CCW);
+      HAL::doSendPulse(2);
+    }
+    if(!YYMIN){
+      HAL::doSendDirection(3,CCW);
+      HAL::doSendPulse(3);
+    }
+    if(!ZMIN){
+      HAL::doSendDirection(4,CCW);
+      HAL::doSendPulse(4);
+    }
+    if(!ZZMIN){
+      HAL::doSendDirection(5,CCW);
+      HAL::doSendPulse(5);
+    }
+  }
+};
+
+
 void TC7_Handler()
 {
   TC_GetStatus(TC2, 1);

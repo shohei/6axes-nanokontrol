@@ -20,6 +20,7 @@ public:
     static void doSendDirection(int motorNumber, bool isClockWise);
     static void doSendPulse(int motorNumber);
     static void setupStepperMotor();
+    static void homing();
 };
 
 

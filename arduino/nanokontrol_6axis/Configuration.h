@@ -23,6 +23,15 @@
 #define RD_LEAD 2
 
 ////////////////////////////////////////////////
+//LIMIT SWITCH SETTINGS
+#define XMIN   22
+#define XXMIN  23
+#define YMIN   24 
+#define YYMIN  25 
+#define ZMIN   26
+#define ZZMIN  27 
+
+////////////////////////////////////////////////
 //MOTOR PIN SETTINGS
 
 //X
