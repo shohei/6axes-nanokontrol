@@ -9,6 +9,7 @@
   { "ffi" : "latest",
     "ref" : "latest",
     "ref-array" : "latest",
+    "serialport" : "latest",
     "korg-nano-kontrol" : "latest"
   }
 }
