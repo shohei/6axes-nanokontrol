@@ -31,7 +31,8 @@ module.exports = function(port){
 	}
 
 	function doSetTimeout(i){
-		setTimeout(function() { calculationAndSend(i); }, i*50);
+		// setTimeout(function() { calculationAndSend(i); }, i*50);
+		setTimeout(function() { calculationAndSend(i); }, i*10);
 	}
 
 	function calculationAndSend(i){
@@ -52,10 +53,10 @@ module.exports = function(port){
 		sentence = "{\"dest1\":\""+dest1+"\",\"dest2\":\""+dest2+"\",\"dest3\":\""+dest3+"\",\"dest4\":\""+dest4+"\",\"dest5\":\""+dest5+"\",\"dest6\":\""+dest6+"\"}\n"
 		console.log(i);
 		console.log(sentence);
-		// port.write(sentence, function(err,bytesWritten){
-		// 	if(err){
-		// 		return console.log('Error: ',err.message);
-		// 	}
-		// }
+		port.write(sentence, function(err,bytesWritten){
+			if(err){
+				return console.log('Error: ',err.message);
+			}
+		});
 	}
 }
