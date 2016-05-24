@@ -15,7 +15,7 @@ void initState(){
     for(int j=0;j<BUF_NUM;j++){
       state->buffer[i][j]=0;
     }
-    state->ringState = WR_LEAD;
+    state->ringState[i] = RING_INIT;
   }
 }
 
@@ -88,23 +88,27 @@ void loop()
     if(dests[i]!=NULL){
       // state->motor[i].dest = atoi(dests[i])*REQUIRED_PULSE;
       //check if writeIndex does not go one lap beyond readIndex
-      if(state->ringState==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i]) 
-        || (state->ringState==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
+      if(state->ringState[i]==RING_INIT){
+        state->buffer[i][state->writeIndex[i]] = atoi(dests[i])*REQUIRED_PULSE;
+        state->writeIndex[i] = state->writeIndex[i] + 1;
+        state->ringState[i] = WR_LEAD;
+      } else if( state->ringState[i]==WR_LEAD&&(state->writeIndex[i] > state->readIndex[i])
+          || (state->ringState[i]==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
         state->buffer[i][state->writeIndex[i]] = atoi(dests[i])*REQUIRED_PULSE;
         if(state->writeIndex[i]+1 > BUF_NUM){
           state->writeIndex[i] = 0;
-          state->ringState = RD_LEAD;
-          }else {
-            state->writeIndex[i] = state->writeIndex[i] + 1;
-          }
+          state->ringState[i] = RD_LEAD;
+        }else {
+          state->writeIndex[i] = state->writeIndex[i] + 1;
         }
       }
     }
-   //dump destination when received command
-   // showStatus();
- }
+  }
+  //dump destination when received command
+  // showStatus();
+}
 
- void dumpAll(){
+void dumpAll(){
   Preference *state = Preference::getInstance();
   for(int i=0;i<6;i++){
     Serial.print("destination");
@@ -126,7 +130,7 @@ void loop()
     Serial.print("ringState ");
     Serial.print(i);
     Serial.print(": ");
-    Serial.println(state->ringState);
+    Serial.println(state->ringState[i]);
     Serial.print("writeIndex ");
     Serial.print(i);
     Serial.print(": ");
@@ -150,16 +154,29 @@ void loop()
 //   }
 // }
 
-void updateRingBufferIndex(Preference* state, int i){
-  if(state->ringState==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i]) 
-    || (state->ringState==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
+void updateRingBufferIndex(Preference* state, int i, bool direction){
+  if(state->ringState[i]==RING_INIT){
+    if(direction==CW){
+      state->buffer[i][state->writeIndex[i]] += JOG_WIDTH;
+    }else if(direction==CCW){
+      state->buffer[i][state->writeIndex[i]] -= JOG_WIDTH;
+    }
+    state->writeIndex[i] = state->writeIndex[i] + 1;
+    state->ringState[i] = WR_LEAD;
+  } else if(state->ringState[i]==WR_LEAD&&(state->writeIndex[i] > state->readIndex[i]) 
+      || (state->ringState[i]==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
+    if(direction==CW){
+      state->buffer[i][state->writeIndex[i]] += JOG_WIDTH;
+    }else if(direction==CCW){
+      state->buffer[i][state->writeIndex[i]] -= JOG_WIDTH;
+    }
     if(state->writeIndex[i]+1 > BUF_NUM){
       state->writeIndex[i] = 0;
-      state->ringState = RD_LEAD;
-      }else {
-        state->writeIndex[i] = state->writeIndex[i] + 1;
-      }
+      state->ringState[i] = RD_LEAD;
+    }else {
+      state->writeIndex[i] = state->writeIndex[i] + 1;
     }
+  }
 }
 
 
@@ -168,75 +185,63 @@ void doJog(int jog_command_number){
   switch(jog_command_number){
 
     case UP1:
-    Serial.println("UP1");
-    state->buffer[0][state->writeIndex[0]] += JOG_WIDTH;
-    updateRingBufferIndex(state,0);
-    break;
+      Serial.println("UP1");
+      updateRingBufferIndex(state,0,CW);
+      break;
 
     case DOWN1:
-    Serial.println("DOWN1");
-    state->buffer[0][state->writeIndex[0]] -= JOG_WIDTH;
-    updateRingBufferIndex(state,0);
-    break;
+      Serial.println("DOWN1");
+      updateRingBufferIndex(state,0,CCW);
+      break;
 
     case UP2:
-    Serial.println("UP2");
-    state->buffer[1][state->writeIndex[1]] += JOG_WIDTH;
-    updateRingBufferIndex(state,1);
-    break;
+      Serial.println("UP2");
+      updateRingBufferIndex(state,1,CW);
+      break;
 
     case DOWN2:
-    Serial.println("DOWN2");
-    state->buffer[1][state->writeIndex[1]] -= JOG_WIDTH;
-    updateRingBufferIndex(state,1);
-    break;
+      Serial.println("DOWN2");
+      updateRingBufferIndex(state,1,CCW);
+      break;
 
     case UP3:
-    Serial.println("UP3");
-    state->buffer[2][state->writeIndex[2]] += JOG_WIDTH;
-    updateRingBufferIndex(state,2);
-    break;
+      Serial.println("UP3");
+      updateRingBufferIndex(state,2,CW);
+      break;
 
     case DOWN3:
-    Serial.println("DOWN3");
-    state->buffer[2][state->writeIndex[2]] -= JOG_WIDTH;
-    updateRingBufferIndex(state,2);
-    break;
+      Serial.println("DOWN3");
+      updateRingBufferIndex(state,2,CCW);
+      break;
 
     case UP4:
-    Serial.println("UP4");
-    state->buffer[3][state->writeIndex[3]] += JOG_WIDTH;
-    updateRingBufferIndex(state,3);
-    break;
+      Serial.println("UP4");
+      updateRingBufferIndex(state,3,CW);
+      break;
 
     case DOWN4:
-    Serial.println("DOWN4");
-    state->buffer[3][state->writeIndex[3]] -= JOG_WIDTH;
-    updateRingBufferIndex(state,3);
-    break;
+      Serial.println("DOWN4");
+      updateRingBufferIndex(state,3,CCW);
+      break;
 
     case UP5:
-    Serial.println("UP5");
-    state->buffer[4][state->writeIndex[4]] += JOG_WIDTH;
-    updateRingBufferIndex(state,4);
-    break;
+      Serial.println("UP5");
+      updateRingBufferIndex(state,4,CW);
+      break;
 
     case DOWN5:
-    Serial.println("DOWN5");
-    state->buffer[4][state->writeIndex[4]] -= JOG_WIDTH;
-    updateRingBufferIndex(state,4);
-    break;
+      Serial.println("DOWN5");
+      updateRingBufferIndex(state,4,CCW);
+      break;
 
     case UP6:
-    Serial.println("UP6");
-    state->buffer[5][state->writeIndex[5]] += JOG_WIDTH;
-    updateRingBufferIndex(state,5);
-    break;
+      Serial.println("UP6");
+      updateRingBufferIndex(state,5,CW);
+      break;
 
     case DOWN6:
-    Serial.println("DOWN6");
-    state->buffer[5][state->writeIndex[5]] -= JOG_WIDTH;
-    updateRingBufferIndex(state,5);
-    break;
+      Serial.println("DOWN6");
+      updateRingBufferIndex(state,5,CCW);
+      break;
   }
 }

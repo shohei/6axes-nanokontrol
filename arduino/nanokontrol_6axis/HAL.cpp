@@ -25,8 +25,6 @@ PIO_Configure(g_APinDescription[pin].pPort, PIO_INPUT, g_APinDescription[pin].ul
 #define SET_OUTPUT(pin) PIO_Configure(g_APinDescription[pin].pPort, PIO_OUTPUT_1, \
 g_APinDescription[pin].ulPin, g_APinDescription[pin].ulPinConfiguration)
 
-#define CW  false
-#define CCW true
 
 void HAL::setupTimer(void){
   /* turn on the timer clock in the power management controller */
@@ -196,13 +194,13 @@ void TC7_Handler()
     }else if(_cur == _dest){
       //update readIndex (but only once!)
       //check if readIndex is behind writeIndex
-      if((state->ringState==WR_LEAD)&&(state->readIndex[i] < state->writeIndex[i])
-        || (state->ringState==RD_LEAD)&&(state->readIndex[i] > (state->writeIndex[i]))){
+      if((state->ringState[i]==WR_LEAD)&&(state->readIndex[i] < state->writeIndex[i])
+        || (state->ringState[i]==RD_LEAD)&&(state->readIndex[i] > (state->writeIndex[i]))){
           //update dest
         state->motor[i].dest = state->buffer[i][state->readIndex[i]];
         if(state->readIndex[i]+1 > BUF_NUM) {
           state->readIndex[i] = 0;
-          state->ringState = WR_LEAD;
+          state->ringState[i] = WR_LEAD;
         } else {
           state->readIndex[i] = state->readIndex[i] + 1;
         }
