@@ -17,6 +17,9 @@ public:
 		return state;
 	};
 	Motor motor[6];
+	float buffer[1024];
+	int readIndex;
+	int writeIndex;
 };
 
 #endif

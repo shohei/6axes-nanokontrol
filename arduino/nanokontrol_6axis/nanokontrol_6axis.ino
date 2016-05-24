@@ -10,6 +10,8 @@ void initState(){
   for(int i=0;i<6;i++){
     state->motor[i].dest = 0;
     state->motor[i].cur = 0;
+    state->readIndex = 0;
+    state->writeIndex = 0;
   }
 }
 
@@ -81,17 +83,17 @@ void loop()
    // showStatus();
  }
 
- void showStatus(){
-  Preference *state = Preference::getInstance();
-  for(int i=0;i<6;i++){
-    Serial.print("destination");
-    Serial.print(i);
-    Serial.print(": ");
-    Serial.print(state->motor[i].dest);
-    Serial.print(", current pos: ");
-    Serial.println(state->motor[i].cur);
-  }
-}
+//  void showStatus(){
+//   Preference *state = Preference::getInstance();
+//   for(int i=0;i<6;i++){
+//     Serial.print("destination");
+//     Serial.print(i);
+//     Serial.print(": ");
+//     Serial.print(state->motor[i].dest);
+//     Serial.print(", current pos: ");
+//     Serial.println(state->motor[i].cur);
+//   }
+// }
 
 void doJog(int jog_command_number){
   Preference *state = Preference::getInstance();
