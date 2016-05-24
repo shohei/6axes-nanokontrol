@@ -19,10 +19,15 @@ void initState(){
   }
 }
 
+void homing(){
+
+
+}
+
 void setup()
 {
-  Serial.begin(115200);    // the GPRS baud rate
-  // Serial.begin(9600);    // the GPRS baud rate
+  Serial.begin(115200);    
+  // Serial.begin(9600); 
   while (!Serial) {
     // wait serial port initialization
   }
@@ -33,6 +38,7 @@ void setup()
   HAL::setupStepperMotor();
   HAL::setupTimer();
   HAL::startTimer();
+  homing();
 }
 
 void loop()
