@@ -4,12 +4,14 @@
 #include "Configuration.h"
 #include "Preference.h"
 #include "HAL.h"
+#include "Printer.h"
 
 void initState(){
   Preference *state = Preference::getInstance(); 
   for(int i=0;i<6;i++){
     state->motor[i].dest = 0;
     state->motor[i].cur = 0;
+    state->endstop[i].status = ES_FREE;
     state->readIndex[i] = 0;
     state->writeIndex[i] = 0;
     for(int j=0;j<BUF_NUM;j++){
@@ -29,13 +31,14 @@ void setup()
   Serial.println("Serial initialized.");
   delay(500);
   // pinMode(13,OUTPUT);//for debug
-  HAL::setupStepperMotor();
+  Printer::setupStepperMotor();
 
-  HAL::homing();
   initState();
 
   HAL::setupTimer();
   HAL::startTimer();
+
+  Printer::homing();
 }
 
 void loop()

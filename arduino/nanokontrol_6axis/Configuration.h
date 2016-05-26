@@ -12,6 +12,7 @@
 #define STEP_RESOLUTION 1
 #define CW  false
 #define CCW true
+#define ZLENGTH 600
 
 ////////////////////////////////////////////////
 //RING BUFFER
@@ -23,13 +24,19 @@
 #define RD_LEAD 2
 
 ////////////////////////////////////////////////
-//LIMIT SWITCH SETTINGS
-#define XMIN   22
-#define XXMIN  23
-#define YMIN   24 
-#define YYMIN  25 
-#define ZMIN   26
-#define ZZMIN  27 
+//ENDSTOP PIN SETTINGS
+#define M1_MIN_PIN 22
+#define M2_MIN_PIN 23
+#define M3_MIN_PIN 24 
+#define M4_MIN_PIN 25 
+#define M5_MIN_PIN 26
+#define M6_MIN_PIN 27 
+
+////////////////////////////////////////////////
+//ENDSTOP SETTINGS
+#define ES_FREE false
+#define ES_HIT true
+#define Z_OFFSET_HOMING 5
 
 ////////////////////////////////////////////////
 //MOTOR PIN SETTINGS

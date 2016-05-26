@@ -8,6 +8,10 @@ typedef struct {
 	long cur;
 } Motor;
 
+typedef struct {
+	bool status;
+} Endstop;
+
 class Preference 
 {
 private:
@@ -19,6 +23,7 @@ public:
 		return state;
 	};
 	Motor motor[6];
+	Endstop endstop[6];
 	float buffer[6][BUF_NUM];
 	int readIndex[6];
 	int writeIndex[6];

@@ -1,30 +1,4 @@
 #include "HAL.h"
-#include "Arduino.h"
-#include "Preference.h"
-#include "Configuration.h"
-#include "fastio.h"
-
-//increment current position
-
-#define _WRITE(port, v)     do { if (v) {DIO ##  port ## _PORT -> PIO_SODR = DIO ## port ## _PIN; } else {DIO ##  port ## _PORT->PIO_CODR = DIO ## port ## _PIN; }; } while (0)
-#define WRITE(pin,v) _WRITE(pin,v)
-#define _READ(pin) (DIO ##  pin ## _PORT->PIO_PDSR & DIO ##  pin ## _PIN ? 1 : 0) // does return 0 or pin value
-#define READ(pin) _READ(pin)
-
-#define _GET_STEP_PIN(pin) M ## pin ## _STEP_PIN
-#define GET_STEP_PIN(pin) _GET_STEP_PIN(pin)
-
-#define _GET_DIR_PIN(pin) M ## pin ## _DIR_PIN
-#define GET_DIR_PIN(pin) _GET_DIR_PIN(pin)
-
-#define _GET_ENABLE_PIN(pin) M ## pin ## _ENABLE_PIN
-#define GET_ENABLE_PIN(pin) _GET_ENABLE_PIN(pin)
-
-#define SET_INPUT(pin) pmc_enable_periph_clk(g_APinDescription[pin].ulPeripheralId); \
-PIO_Configure(g_APinDescription[pin].pPort, PIO_INPUT, g_APinDescription[pin].ulPin, 0)
-#define SET_OUTPUT(pin) PIO_Configure(g_APinDescription[pin].pPort, PIO_OUTPUT_1, \
-g_APinDescription[pin].ulPin, g_APinDescription[pin].ulPinConfiguration)
-
 
 void HAL::setupTimer(void){
   /* turn on the timer clock in the power management controller */
@@ -142,70 +116,6 @@ void HAL::doSendPulse(int motorNumber){
   }
 }
 
-void HAL::setupStepperMotor(){
-  pinMode(GET_DIR_PIN(1),OUTPUT);
-  pinMode(GET_STEP_PIN(1),OUTPUT);
-  pinMode(GET_ENABLE_PIN(1),OUTPUT);
-  WRITE(GET_ENABLE_PIN(1),false);
-
-  pinMode(GET_DIR_PIN(2),OUTPUT);
-  pinMode(GET_STEP_PIN(2),OUTPUT);
-  pinMode(GET_ENABLE_PIN(2),OUTPUT);
-  WRITE(GET_ENABLE_PIN(2),false);
-
-  pinMode(GET_DIR_PIN(3),OUTPUT);
-  pinMode(GET_STEP_PIN(3),OUTPUT);
-  pinMode(GET_ENABLE_PIN(3),OUTPUT);
-  WRITE(GET_ENABLE_PIN(3),false);
-
-  pinMode(GET_DIR_PIN(4),OUTPUT);
-  pinMode(GET_STEP_PIN(4),OUTPUT);
-  pinMode(GET_ENABLE_PIN(4),OUTPUT);
-  WRITE(GET_ENABLE_PIN(4),false);
-
-  pinMode(GET_DIR_PIN(5),OUTPUT);
-  pinMode(GET_STEP_PIN(5),OUTPUT);
-  pinMode(GET_ENABLE_PIN(5),OUTPUT);
-  WRITE(GET_ENABLE_PIN(5),false);
-
-  pinMode(GET_DIR_PIN(6),OUTPUT);
-  pinMode(GET_STEP_PIN(6),OUTPUT);
-  pinMode(GET_ENABLE_PIN(6),OUTPUT);
-  WRITE(GET_ENABLE_PIN(6),false);
-}
-
-
-//TODO: refer repetier-firmware
-void HAL::homing(){
-  while(!XMIN || !XXMIN || !YMIN || !YYMIN || !ZMIN || !ZZMIN){
-    if(!XMIN){
-      HAL::doSendDirection(0,CCW);
-      HAL::doSendPulse(0);
-    }
-    if(!XXMIN){
-      HAL::doSendDirection(1,CCW);
-      HAL::doSendPulse(1);
-    }
-    if(!YMIN){
-      HAL::doSendDirection(2,CCW);
-      HAL::doSendPulse(2);
-    }
-    if(!YYMIN){
-      HAL::doSendDirection(3,CCW);
-      HAL::doSendPulse(3);
-    }
-    if(!ZMIN){
-      HAL::doSendDirection(4,CCW);
-      HAL::doSendPulse(4);
-    }
-    if(!ZZMIN){
-      HAL::doSendDirection(5,CCW);
-      HAL::doSendPulse(5);
-    }
-  }
-};
-
-
 void TC7_Handler()
 {
   TC_GetStatus(TC2, 1);
@@ -213,14 +123,20 @@ void TC7_Handler()
   for(int i=0;i<6;i++){
     int _dest = state->motor[i].dest;
     int _cur = state->motor[i].cur;
+    Printer::checkEndstop(i);
     if(_cur <_dest){
-      HAL::doSendDirection(i,CW);
-      HAL::doSendPulse(i);
-      state->motor[i].cur += STEP_RESOLUTION;
+        HAL::doSendDirection(i,CW);
+        HAL::doSendPulse(i);
+        state->motor[i].cur += STEP_RESOLUTION;
     }else if(_cur > _dest){
-      HAL::doSendDirection(i,CCW);
-      HAL::doSendPulse(i);
-      state->motor[i].cur -= STEP_RESOLUTION;
+      if(!state->endstop[i].status==ES_HIT){
+        HAL::doSendDirection(i,CCW);
+        HAL::doSendPulse(i);
+        state->motor[i].cur -= STEP_RESOLUTION;
+      } else {
+        Printer::setOrigin(i);
+        Printer::setOffsetToDestination(i);
+      }
     }else if(_cur == _dest){
       //update readIndex (but only once!)
       //check if readIndex is behind writeIndex
