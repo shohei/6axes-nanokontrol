@@ -11,13 +11,14 @@ void initState(){
   for(int i=0;i<6;i++){
     state->motor[i].dest = 0;
     state->motor[i].cur = 0;
-    state->endstop[i].status = ES_FREE;
+    // state->endstop[i].status = ES_FREE;
     state->readIndex[i] = 0;
     state->writeIndex[i] = 0;
     for(int j=0;j<BUF_NUM;j++){
       state->buffer[i][j]=0;
     }
     state->ringState[i] = RING_INIT;
+    // state->ringState[i] = WR_LEAD;
   }
 }
 
@@ -99,20 +100,21 @@ void loop()
   Preference *state = Preference::getInstance(); 
   for(int i=0;i<6;i++){
     if(dests[i]!=NULL){
-      // state->motor[i].dest = atoi(dests[i])*REQUIRED_PULSE;
       //check if writeIndex does not go one lap beyond readIndex
       if(state->ringState[i]==RING_INIT){
         state->buffer[i][0] = atoi(dests[i])*REQUIRED_PULSE;
         state->writeIndex[i] = 1;
         state->ringState[i] = WR_LEAD;
+        state->motor[i].dest = state->buffer[i][0];
       } else if( state->ringState[i]==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i])
+      // if( state->ringState[i]==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i])
           || (state->ringState[i]==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
         state->buffer[i][state->writeIndex[i]] = atoi(dests[i])*REQUIRED_PULSE;
         if(state->writeIndex[i]+1 > BUF_NUM-1){
           state->writeIndex[i] = 0;
           state->ringState[i] = RD_LEAD;
         }else {
-          state->writeIndex[i] = state->writeIndex[i] + 1;
+          state->writeIndex[i]++;
         }
       }
     }
@@ -170,24 +172,26 @@ void dumpAll(){
 void updateRingBufferIndex(Preference* state, int i, bool direction){
   if(state->ringState[i]==RING_INIT){
     if(direction==CW){
-      state->buffer[i][0] += JOG_WIDTH;
+      state->buffer[i][0] = +JOG_WIDTH;
     }else if(direction==CCW){
-      state->buffer[i][0] -= JOG_WIDTH;
+      state->buffer[i][0] = -JOG_WIDTH;
     }
     state->writeIndex[i] = 1;
     state->ringState[i] = WR_LEAD;
+    state->motor[i].dest = state->buffer[i][0];
   } else if(state->ringState[i]==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i]) 
+  // if(state->ringState[i]==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i]) 
       || (state->ringState[i]==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
     if(direction==CW){
-      state->buffer[i][state->writeIndex[i]] += JOG_WIDTH;
+      state->buffer[i][state->writeIndex[i]] = state->buffer[i][state->writeIndex[i]-1] + JOG_WIDTH;
     }else if(direction==CCW){
-      state->buffer[i][state->writeIndex[i]] -= JOG_WIDTH;
+      state->buffer[i][state->writeIndex[i]] = state->buffer[i][state->writeIndex[i]-1] - JOG_WIDTH;
     }
     if(state->writeIndex[i]+1 > BUF_NUM-1){
       state->writeIndex[i] = 0;
       state->ringState[i] = RD_LEAD;
     }else {
-      state->writeIndex[i] = state->writeIndex[i] + 1;
+      state->writeIndex[i]++;
     }
   }
 }
