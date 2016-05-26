@@ -27,11 +27,11 @@
 ////////////////////////////////////////////////
 //ENDSTOP PIN SETTINGS
 #define M1_MIN_PIN 22
-#define M2_MIN_PIN 23
+#define M2_MIN_PIN 30 
 #define M3_MIN_PIN 24 
-#define M4_MIN_PIN 25 
+#define M4_MIN_PIN 38 
 #define M5_MIN_PIN 26
-#define M6_MIN_PIN 27 
+#define M6_MIN_PIN 34 
 
 ////////////////////////////////////////////////
 //ENDSTOP SETTINGS
