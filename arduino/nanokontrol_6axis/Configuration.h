@@ -16,7 +16,7 @@
 
 ////////////////////////////////////////////////
 //RING BUFFER
-#define BUF_NUM  16 
+#define BUF_NUM  4 
 // #define BUF_NUM  64 
 // #define BUF_NUM  128 
 // #define BUF_NUM 1024
