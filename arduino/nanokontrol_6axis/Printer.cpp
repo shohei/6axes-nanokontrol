@@ -43,34 +43,12 @@ void Printer::checkEndstop(int motorNumber){
 void Printer::homing(){
   Preference *state = Preference::getInstance();
   for(int i=0;i<6;i++){
+    for(int j=0;j<BUF_NUM;j++){
+      //clear all buffer
+	  state->buffer[i][j]=0;
+    }
     state->motor[i].dest = -ZLENGTH * REQUIRED_PULSE;
   }
-  // while(!M1_PIN|| !XXMIN || !YMIN || !YYMIN || !ZMIN || !ZZMIN){
-  //   if(!XMIN){
-  //     HAL::doSendDirection(0,CCW);
-  //     HAL::doSendPulse(0);
-  //   }
-  //   if(!XXMIN){
-  //     HAL::doSendDirection(1,CCW);
-  //     HAL::doSendPulse(1);
-  //   }
-  //   if(!YMIN){
-  //     HAL::doSendDirection(2,CCW);
-  //     HAL::doSendPulse(2);
-  //   }
-  //   if(!YYMIN){
-  //     HAL::doSendDirection(3,CCW);
-  //     HAL::doSendPulse(3);
-  //   }
-  //   if(!ZMIN){
-  //     HAL::doSendDirection(4,CCW);
-  //     HAL::doSendPulse(4);
-  //   }
-  //   if(!ZZMIN){
-  //     HAL::doSendDirection(5,CCW);
-  //     HAL::doSendPulse(5);
-  //   }
-  // }
 }
 
 void Printer::setupStepperMotor(){

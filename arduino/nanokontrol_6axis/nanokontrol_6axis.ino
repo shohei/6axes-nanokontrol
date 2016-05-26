@@ -38,7 +38,7 @@ void setup()
   HAL::setupTimer();
   HAL::startTimer();
 
-  Printer::homing();
+  // Printer::homing();
 }
 
 void loop()
@@ -62,6 +62,13 @@ void loop()
   JsonObject& root = jsonBuffer.parseObject(charBuf);
   if (!root.success()) {
     // Serial.println("parseObject() failed");
+    return;
+  }
+
+  const char* home_command = root["home"];
+  if(!home_command==NULL){
+    Serial.println("home Z axis");
+    Printer::homing();
     return;
   }
 
