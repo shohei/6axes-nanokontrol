@@ -16,9 +16,9 @@
 
 ////////////////////////////////////////////////
 //RING BUFFER
-#define BUF_NUM  4 
+// #define BUF_NUM  4 
 // #define BUF_NUM  64 
-// #define BUF_NUM  128 
+#define BUF_NUM  128 
 // #define BUF_NUM 1024
 #define RING_INIT 0
 #define WR_LEAD 1

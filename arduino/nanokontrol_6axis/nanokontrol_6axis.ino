@@ -107,7 +107,6 @@ void loop()
         state->ringState[i] = WR_LEAD;
         state->motor[i].dest = state->buffer[i][0];
       } else if( state->ringState[i]==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i])
-      // if( state->ringState[i]==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i])
           || (state->ringState[i]==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
         state->buffer[i][state->writeIndex[i]] = atoi(dests[i])*REQUIRED_PULSE;
         if(state->writeIndex[i]+1 > BUF_NUM-1){
@@ -180,7 +179,6 @@ void updateRingBufferIndex(Preference* state, int i, bool direction){
     state->motor[i].dest = state->buffer[i][0];
     state->ringState[i] = WR_LEAD;
   } else if(state->ringState[i]==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i]) 
-  // if(state->ringState[i]==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i]) 
       || (state->ringState[i]==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
     if(direction==CW){
       if(!state->writeIndex[i]==0){
