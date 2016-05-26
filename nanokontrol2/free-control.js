@@ -67,6 +67,16 @@ function sendJog(jog_command){
   });
 }
 
+function sendHoming(){
+  sentence = "{\"home\":\""+"g28"+"\"}\n"
+  port.write(sentence, function(err,bytesWritten){
+    if(err){
+      return console.log('Error: ',err.message);
+    }
+  });
+}
+
+
 function Printer(){
   this.dist1 = '';
   this.dist2 = '';
@@ -209,6 +219,14 @@ nanoKONTROL.connect()
         sendDump();      
         }
     });
+
+    device.on('button:rec', function(value){
+        if(value){
+        console.log("home axis.");
+        sendHoming();      
+        }
+    });
+
 
       device.on('button:stop', function(value){
         console.log("button:stop >>> "+value);
