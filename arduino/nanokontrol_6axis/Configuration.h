@@ -97,7 +97,7 @@ enum JOG{
 
 enum JOG_OR_SLIDER{
 	SLIDER,JOG	
-}
+};
 
 
 #endif

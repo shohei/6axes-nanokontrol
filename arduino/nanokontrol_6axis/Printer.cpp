@@ -86,70 +86,71 @@ void Printer::setupStepperMotor(){
 
 void Printer::doJog(int jog_command_number){
   Preference *state = Preference::getInstance();
+  const char* dummy[] = {"dummy"};
   switch(jog_command_number){
     case UP1:
       Serial.println("UP1");
-      Printer::updateRingBufferIndex(state,0,JOG_OR_SLIDER.JOG,CW);
+      Printer::updateRingBufferIndex(state,0,JOG,CW,dummy);
       break;
 
     case DOWN1:
       Serial.println("DOWN1");
-      Printer::updateRingBufferIndex(state,0,JOG_OR_SLIDER.JOG,CCW);
+      Printer::updateRingBufferIndex(state,0,JOG,CCW,dummy);
       break;
 
     case UP2:
       Serial.println("UP2");
-      Printer::updateRingBufferIndex(state,1,JOG_OR_SLIDER.JOG,CW);
+      Printer::updateRingBufferIndex(state,1,JOG,CW,dummy);
       break;
 
     case DOWN2:
       Serial.println("DOWN2");
-      Printer::updateRingBufferIndex(state,1,JOG_OR_SLIDER.JOG,CCW);
+      Printer::updateRingBufferIndex(state,1,JOG,CCW,dummy);
       break;
 
     case UP3:
       Serial.println("UP3");
-      Printer::updateRingBufferIndex(state,2,JOG_OR_SLIDER.JOG,CW);
+      Printer::updateRingBufferIndex(state,2,JOG,CW,dummy);
       break;
 
     case DOWN3:
       Serial.println("DOWN3");
-      Printer::updateRingBufferIndex(state,2,JOG_OR_SLIDER.JOG,CCW);
+      Printer::updateRingBufferIndex(state,2,JOG,CCW,dummy);
       break;
 
     case UP4:
       Serial.println("UP4");
-      Printer::updateRingBufferIndex(state,3,JOG_OR_SLIDER.JOG,CW);
+      Printer::updateRingBufferIndex(state,3,JOG,CW,dummy);
       break;
 
     case DOWN4:
       Serial.println("DOWN4");
-      Printer::updateRingBufferIndex(state,3,JOG_OR_SLIDER.JOG,CCW);
+      Printer::updateRingBufferIndex(state,3,JOG,CCW,dummy);
       break;
 
     case UP5:
       Serial.println("UP5");
-      Printer::updateRingBufferIndex(state,4,JOG_OR_SLIDER.JOG,CW);
+      Printer::updateRingBufferIndex(state,4,JOG,CW,dummy);
       break;
 
     case DOWN5:
       Serial.println("DOWN5");
-      Printer::updateRingBufferIndex(state,4,JOG_OR_SLIDER.JOG,CCW);
+      Printer::updateRingBufferIndex(state,4,JOG,CCW,dummy);
       break;
 
     case UP6:
       Serial.println("UP6");
-      Printer::updateRingBufferIndex(state,5,JOG_OR_SLIDER.JOG,CW);
+      Printer::updateRingBufferIndex(state,5,JOG,CW,dummy);
       break;
 
     case DOWN6:
       Serial.println("DOWN6");
-      Printer::updateRingBufferIndex(state,5,JOG_OR_SLIDER.JOG,CCW);
+      Printer::updateRingBufferIndex(state,5,JOG,CCW,dummy);
       break;
   }
 }
 
-void Printer::updateRingBufferIndex(Preference* state, int i, int jog_or_slider, bool direction){
+void Printer::updateRingBufferIndex(Preference* state, int i, int jog_or_slider, bool direction, const char* dests[]){
   if(state->ringState[i]==RING_INIT){
     if(jog_or_slider==JOG&&direction==CW){
       state->buffer[i][0] = +JOG_WIDTH;

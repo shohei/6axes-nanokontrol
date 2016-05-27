@@ -1,6 +1,8 @@
 #ifndef _PRINTER_H
 #define _PRINTER_H
 
+#include "Preference.h"
+
 class Printer {
 public:
 	static void setOrigin(int motorNumber);
@@ -9,7 +11,7 @@ public:
 	static void homing();
 	static void setupStepperMotor();
 	static void doJog(int jog_command_number);
-	static void updateRingBufferIndex(Preference* state, int i, int jog_or_slider, bool direction);
+	static void updateRingBufferIndex(Preference* state, int i, int jog_or_slider, bool direction, const char* dests[]);
 };
 
 #endif

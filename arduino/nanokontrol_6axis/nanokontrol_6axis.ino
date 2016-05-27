@@ -99,7 +99,7 @@ void loop()
   for(int i=0;i<6;i++){
     if(dests[i]!=NULL){
       //check if writeIndex does not go one lap beyond readIndex
-      Printer::updateRingBufferIndex(state,i,JOG_OR_SLIDER.SLIDER, ANY);
+      Printer::updateRingBufferIndex(state,i,SLIDER,ANY,dests);
     }
   }
   //dump destination when received command
