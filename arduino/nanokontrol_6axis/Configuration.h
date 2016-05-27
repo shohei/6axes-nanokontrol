@@ -80,7 +80,7 @@
 #define M6_ENABLE_PIN 45 
 
 
-enum JOG{ 
+enum JOG_COMMAND{ 
 	UP1 = 1,
 	DOWN1= 2,
 	UP2 = 3,

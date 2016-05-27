@@ -4,9 +4,9 @@
 
 class Com
 {
-public:
-	static void dumpAll();
-	static void showStatus();
+  public:
+    static void dumpAll();
+    static void showStatus();
 };
 
 

@@ -33,44 +33,44 @@ void HAL::doSendDirection(int motorNumber, bool isClockWise){
   if(isClockWise){
     switch(motorNumber){
       case 0:
-      WRITE(GET_DIR_PIN(1),true);
-      break;    
+        WRITE(GET_DIR_PIN(1),true);
+        break;    
       case 1:
-      WRITE(GET_DIR_PIN(2),true);
-      break;    
+        WRITE(GET_DIR_PIN(2),true);
+        break;    
       case 2:
-      WRITE(GET_DIR_PIN(3),true);
-      break;    
+        WRITE(GET_DIR_PIN(3),true);
+        break;    
       case 3:
-      WRITE(GET_DIR_PIN(4),true);
-      break;    
+        WRITE(GET_DIR_PIN(4),true);
+        break;    
       case 4:
-      WRITE(GET_DIR_PIN(5),true);
-      break;    
+        WRITE(GET_DIR_PIN(5),true);
+        break;    
       case 5:
-      WRITE(GET_DIR_PIN(6),true);
-      break;    
+        WRITE(GET_DIR_PIN(6),true);
+        break;    
     }
   }else {
     switch(motorNumber){
       case 0:
-      WRITE(GET_DIR_PIN(1),false);
-      break;    
+        WRITE(GET_DIR_PIN(1),false);
+        break;    
       case 1:
-      WRITE(GET_DIR_PIN(2),false);
-      break;    
+        WRITE(GET_DIR_PIN(2),false);
+        break;    
       case 2:
-      WRITE(GET_DIR_PIN(3),false);
-      break;    
+        WRITE(GET_DIR_PIN(3),false);
+        break;    
       case 3:
-      WRITE(GET_DIR_PIN(4),false);
-      break;    
+        WRITE(GET_DIR_PIN(4),false);
+        break;    
       case 4:
-      WRITE(GET_DIR_PIN(5),false);
-      break;    
+        WRITE(GET_DIR_PIN(5),false);
+        break;    
       case 5:
-      WRITE(GET_DIR_PIN(6),false);
-      break;    
+        WRITE(GET_DIR_PIN(6),false);
+        break;    
     }
   }
 }
@@ -78,41 +78,41 @@ void HAL::doSendDirection(int motorNumber, bool isClockWise){
 void HAL::doSendPulse(int motorNumber){
   switch(motorNumber){
     case 0:
-    WRITE(GET_STEP_PIN(1),true);
-    _DELAY_1_9_US;
-    WRITE(GET_STEP_PIN(1),false);
-    _DELAY_1_9_US;
-    break;    
+      WRITE(GET_STEP_PIN(1),true);
+      _DELAY_1_9_US;
+      WRITE(GET_STEP_PIN(1),false);
+      _DELAY_1_9_US;
+      break;    
     case 1:
-    WRITE(GET_STEP_PIN(2),true);
-    _DELAY_1_9_US;
-    WRITE(GET_STEP_PIN(2),false);
-    _DELAY_1_9_US;
-    break;    
+      WRITE(GET_STEP_PIN(2),true);
+      _DELAY_1_9_US;
+      WRITE(GET_STEP_PIN(2),false);
+      _DELAY_1_9_US;
+      break;    
     case 2:
-    WRITE(GET_STEP_PIN(3),true);
-    _DELAY_1_9_US;
-    WRITE(GET_STEP_PIN(3),false);
-    _DELAY_1_9_US;
-    break;    
+      WRITE(GET_STEP_PIN(3),true);
+      _DELAY_1_9_US;
+      WRITE(GET_STEP_PIN(3),false);
+      _DELAY_1_9_US;
+      break;    
     case 3:
-    WRITE(GET_STEP_PIN(4),true);
-    _DELAY_1_9_US;
-    WRITE(GET_STEP_PIN(4),false);
-    _DELAY_1_9_US;
-    break;    
+      WRITE(GET_STEP_PIN(4),true);
+      _DELAY_1_9_US;
+      WRITE(GET_STEP_PIN(4),false);
+      _DELAY_1_9_US;
+      break;    
     case 4:
-    WRITE(GET_STEP_PIN(5),true);
-    _DELAY_1_9_US;
-    WRITE(GET_STEP_PIN(5),false);
-    _DELAY_1_9_US;
-    break;    
+      WRITE(GET_STEP_PIN(5),true);
+      _DELAY_1_9_US;
+      WRITE(GET_STEP_PIN(5),false);
+      _DELAY_1_9_US;
+      break;    
     case 5:
-    WRITE(GET_STEP_PIN(6),true);
-    _DELAY_1_9_US;
-    WRITE(GET_STEP_PIN(6),false);
-    _DELAY_1_9_US;
-    break;    
+      WRITE(GET_STEP_PIN(6),true);
+      _DELAY_1_9_US;
+      WRITE(GET_STEP_PIN(6),false);
+      _DELAY_1_9_US;
+      break;    
   }
 }
 
@@ -125,9 +125,9 @@ void TC7_Handler()
     int _cur = state->motor[i].cur;
     Printer::checkEndstop(i);
     if(_cur <_dest){
-        HAL::doSendDirection(i,CW);
-        HAL::doSendPulse(i);
-        state->motor[i].cur += STEP_RESOLUTION;
+      HAL::doSendDirection(i,CW);
+      HAL::doSendPulse(i);
+      state->motor[i].cur += STEP_RESOLUTION;
     }else if(_cur > _dest){
       if(!state->endstop[i].status==ES_HIT){
         HAL::doSendDirection(i,CCW);
@@ -141,8 +141,8 @@ void TC7_Handler()
       //update readIndex (but only once!)
       //check if readIndex is behind writeIndex
       if((state->ringState[i]==WR_LEAD)&&(state->readIndex[i] < state->writeIndex[i])
-        || (state->ringState[i]==RD_LEAD)&&(state->readIndex[i] > (state->writeIndex[i]))){
-          //update dest
+          || (state->ringState[i]==RD_LEAD)&&(state->readIndex[i] > (state->writeIndex[i]))){
+        //update dest
         state->motor[i].dest = state->buffer[i][state->readIndex[i]];
         if(state->readIndex[i]+1 > BUF_NUM-1) {
           state->readIndex[i] = 0;

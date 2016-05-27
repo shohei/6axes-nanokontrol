@@ -11,13 +11,11 @@
 void setup()
 {
   Serial.begin(115200);    
-  // Serial.begin(9600); 
   while (!Serial) {
     // wait serial port initialization
   }
   Serial.println("Serial initialized.");
   delay(500);
-  // pinMode(13,OUTPUT);//for debug
   Printer::setupStepperMotor();
 
   Printer::initState();

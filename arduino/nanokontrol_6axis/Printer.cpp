@@ -19,39 +19,39 @@ void Printer::initState(){
 }
 
 void Printer::setOrigin(int motorNumber){
-	Preference *state = Preference::getInstance();
-	state->motor[motorNumber].cur = 0;
-	state->motor[motorNumber].dest = 0;
+  Preference *state = Preference::getInstance();
+  state->motor[motorNumber].cur = 0;
+  state->motor[motorNumber].dest = 0;
 }
 
 void Printer::setOffsetToDestination(int motorNumber){
-	Preference *state = Preference::getInstance();
-	state->motor[motorNumber].dest = Z_OFFSET_HOMING * REQUIRED_PULSE;
+  Preference *state = Preference::getInstance();
+  state->motor[motorNumber].dest = Z_OFFSET_HOMING * REQUIRED_PULSE;
 }
 
 
 void Printer::checkEndstop(int motorNumber){
-	Preference *state = Preference::getInstance();
-	switch(motorNumber){
-		case 0:
-			state->endstop[motorNumber].status = READ(GET_MIN_PIN(1));
-		break;
-		case 1:
-			state->endstop[motorNumber].status = READ(GET_MIN_PIN(2));
-		break;
-		case 2:
-			state->endstop[motorNumber].status = READ(GET_MIN_PIN(3));
-		break;
-		case 3:
-			state->endstop[motorNumber].status = READ(GET_MIN_PIN(4));
-		break;
-		case 4:
-			state->endstop[motorNumber].status = READ(GET_MIN_PIN(5));
-		break;
-		case 5:
-			state->endstop[motorNumber].status = READ(GET_MIN_PIN(6));
-		break;
-	}
+  Preference *state = Preference::getInstance();
+  switch(motorNumber){
+    case 0:
+      state->endstop[motorNumber].status = READ(GET_MIN_PIN(1));
+      break;
+    case 1:
+      state->endstop[motorNumber].status = READ(GET_MIN_PIN(2));
+      break;
+    case 2:
+      state->endstop[motorNumber].status = READ(GET_MIN_PIN(3));
+      break;
+    case 3:
+      state->endstop[motorNumber].status = READ(GET_MIN_PIN(4));
+      break;
+    case 4:
+      state->endstop[motorNumber].status = READ(GET_MIN_PIN(5));
+      break;
+    case 5:
+      state->endstop[motorNumber].status = READ(GET_MIN_PIN(6));
+      break;
+  }
 }
 
 //TODO: refer repetier-firmware
@@ -60,7 +60,7 @@ void Printer::homing(){
   for(int i=0;i<6;i++){
     for(int j=0;j<BUF_NUM;j++){
       //clear all buffer
-	  state->buffer[i][j]=0;
+      state->buffer[i][j]=0;
     }
     state->motor[i].dest = -ZLENGTH * REQUIRED_PULSE;
   }
@@ -178,7 +178,7 @@ void Printer::updateRingBufferIndex(Preference* state, int i, int jog_or_slider,
     state->motor[i].dest = state->buffer[i][0];
     state->ringState[i] = WR_LEAD;
   } else if(state->ringState[i]==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i]) 
-    || (state->ringState[i]==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
+      || (state->ringState[i]==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
     if(jog_or_slider==SLIDER){
       state->buffer[i][state->writeIndex[i]] = atoi(dests[i])*REQUIRED_PULSE;
     }else if(jog_or_slider==JOG){
