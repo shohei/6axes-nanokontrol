@@ -12,6 +12,7 @@
 #define STEP_RESOLUTION 1
 #define CW  false
 #define CCW true
+#define ANY false
 #define ZLENGTH 600
 
 ////////////////////////////////////////////////
@@ -93,6 +94,10 @@ enum JOG{
 	UP6 = 11,
 	DOWN6 = 12
 };
+
+enum JOG_OR_SLIDER{
+	SLIDER,JOG	
+}
 
 
 #endif

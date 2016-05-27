@@ -8,6 +8,8 @@ public:
 	static void checkEndstop(int motorNumber);
 	static void homing();
 	static void setupStepperMotor();
+	static void doJog(int jog_command_number);
+	static void updateRingBufferIndex(Preference* state, int i, int jog_or_slider, bool direction);
 };
 
 #endif

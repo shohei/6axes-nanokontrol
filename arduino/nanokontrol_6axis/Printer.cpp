@@ -82,3 +82,109 @@ void Printer::setupStepperMotor(){
   pinMode(GET_ENABLE_PIN(6),OUTPUT);
   WRITE(GET_ENABLE_PIN(6),false);
 }
+
+
+void Printer::doJog(int jog_command_number){
+  Preference *state = Preference::getInstance();
+  switch(jog_command_number){
+    case UP1:
+      Serial.println("UP1");
+      Printer::updateRingBufferIndex(state,0,JOG_OR_SLIDER.JOG,CW);
+      break;
+
+    case DOWN1:
+      Serial.println("DOWN1");
+      Printer::updateRingBufferIndex(state,0,JOG_OR_SLIDER.JOG,CCW);
+      break;
+
+    case UP2:
+      Serial.println("UP2");
+      Printer::updateRingBufferIndex(state,1,JOG_OR_SLIDER.JOG,CW);
+      break;
+
+    case DOWN2:
+      Serial.println("DOWN2");
+      Printer::updateRingBufferIndex(state,1,JOG_OR_SLIDER.JOG,CCW);
+      break;
+
+    case UP3:
+      Serial.println("UP3");
+      Printer::updateRingBufferIndex(state,2,JOG_OR_SLIDER.JOG,CW);
+      break;
+
+    case DOWN3:
+      Serial.println("DOWN3");
+      Printer::updateRingBufferIndex(state,2,JOG_OR_SLIDER.JOG,CCW);
+      break;
+
+    case UP4:
+      Serial.println("UP4");
+      Printer::updateRingBufferIndex(state,3,JOG_OR_SLIDER.JOG,CW);
+      break;
+
+    case DOWN4:
+      Serial.println("DOWN4");
+      Printer::updateRingBufferIndex(state,3,JOG_OR_SLIDER.JOG,CCW);
+      break;
+
+    case UP5:
+      Serial.println("UP5");
+      Printer::updateRingBufferIndex(state,4,JOG_OR_SLIDER.JOG,CW);
+      break;
+
+    case DOWN5:
+      Serial.println("DOWN5");
+      Printer::updateRingBufferIndex(state,4,JOG_OR_SLIDER.JOG,CCW);
+      break;
+
+    case UP6:
+      Serial.println("UP6");
+      Printer::updateRingBufferIndex(state,5,JOG_OR_SLIDER.JOG,CW);
+      break;
+
+    case DOWN6:
+      Serial.println("DOWN6");
+      Printer::updateRingBufferIndex(state,5,JOG_OR_SLIDER.JOG,CCW);
+      break;
+  }
+}
+
+void Printer::updateRingBufferIndex(Preference* state, int i, int jog_or_slider, bool direction){
+  if(state->ringState[i]==RING_INIT){
+    if(jog_or_slider==JOG&&direction==CW){
+      state->buffer[i][0] = +JOG_WIDTH;
+    }else if(jog_or_slider==JOG&&direction==CCW){
+      state->buffer[i][0] = -JOG_WIDTH;
+    }else if(jog_or_slider==SLIDER){
+      state->buffer[i][0] = atoi(dests[i])*REQUIRED_PULSE;
+    }
+    state->writeIndex[i] = 1;
+    state->motor[i].dest = state->buffer[i][0];
+    state->ringState[i] = WR_LEAD;
+  } else if(state->ringState[i]==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i]) 
+    || (state->ringState[i]==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
+    if(jog_or_slider==SLIDER){
+      state->buffer[i][state->writeIndex[i]] = atoi(dests[i])*REQUIRED_PULSE;
+    }else if(jog_or_slider==JOG){
+      if(direction==CW){
+        if(!state->writeIndex[i]==0){
+          state->buffer[i][state->writeIndex[i]] = state->buffer[i][state->writeIndex[i]-1] + JOG_WIDTH;
+        } else {
+          state->buffer[i][0] = state->buffer[i][BUF_NUM-1] + JOG_WIDTH;
+        }
+      }else if(direction==CCW){
+        if(!state->writeIndex[i]==0){
+          state->buffer[i][state->writeIndex[i]] = state->buffer[i][state->writeIndex[i]-1] - JOG_WIDTH;
+        } else {
+          state->buffer[i][0] = state->buffer[i][BUF_NUM-1] - JOG_WIDTH;
+        }
+      }
+      state->writeIndex[i]++;
+      if(state->writeIndex[i] > BUF_NUM-1){
+        state->writeIndex[i] = 0;
+        state->ringState[i] = RD_LEAD;
+      }
+    }
+  }
+}
+

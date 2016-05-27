@@ -81,7 +81,7 @@ void loop()
   const char* jog_command = root["jog"];
   if(!jog_command==NULL){
     int jog_command_number = atoi(jog_command);
-    doJog(jog_command_number);
+    Printer::doJog(jog_command_number);
     // Com::showStatus();
     return;
   }
@@ -99,122 +99,11 @@ void loop()
   for(int i=0;i<6;i++){
     if(dests[i]!=NULL){
       //check if writeIndex does not go one lap beyond readIndex
-      if(state->ringState[i]==RING_INIT){
-        state->buffer[i][0] = atoi(dests[i])*REQUIRED_PULSE;
-        state->writeIndex[i] = 1;
-        state->ringState[i] = WR_LEAD;
-        state->motor[i].dest = state->buffer[i][0];
-      } else if( state->ringState[i]==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i])
-          || (state->ringState[i]==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
-        state->buffer[i][state->writeIndex[i]] = atoi(dests[i])*REQUIRED_PULSE;
-        if(state->writeIndex[i]+1 > BUF_NUM-1){
-          state->writeIndex[i] = 0;
-          state->ringState[i] = RD_LEAD;
-        }else {
-          state->writeIndex[i]++;
-        }
-      }
+      Printer::updateRingBufferIndex(state,i,JOG_OR_SLIDER.SLIDER, ANY);
     }
   }
   //dump destination when received command
   // Com::showStatus();
 }
 
-void updateRingBufferIndex(Preference* state, int i, bool direction){
-  if(state->ringState[i]==RING_INIT){
-    if(direction==CW){
-      state->buffer[i][0] = +JOG_WIDTH;
-    }else if(direction==CCW){
-      state->buffer[i][0] = -JOG_WIDTH;
-    }
-    state->writeIndex[i] = 1;
-    state->motor[i].dest = state->buffer[i][0];
-    state->ringState[i] = WR_LEAD;
-  } else if(state->ringState[i]==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i]) 
-      || (state->ringState[i]==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
-    if(direction==CW){
-      if(!state->writeIndex[i]==0){
-        state->buffer[i][state->writeIndex[i]] = state->buffer[i][state->writeIndex[i]-1] + JOG_WIDTH;
-      } else {
-        state->buffer[i][0] = state->buffer[i][BUF_NUM-1] + JOG_WIDTH;
-      }
-    }else if(direction==CCW){
-      if(!state->writeIndex[i]==0){
-          state->buffer[i][state->writeIndex[i]] = state->buffer[i][state->writeIndex[i]-1] - JOG_WIDTH;
-        } else {
-          state->buffer[i][0] = state->buffer[i][BUF_NUM-1] - JOG_WIDTH;
-        }
-    }
-    state->writeIndex[i]++;
-    if(state->writeIndex[i] > BUF_NUM-1){
-      state->writeIndex[i] = 0;
-      state->ringState[i] = RD_LEAD;
-    }
-  }
-}
 
-void doJog(int jog_command_number){
-  Preference *state = Preference::getInstance();
-  switch(jog_command_number){
-
-    case UP1:
-      Serial.println("UP1");
-      updateRingBufferIndex(state,0,CW);
-      break;
-
-    case DOWN1:
-      Serial.println("DOWN1");
-      updateRingBufferIndex(state,0,CCW);
-      break;
-
-    case UP2:
-      Serial.println("UP2");
-      updateRingBufferIndex(state,1,CW);
-      break;
-
-    case DOWN2:
-      Serial.println("DOWN2");
-      updateRingBufferIndex(state,1,CCW);
-      break;
-
-    case UP3:
-      Serial.println("UP3");
-      updateRingBufferIndex(state,2,CW);
-      break;
-
-    case DOWN3:
-      Serial.println("DOWN3");
-      updateRingBufferIndex(state,2,CCW);
-      break;
-
-    case UP4:
-      Serial.println("UP4");
-      updateRingBufferIndex(state,3,CW);
-      break;
-
-    case DOWN4:
-      Serial.println("DOWN4");
-      updateRingBufferIndex(state,3,CCW);
-      break;
-
-    case UP5:
-      Serial.println("UP5");
-      updateRingBufferIndex(state,4,CW);
-      break;
-
-    case DOWN5:
-      Serial.println("DOWN5");
-      updateRingBufferIndex(state,4,CCW);
-      break;
-
-    case UP6:
-      Serial.println("UP6");
-      updateRingBufferIndex(state,5,CW);
-      break;
-
-    case DOWN6:
-      Serial.println("DOWN6");
-      updateRingBufferIndex(state,5,CCW);
-      break;
-  }
-}
