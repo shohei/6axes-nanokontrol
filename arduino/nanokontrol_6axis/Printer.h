@@ -5,6 +5,7 @@
 
 class Printer {
 public:
+	static void initState();
 	static void setOrigin(int motorNumber);
 	static void setOffsetToDestination(int motorNumber);
 	static void checkEndstop(int motorNumber);

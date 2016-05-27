@@ -7,20 +7,6 @@
 #include "Printer.h"
 #include "Communication.h"
 
-void initState(){
-  Preference *state = Preference::getInstance(); 
-  for(int i=0;i<6;i++){
-    state->motor[i].dest = 0;
-    state->motor[i].cur = 0;
-    // state->endstop[i].status = ES_FREE;
-    state->readIndex[i] = 0;
-    state->writeIndex[i] = 0;
-    for(int j=0;j<BUF_NUM;j++){
-      state->buffer[i][j]=0;
-    }
-    state->ringState[i] = RING_INIT;
-  }
-}
 
 void setup()
 {
@@ -34,7 +20,7 @@ void setup()
   // pinMode(13,OUTPUT);//for debug
   Printer::setupStepperMotor();
 
-  initState();
+  Printer::initState();
 
   HAL::setupTimer();
   HAL::startTimer();
