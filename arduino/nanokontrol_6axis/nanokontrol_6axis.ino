@@ -5,6 +5,7 @@
 #include "Preference.h"
 #include "HAL.h"
 #include "Printer.h"
+#include "Communication.h"
 
 void initState(){
   Preference *state = Preference::getInstance(); 
@@ -18,7 +19,6 @@ void initState(){
       state->buffer[i][j]=0;
     }
     state->ringState[i] = RING_INIT;
-    // state->ringState[i] = WR_LEAD;
   }
 }
 
@@ -39,7 +39,6 @@ void setup()
   HAL::setupTimer();
   HAL::startTimer();
 
-  // Printer::homing();
 }
 
 void loop()
@@ -75,16 +74,15 @@ void loop()
 
   const char* dump_command = root["dump"];
   if(!dump_command==NULL){
-    dumpAll();
+    Com::dumpAll();
     return;
   }
 
   const char* jog_command = root["jog"];
   if(!jog_command==NULL){
-    // Serial.println(jog_command);    
     int jog_command_number = atoi(jog_command);
     doJog(jog_command_number);
-    // showStatus();
+    // Com::showStatus();
     return;
   }
 
@@ -119,54 +117,8 @@ void loop()
     }
   }
   //dump destination when received command
-  // showStatus();
+  // Com::showStatus();
 }
-
-void dumpAll(){
-  Preference *state = Preference::getInstance();
-  for(int i=0;i<6;i++){
-    Serial.print("destination");
-    Serial.print(i);
-    Serial.print(": ");
-    Serial.print(state->motor[i].dest);
-    Serial.print(", current pos: ");
-    Serial.println(state->motor[i].cur);
-    for(int j=0;j<BUF_NUM;j++){
-      Serial.print("buffer");
-      Serial.print("[");
-      Serial.print(i);
-      Serial.print("]");
-      Serial.print("[");
-      Serial.print(j);
-      Serial.print("]");
-      Serial.println(state->buffer[i][j]);
-    }
-    Serial.print("ringState ");
-    Serial.print(i);
-    Serial.print(": ");
-    Serial.println(state->ringState[i]);
-    Serial.print("writeIndex ");
-    Serial.print(i);
-    Serial.print(": ");
-    Serial.println(state->writeIndex[i]);
-    Serial.print("readIndex ");
-    Serial.print(i);
-    Serial.print(": ");
-    Serial.println(state->readIndex[i]);
-  }
-}
-
-//  void showStatus(){
-//   Preference *state = Preference::getInstance();
-//   for(int i=0;i<6;i++){
-//     Serial.print("destination");
-//     Serial.print(i);
-//     Serial.print(": ");
-//     Serial.print(state->motor[i].dest);
-//     Serial.print(", current pos: ");
-//     Serial.println(state->motor[i].cur);
-//   }
-// }
 
 void updateRingBufferIndex(Preference* state, int i, bool direction){
   if(state->ringState[i]==RING_INIT){
@@ -200,7 +152,6 @@ void updateRingBufferIndex(Preference* state, int i, bool direction){
     }
   }
 }
-
 
 void doJog(int jog_command_number){
   Preference *state = Preference::getInstance();
