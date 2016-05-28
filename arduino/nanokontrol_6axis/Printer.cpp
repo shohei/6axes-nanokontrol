@@ -167,39 +167,53 @@ void Printer::doJog(int jog_command_number){
 
 void Printer::updateRingBufferIndex(Preference* state, int i, int jog_or_slider, bool direction, const char* dests[]){
   if(state->ringState[i]==RING_INIT){
-    if(jog_or_slider==JOG&&direction==CW){
-      state->buffer[i][0] = +JOG_WIDTH;
-    }else if(jog_or_slider==JOG&&direction==CCW){
-      state->buffer[i][0] = -JOG_WIDTH;
-    }else if(jog_or_slider==SLIDER){
-      state->buffer[i][0] = atoi(dests[i])*REQUIRED_PULSE;
+    switch(jog_or_slider){
+      case SLIDER:
+        state->buffer[i][0] = atoi(dests[i])*REQUIRED_PULSE;
+        break;
+      case JOG:
+        switch(direction){
+          case CW:
+            state->buffer[i][0] = +JOG_WIDTH;
+            break;
+          case CCW:
+            state->buffer[i][0] = -JOG_WIDTH;
+            break;
+        }  
+        break;
     }
     state->writeIndex[i] = 1;
     state->motor[i].dest = state->buffer[i][0];
     state->ringState[i] = WR_LEAD;
   } else if(state->ringState[i]==WR_LEAD&&(state->writeIndex[i] >= state->readIndex[i]) 
       || (state->ringState[i]==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
-    if(jog_or_slider==SLIDER){
-      state->buffer[i][state->writeIndex[i]] = atoi(dests[i])*REQUIRED_PULSE;
-    }else if(jog_or_slider==JOG){
-      if(direction==CW){
-        if(!state->writeIndex[i]==0){
-          state->buffer[i][state->writeIndex[i]] = state->buffer[i][state->writeIndex[i]-1] + JOG_WIDTH;
-        } else {
-          state->buffer[i][0] = state->buffer[i][BUF_NUM-1] + JOG_WIDTH;
+    switch(jog_or_slider){
+      case SLIDER:
+        state->buffer[i][state->writeIndex[i]] = atoi(dests[i])*REQUIRED_PULSE;
+        break;
+      case JOG:
+        switch(direction){
+          case CW:
+            if(!state->writeIndex[i]==0){
+              state->buffer[i][state->writeIndex[i]] = state->buffer[i][state->writeIndex[i]-1] + JOG_WIDTH;
+            } else {
+              state->buffer[i][0] = state->buffer[i][BUF_NUM-1] + JOG_WIDTH;
+            }
+            break;
+          case CCW:
+            if(!state->writeIndex[i]==0){
+              state->buffer[i][state->writeIndex[i]] = state->buffer[i][state->writeIndex[i]-1] - JOG_WIDTH;
+            } else {
+              state->buffer[i][0] = state->buffer[i][BUF_NUM-1] - JOG_WIDTH;
+            }
+            break;
         }
-      }else if(direction==CCW){
-        if(!state->writeIndex[i]==0){
-          state->buffer[i][state->writeIndex[i]] = state->buffer[i][state->writeIndex[i]-1] - JOG_WIDTH;
-        } else {
-          state->buffer[i][0] = state->buffer[i][BUF_NUM-1] - JOG_WIDTH;
-        }
-      }
-      state->writeIndex[i]++;
-      if(state->writeIndex[i] > BUF_NUM-1){
-        state->writeIndex[i] = 0;
-        state->ringState[i] = RD_LEAD;
-      }
+        break;
+    }
+    state->writeIndex[i]++;
+    if(state->writeIndex[i] > BUF_NUM-1){
+      state->writeIndex[i] = 0;
+      state->ringState[i] = RD_LEAD;
     }
   }
 }
