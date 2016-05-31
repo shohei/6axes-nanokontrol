@@ -17,6 +17,7 @@ void setup()
   Serial.println("Serial initialized.");
   delay(500);
   Printer::setupStepperMotor();
+  Printer::setupEndStop();
 
   Printer::initState();
 

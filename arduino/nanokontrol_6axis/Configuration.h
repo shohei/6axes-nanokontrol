@@ -3,17 +3,24 @@
 
 ////////////////////////////////////////////////
 //MOTOR AND SLIDER SETTINTS 
-#define SLIDER_PITCH 12
+//PROTOTYPE 0
+// #define SLIDER_PITCH 12
+//POTOTYPE 1
+#define SLIDER_PITCH 6 
 #define MICROSTEP 32
 #define PULSE_PER_REVOLUTION 200
 #define REQUIRED_PULSE (MICROSTEP*PULSE_PER_REVOLUTION/SLIDER_PITCH)
-#define JOG_DISTANCE 10
+// PROTOTYPE0
+// #define JOG_DISTANCE 10 
+//PROTOTYPE1
+#define JOG_DISTANCE 5
 #define JOG_WIDTH (JOG_DISTANCE*REQUIRED_PULSE)
 #define STEP_RESOLUTION 1
-#define CW  false
-#define CCW true
+#define CW  true
+#define CCW false
 #define ANY false
-#define ZLENGTH 600
+#define ZLENGTH 250
+#define INITIALZ 100 
 
 ////////////////////////////////////////////////
 //RING BUFFER
@@ -25,19 +32,11 @@
 #define WR_LEAD 1
 #define RD_LEAD 2
 
-////////////////////////////////////////////////
-//ENDSTOP PIN SETTINGS
-#define M1_MIN_PIN 22
-#define M2_MIN_PIN 30 
-#define M3_MIN_PIN 24 
-#define M4_MIN_PIN 38 
-#define M5_MIN_PIN 26
-#define M6_MIN_PIN 34 
 
 ////////////////////////////////////////////////
 //ENDSTOP SETTINGS
-#define ES_FREE false
-#define ES_HIT true
+#define ES_FREE 1
+#define ES_HIT 0
 #define Z_OFFSET_HOMING 5
 
 ////////////////////////////////////////////////
@@ -48,37 +47,48 @@
 #define M1_DIR_PIN    62
 #define M1_STEP_PIN   63
 #define M1_ENABLE_PIN 48
+//XMIN
+#define M1_MIN_PIN 22
 
-//Y->XX
+//E2->XX
 #define M2_STEP       200
-#define M2_DIR_PIN    64
-#define M2_STEP_PIN   65
-#define M2_ENABLE_PIN 46
+#define M2_DIR_PIN    47 
+#define M2_STEP_PIN   32 
+#define M2_ENABLE_PIN 45 
+//XMAX
+#define M2_MIN_PIN 30 
 
-//Z->Y
+//E0->Y
 #define M3_STEP       200
-#define M3_DIR_PIN    66
-#define M3_STEP_PIN   67
-#define M3_ENABLE_PIN 44
+#define M3_DIR_PIN    28 
+#define M3_STEP_PIN   36 
+#define M3_ENABLE_PIN 42
+//YMIN
+#define M3_MIN_PIN 24 
 
-//E0->YY
+//E1->YY
 #define M4_STEP       200
-#define M4_DIR_PIN    28 
-#define M4_STEP_PIN   36 
-#define M4_ENABLE_PIN 42
+#define M4_DIR_PIN    41 
+#define M4_STEP_PIN   43 
+#define M4_ENABLE_PIN 39 
+//YMAX
+#define M4_MIN_PIN 38 
 
-//E1->Z
+//Y->Z
 #define M5_STEP       200
-#define M5_DIR_PIN    41 
-#define M5_STEP_PIN   43 
-#define M5_ENABLE_PIN 39 
+#define M5_DIR_PIN    64
+#define M5_STEP_PIN   65
+#define M5_ENABLE_PIN 46
+//ZMIN
+#define M5_MIN_PIN 26
 
-//E2->ZZ
+//Z->ZZ
 #define M6_STEP       200
-#define M6_DIR_PIN    47 
-#define M6_STEP_PIN   32 
-#define M6_ENABLE_PIN 45 
-
+#define M6_DIR_PIN    66
+#define M6_STEP_PIN   67
+#define M6_ENABLE_PIN 44
+//ZMAX
+#define M6_MIN_PIN 34 
 
 enum JOG_COMMAND{ 
 	UP1 = 1,

@@ -123,20 +123,22 @@ void TC7_Handler()
   for(int i=0;i<6;i++){
     int _dest = state->motor[i].dest;
     int _cur = state->motor[i].cur;
+    //update endstop status
     Printer::checkEndstop(i);
     if(_cur <_dest){
       HAL::doSendDirection(i,CW);
       HAL::doSendPulse(i);
       state->motor[i].cur += STEP_RESOLUTION;
     }else if(_cur > _dest){
-      if(!state->endstop[i].status==ES_HIT){
+      // if(state->isHomed[i]==true){
+        //Axis is on the limit
+        // Printer::setOrigin(i);
+        // Printer::setOffsetToDestination(i);
+      // } else {
         HAL::doSendDirection(i,CCW);
         HAL::doSendPulse(i);
         state->motor[i].cur -= STEP_RESOLUTION;
-      } else {
-        Printer::setOrigin(i);
-        Printer::setOffsetToDestination(i);
-      }
+      // }
     }else if(_cur == _dest){
       //update readIndex (but only once!)
       //check if readIndex is behind writeIndex

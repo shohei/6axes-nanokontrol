@@ -11,8 +11,10 @@ class Printer {
     static void checkEndstop(int motorNumber);
     static void homing();
     static void setupStepperMotor();
+    static void setupEndStop();
     static void doJog(int jog_command_number);
     static void updateRingBufferIndex(Preference* state, int i, int jog_or_slider, bool direction, const char* dests[]);
+    static void goToInitialZ();
 };
 
 #endif

@@ -8,49 +8,106 @@ void Printer::initState(){
   for(int i=0;i<6;i++){
     state->motor[i].dest = 0;
     state->motor[i].cur = 0;
-    // state->endstop[i].status = ES_FREE;
     state->readIndex[i] = 0;
     state->writeIndex[i] = 0;
+    state->isHomed[i] = false;
     for(int j=0;j<BUF_NUM;j++){
       state->buffer[i][j]=0;
     }
     state->ringState[i] = RING_INIT;
   }
+  state->homing = false;
 }
 
-void Printer::setOrigin(int motorNumber){
-  Preference *state = Preference::getInstance();
-  state->motor[motorNumber].cur = 0;
-  state->motor[motorNumber].dest = 0;
-}
+// void Printer::setOrigin(int motorNumber){
+//   Preference *state = Preference::getInstance();
+//   state->motor[motorNumber].cur = 0;
+//   // should use updateRingBufferIndex()??
+//   state->motor[motorNumber].dest = 0;
+//   state->isHomed[motorNumber] = true;
+// }
 
-void Printer::setOffsetToDestination(int motorNumber){
-  Preference *state = Preference::getInstance();
-  state->motor[motorNumber].dest = Z_OFFSET_HOMING * REQUIRED_PULSE;
-}
+// void Printer::setOffsetToDestination(int motorNumber){
+//   Preference *state = Preference::getInstance();
+//   // state->motor[motorNumber].dest = Z_OFFSET_HOMING * REQUIRED_PULSE;
+// }
 
 
 void Printer::checkEndstop(int motorNumber){
   Preference *state = Preference::getInstance();
-  switch(motorNumber){
-    case 0:
-      state->endstop[motorNumber].status = READ(GET_MIN_PIN(1));
-      break;
-    case 1:
-      state->endstop[motorNumber].status = READ(GET_MIN_PIN(2));
-      break;
-    case 2:
-      state->endstop[motorNumber].status = READ(GET_MIN_PIN(3));
-      break;
-    case 3:
-      state->endstop[motorNumber].status = READ(GET_MIN_PIN(4));
-      break;
-    case 4:
-      state->endstop[motorNumber].status = READ(GET_MIN_PIN(5));
-      break;
-    case 5:
-      state->endstop[motorNumber].status = READ(GET_MIN_PIN(6));
-      break;
+  int s;
+  if(state->homing){
+    switch(motorNumber){
+      case 0:
+        if(state->isHomed[0]==false&&READ(GET_MIN_PIN(1))==ES_HIT){
+          Serial.println("ES1 HIT!");
+          state->isHomed[0]=true;
+          state->motor[0].dest = 0;
+          state->motor[0].cur = 0;
+        }
+        break;
+      case 1:
+        if(state->isHomed[1]==false&&READ(GET_MIN_PIN(2))==ES_HIT){
+          Serial.println("ES2 HIT!");
+          state->isHomed[1]=true;
+          state->motor[1].dest = 0;
+          state->motor[1].cur = 0;
+        } 
+        break;
+      case 2:
+        if(state->isHomed[2]==false&&READ(GET_MIN_PIN(3))==ES_HIT){
+          Serial.println("ES3 HIT!");
+          state->isHomed[2]=true;
+          state->motor[2].dest = 0;
+          state->motor[2].cur = 0;
+        } 
+        break;
+      case 3:
+        if(state->isHomed[3]==false&&READ(GET_MIN_PIN(4))==ES_HIT) {
+          Serial.println("ES4 HIT!");
+          state->isHomed[3]=true;
+          state->motor[3].dest = 0;
+          state->motor[3].cur = 0;
+        }
+        break;
+      case 4:
+        if(state->isHomed[4]==false&&READ(GET_MIN_PIN(5))==ES_HIT) {
+          Serial.println("ES5 HIT!");
+          state->isHomed[4]=true;
+          state->motor[4].dest = 0;
+          state->motor[4].cur = 0;
+        }
+        break;
+      case 5:
+        if(state->isHomed[5]==false&&READ(GET_MIN_PIN(6))==ES_HIT) {
+          Serial.println("ES6 HIT!");
+          state->isHomed[5]=true;
+          state->motor[5].dest = 0;
+          state->motor[5].cur = 0;
+        }
+        break;
+    }
+  }
+  if(state->isHomed[0]&&state->isHomed[1]&&state->isHomed[2]
+    &&state->isHomed[3]&&state->isHomed[4]&&state->isHomed[5]){
+    Serial.println("All axis homed.");
+    for(int i=0;i<6;i++){
+      state->isHomed[i] = false;
+    }
+    state->homing = false;
+    Serial.print("move to initial height: ");
+    Serial.println(INITIALZ);
+    Printer::goToInitialZ(); 
+  }
+}
+
+void Printer::goToInitialZ(){
+  Preference *state = Preference::getInstance();
+  const char* dest = String(INITIALZ).c_str(); 
+  const char* dests[] = {dest,dest,dest,dest,dest,dest}; 
+  for(int i=0;i<6;i++){
+    // state->motor[i].dest = INITIALZ;
+    Printer::updateRingBufferIndex(state,i,SLIDER,ANY,dests);
   }
 }
 
@@ -62,8 +119,13 @@ void Printer::homing(){
       //clear all buffer
       state->buffer[i][j]=0;
     }
+    state->writeIndex[i]=0;
+    state->readIndex[i]=0;
+    state->ringState[i]=RING_INIT;  
+    // Printer::updateRingBufferIndex(state,i,SLIDER,ANY,dests);
     state->motor[i].dest = -ZLENGTH * REQUIRED_PULSE;
   }
+  state->homing = true;
 }
 
 void Printer::setupStepperMotor(){
@@ -98,6 +160,14 @@ void Printer::setupStepperMotor(){
   WRITE(GET_ENABLE_PIN(6),false);
 }
 
+void Printer::setupEndStop(){
+  pinMode(M1_MIN_PIN,INPUT);
+  pinMode(M2_MIN_PIN,INPUT);
+  pinMode(M3_MIN_PIN,INPUT);
+  pinMode(M4_MIN_PIN,INPUT);
+  pinMode(M5_MIN_PIN,INPUT);
+  pinMode(M6_MIN_PIN,INPUT);
+}
 
 void Printer::doJog(int jog_command_number){
   Preference *state = Preference::getInstance();
