@@ -4,6 +4,7 @@
 #include "HAL.h"
 
 void Printer::standby(){ 
+  Serial.println("printer standing by");
   Preference *state = Preference::getInstance();
   for(int i=0;i<6;i++){
     for(int j=0;j<BUF_NUM;j++){
