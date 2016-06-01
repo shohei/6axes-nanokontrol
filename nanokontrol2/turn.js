@@ -60,7 +60,7 @@ module.exports = function(port){
 		dest4 = result[3];
 		dest5 = result[4];
 		dest6 = result[5];
-		sentence = "{\"dest1\":\""+dest1+"\",\"dest2\":\""+dest2+"\",\"dest3\":\""+dest3+"\",\"dest4\":\""+dest4+"\",\"dest5\":\""+dest5+"\",\"dest6\":\""+dest6+"\"}\n"
+		sentence = "{\"auto\":\""+"command"+"\",\"dest1\":\""+dest1+"\",\"dest2\":\""+dest2+"\",\"dest3\":\""+dest3+"\",\"dest4\":\""+dest4+"\",\"dest5\":\""+dest5+"\",\"dest6\":\""+dest6+"\"}\n"
 		console.log(i);
 		console.log(sentence);
 		port.write(sentence, function(err,bytesWritten){

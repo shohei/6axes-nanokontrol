@@ -13,7 +13,6 @@ var initialHeight = 100;
 
 var turn = require('./turn');
 var tilt = require('./tilt');
-var turn_and_tilt = require('./turn_and_tilt');
 
 
 port.on('open', function () {
@@ -39,22 +38,16 @@ var COMMAND = {
   DOWN6 : 12
 };
 
-// var COMMAND = {
-//   TURN : 1, 
-//   TILT : 2, 
-//   TURN_TILT : 3, 
-// };
-
 
 const divider = 5;
-function sendDestination(printer){
+function sendManualDestination(printer){
   dest1 = initialHeight + printer.dest1/divider;
   dest2 = initialHeight + printer.dest2/divider;
   dest3 = initialHeight + printer.dest3/divider;
   dest4 = initialHeight + printer.dest4/divider;
   dest5 = initialHeight + printer.dest5/divider;
   dest6 = initialHeight + printer.dest6/divider;
-  sentence = "{\"dest1\":\""+dest1+"\",\"dest2\":\""+dest2+"\",\"dest3\":\""+dest3+"\",\"dest4\":\""+dest4+"\",\"dest5\":\""+dest5+"\",\"dest6\":\""+dest6+"\"}\n"
+  sentence = "{\"slider\":\""+"manual"+"\",\"dest1\":\""+dest1+"\",\"dest2\":\""+dest2+"\",\"dest3\":\""+dest3+"\",\"dest4\":\""+dest4+"\",\"dest5\":\""+dest5+"\",\"dest6\":\""+dest6+"\"}\n"
   port.write(sentence, function(err,bytesWritten){
     if(err){
       return console.log('Error: ',err.message);
@@ -82,6 +75,24 @@ function sendJog(jog_command){
 
 function sendHoming(){
   sentence = "{\"home\":\""+"g28"+"\"}\n"
+  port.write(sentence, function(err,bytesWritten){
+    if(err){
+      return console.log('Error: ',err.message);
+    }
+  });
+}
+
+function sendStandBy(){
+  sentence = "{\"standby\":\""+"go"+"\"}\n"
+  port.write(sentence, function(err,bytesWritten){
+    if(err){
+      return console.log('Error: ',err.message);
+    }
+  });
+}
+
+function sendToggleMode(){
+  sentence = "{\"mode\":\""+"select"+"\"}\n"
   port.write(sentence, function(err,bytesWritten){
     if(err){
       return console.log('Error: ',err.message);
@@ -122,42 +133,42 @@ nanoKONTROL.connect()
     printer.dest1 = value;
     if(printer.dest1 % step ==1){
       console.log("slider:1 >>> "+value);
-      sendDestination(printer);
+      sendManualDestination(printer);
     }
   });
   device.on('slider:2', function(value){
     printer.dest2 = value;
     if(printer.dest2 % step ==1){
       console.log("slider:2 >>> "+value);
-      sendDestination(printer);
+      sendManualDestination(printer);
     }
   });
   device.on('slider:3', function(value){
     printer.dest3 = value;
     if(printer.dest3 % step ==1){
       console.log("slider:3 >>> "+value);
-      sendDestination(printer);
+      sendManualDestination(printer);
     }
   });
   device.on('slider:4', function(value){
     printer.dest4 = value;
     if(printer.dest4 % step ==1){
       console.log("slider:4 >>> "+value);
-      sendDestination(printer);
+      sendManualDestination(printer);
     }
   });
   device.on('slider:5', function(value){
     printer.dest5 = value;
     if(printer.dest5 % step ==1){
       console.log("slider:5 >>> "+value);
-      sendDestination(printer);
+      sendManualDestination(printer);
     }
   });
   device.on('slider:6', function(value){
     printer.dest6 = value;
     if(printer.dest6 % step ==1){
       console.log("slider:6 >>> "+value);
-      sendDestination(printer);
+      sendManualDestination(printer);
     }
   });
   device.on('button:s:1', function(value){
@@ -276,8 +287,14 @@ nanoKONTROL.connect()
     });
     device.on('button:m:3', function(value){
       if(value){
-        console.log("TURN WITH TILT");
-        turn_and_tilt(port);
+        console.log("STAND BY");
+        sendStandBy();
+      }
+    });
+    device.on('button:m:4', function(value){
+      if(value){
+        console.log("Toggle mode");
+        sendToggleMode();
       }
     });
 

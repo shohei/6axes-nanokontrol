@@ -18,8 +18,13 @@ void Printer::standby(){
 }
 
 void Printer::toggleMode(){
-
-
+  Preference *state = Preference::getInstance(); 
+  state->manualMode ^= true; //toggle boolean
+  if(state->manualMode){
+    Serial.println("set to manual mode");
+  } else {
+    Serial.println("set to auto mode");
+  }
 }
 
 
@@ -39,6 +44,7 @@ void Printer::initState(){
     state->ringState[i] = RING_INIT;
   }
   state->homing = false;
+  state->manualMode = false;
 }
 
 void Printer::checkEndstop(int motorNumber){

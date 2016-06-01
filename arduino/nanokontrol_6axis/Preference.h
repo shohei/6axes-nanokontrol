@@ -31,6 +31,7 @@ class Preference
     int ringState[6];
     bool isHomed[6];
     bool homing;
+    bool manualMode;
 };
 
 #endif
