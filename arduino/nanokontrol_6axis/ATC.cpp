@@ -20,10 +20,10 @@ void ATC::doSendPulse(){
 
 void ATC::turnCW(){
 	Preference *state = Preference::getInstance();
-	state->wheel.dest = ATC_JOG;
+	state->wheel.dest += ATC_JOG;
 }
 
 void ATC::turnCCW(){
 	Preference *state = Preference::getInstance();
-	state->wheel.dest = -ATC_JOG;
+	state->wheel.dest -= ATC_JOG;
 }
