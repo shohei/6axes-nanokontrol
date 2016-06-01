@@ -11,6 +11,11 @@ var port = new SerialPort("/dev/tty.usbmodem1411", {
 var step = 20;
 var initialHeight = 100;
 
+var turn = require('./turn');
+var tilt = require('./tilt');
+var turn_and_tilt = require('./turn_and_tilt');
+
+
 port.on('open', function () {
   console.log("serial port open");
 });
@@ -33,6 +38,13 @@ var COMMAND = {
   UP6   : 11, 
   DOWN6 : 12
 };
+
+// var COMMAND = {
+//   TURN : 1, 
+//   TILT : 2, 
+//   TURN_TILT : 3, 
+// };
+
 
 const divider = 5;
 function sendDestination(printer){
@@ -217,45 +229,66 @@ nanoKONTROL.connect()
 
   // device.on('knob:1', function(value){
     //   console.log("knob:1 >>> "+value);
-// });
+    // });
     //
     device.on('button:play', function(value){
-        if(value){
+      if(value){
         console.log("button:play >>> "+value);
         console.log("dumpAll()");
         sendDump();      
-        }
+      }
     });
 
     device.on('button:rec', function(value){
-        if(value){
+      if(value){
         console.log("home axis.");
         sendHoming();      
-        }
+      }
     });
 
 
-      device.on('button:stop', function(value){
-        console.log("button:stop >>> "+value);
-        if(value === false){
-          console.log('exit!!');
-          device.close();
-        }
-      });
+    device.on('button:stop', function(value){
+      console.log("button:stop >>> "+value);
+      if(value === false){
+        console.log('exit!!');
+        device.close();
+      }
+    });
 
-      // catch all slider/knob/button event
-      // device.on('slider:*', function(value){
+    //PRESET CONTROL//
+    device.on('button:m:1', function(value){
+      if(value){
+        console.log("TURN");
+        turn(port);
+      }
+    });
+    device.on('button:m:2', function(value){
+      if(value){
+        console.log("TILT");
+        tilt(port);
+      }
+    });
+    device.on('button:m:3', function(value){
+      if(value){
+        console.log("TURN WITH TILT");
+        turn_and_tilt(port);
+      }
+    });
+
+
+    // catch all slider/knob/button event
+    // device.on('slider:*', function(value){
+      //   console.log(this.event+' => '+value);
+      //
+      // });
+      //
+      // device.on('knob:*', function(value){
         //   console.log(this.event+' => '+value);
+        // });
         //
-// });
-        //
-        // device.on('knob:*', function(value){
+        // device.on('button:**', function(value){
           //   console.log(this.event+' => '+value);
-// });
-          //
-          // device.on('button:**', function(value){
-            //   console.log(this.event+' => '+value);
-// });
+          // });
 
 })
 .catch(function(err){
