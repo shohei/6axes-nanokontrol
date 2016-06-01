@@ -48,12 +48,12 @@ var COMMAND = {
 
 const divider = 5;
 function sendDestination(printer){
-  dest1 = printer.dest1/divider;
-  dest2 = printer.dest2/divider;
-  dest3 = printer.dest3/divider;
-  dest4 = printer.dest4/divider;
-  dest5 = printer.dest5/divider;
-  dest6 = printer.dest6/divider;
+  dest1 = initialHeight + printer.dest1/divider;
+  dest2 = initialHeight + printer.dest2/divider;
+  dest3 = initialHeight + printer.dest3/divider;
+  dest4 = initialHeight + printer.dest4/divider;
+  dest5 = initialHeight + printer.dest5/divider;
+  dest6 = initialHeight + printer.dest6/divider;
   sentence = "{\"dest1\":\""+dest1+"\",\"dest2\":\""+dest2+"\",\"dest3\":\""+dest3+"\",\"dest4\":\""+dest4+"\",\"dest5\":\""+dest5+"\",\"dest6\":\""+dest6+"\"}\n"
   port.write(sentence, function(err,bytesWritten){
     if(err){
@@ -107,7 +107,6 @@ nanoKONTROL.connect()
 
   // register specific slider/knob/button event
   device.on('slider:1', function(value){
-    value = value + initialHeight;
     printer.dest1 = value;
     if(printer.dest1 % step ==1){
       console.log("slider:1 >>> "+value);
@@ -115,7 +114,6 @@ nanoKONTROL.connect()
     }
   });
   device.on('slider:2', function(value){
-    value = value + initialHeight;
     printer.dest2 = value;
     if(printer.dest2 % step ==1){
       console.log("slider:2 >>> "+value);
@@ -123,7 +121,6 @@ nanoKONTROL.connect()
     }
   });
   device.on('slider:3', function(value){
-    value = value + initialHeight;
     printer.dest3 = value;
     if(printer.dest3 % step ==1){
       console.log("slider:3 >>> "+value);
@@ -131,7 +128,6 @@ nanoKONTROL.connect()
     }
   });
   device.on('slider:4', function(value){
-    value = value + initialHeight;
     printer.dest4 = value;
     if(printer.dest4 % step ==1){
       console.log("slider:4 >>> "+value);
@@ -139,7 +135,6 @@ nanoKONTROL.connect()
     }
   });
   device.on('slider:5', function(value){
-    value = value + initialHeight;
     printer.dest5 = value;
     if(printer.dest5 % step ==1){
       console.log("slider:5 >>> "+value);
@@ -147,7 +142,6 @@ nanoKONTROL.connect()
     }
   });
   device.on('slider:6', function(value){
-    value = value + initialHeight;
     printer.dest6 = value;
     if(printer.dest6 % step ==1){
       console.log("slider:6 >>> "+value);

@@ -16,7 +16,7 @@ module.exports = function(){
 		lc : 268,
 		rb : 180.38,
 		// Pz : 438.17
-		Pz : 200 
+		Pz : 300 
 		// Pz : 0 //for debug
 	}
 }
