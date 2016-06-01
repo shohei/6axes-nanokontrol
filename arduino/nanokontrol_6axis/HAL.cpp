@@ -130,15 +130,9 @@ void TC7_Handler()
       HAL::doSendPulse(i);
       state->motor[i].cur += STEP_RESOLUTION;
     }else if(_cur > _dest){
-      // if(state->isHomed[i]==true){
-        //Axis is on the limit
-        // Printer::setOrigin(i);
-        // Printer::setOffsetToDestination(i);
-      // } else {
         HAL::doSendDirection(i,CCW);
         HAL::doSendPulse(i);
         state->motor[i].cur -= STEP_RESOLUTION;
-      // }
     }else if(_cur == _dest){
       //update readIndex (but only once!)
       //check if readIndex is behind writeIndex

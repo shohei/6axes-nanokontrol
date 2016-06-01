@@ -19,20 +19,6 @@ void Printer::initState(){
   state->homing = false;
 }
 
-// void Printer::setOrigin(int motorNumber){
-//   Preference *state = Preference::getInstance();
-//   state->motor[motorNumber].cur = 0;
-//   // should use updateRingBufferIndex()??
-//   state->motor[motorNumber].dest = 0;
-//   state->isHomed[motorNumber] = true;
-// }
-
-// void Printer::setOffsetToDestination(int motorNumber){
-//   Preference *state = Preference::getInstance();
-//   // state->motor[motorNumber].dest = Z_OFFSET_HOMING * REQUIRED_PULSE;
-// }
-
-
 void Printer::checkEndstop(int motorNumber){
   Preference *state = Preference::getInstance();
   int s;
@@ -106,7 +92,6 @@ void Printer::goToInitialZ(){
   const char* dest = String(INITIALZ).c_str(); 
   const char* dests[] = {dest,dest,dest,dest,dest,dest}; 
   for(int i=0;i<6;i++){
-    // state->motor[i].dest = INITIALZ;
     Printer::updateRingBufferIndex(state,i,SLIDER,ANY,dests);
   }
 }
@@ -122,7 +107,6 @@ void Printer::homing(){
     state->writeIndex[i]=0;
     state->readIndex[i]=0;
     state->ringState[i]=RING_INIT;  
-    // Printer::updateRingBufferIndex(state,i,SLIDER,ANY,dests);
     state->motor[i].dest = -ZLENGTH * REQUIRED_PULSE;
   }
   state->homing = true;
