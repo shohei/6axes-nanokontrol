@@ -60,9 +60,11 @@ void loop()
 
   const char* atc_command = root["atc"];
   if(atc_command!=NULL){
-    if(atc_command=="CW"){
+    const char* _cw = "\x43\x57\x0";
+    const char* _ccw = "\x43\x43\x57\x0"; 
+    if(strcmp(atc_command,_cw)==0){
         ATC::turnCW();
-      } else if(atc_command=="CCW"){
+      } else if(strcmp(atc_command,_ccw)==0){
         ATC::turnCCW();
       }
     return;

@@ -89,6 +89,18 @@ function sendHoming(){
   });
 }
 
+function sendATC(direction){
+  if(direction==="CW"){
+    sentence = "{\"atc\":\""+"CW"+"\"}\n"
+  } else if(direction==="CCW"){
+    sentence = "{\"atc\":\""+"CCW"+"\"}\n"
+  }
+  port.write(sentence, function(err,bytesWritten){
+    if(err){
+      return console.log('Error: ',err.message);
+    }
+  });
+}
 
 function Printer(){
   this.dist1 = '';
@@ -269,7 +281,19 @@ nanoKONTROL.connect()
       }
     });
 
+    device.on('button:marker:next', function(value){
+      if(value){
+        console.log("Rotate ATC: Clockwise");
+        sendATC("CW");      
+      }
+    });
 
+    device.on('button:marker:prev', function(value){
+      if(value){
+        console.log("Rotate ATC: Counter Clockwise");
+        sendATC("CCW");      
+      }
+    });
     // catch all slider/knob/button event
     // device.on('slider:*', function(value){
       //   console.log(this.event+' => '+value);
