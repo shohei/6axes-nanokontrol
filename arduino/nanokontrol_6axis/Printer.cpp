@@ -144,6 +144,10 @@ void Printer::setupStepperMotor(){
   pinMode(GET_STEP_PIN(6),OUTPUT);
   pinMode(GET_ENABLE_PIN(6),OUTPUT);
   WRITE(GET_ENABLE_PIN(6),false);
+
+  pinMode(ATC_STEP_PIN,OUTPUT);
+  pinMode(ATC_DIR_PIN,OUTPUT);
+  pinMode(ATC_ENABLE_PIN,OUTPUT);
 }
 
 void Printer::setupEndStop(){
