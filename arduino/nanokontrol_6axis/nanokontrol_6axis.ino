@@ -78,8 +78,7 @@ void loop()
   const char* dest5 = root["dest5"];
   const char* dest6 = root["dest6"];
 
-  const char* nan_char = "\x4e\x61\x4e\x0";
-
+  const char* nan_char = "\x4e\x61\x4e\x0";//"NaN"
 
   const char* dests[] = {dest1,dest2,dest3,dest4,dest5,dest6};
 
