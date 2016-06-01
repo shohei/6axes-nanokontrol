@@ -84,7 +84,7 @@ void loop()
 
   Preference *state = Preference::getInstance(); 
   for(int i=0;i<6;i++){
-    if(strcmp(dests[i],nan_char)!=0){
+    if(dests[i]!=NULL&&strcmp(dests[i],nan_char)!=0){
       //check if writeIndex does not go one lap beyond readIndex
       Printer::updateRingBufferIndex(state,i,SLIDER,ANY,dests);
     }
