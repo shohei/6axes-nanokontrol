@@ -36,13 +36,13 @@ module.exports = function(port){
     // theta = pi/12*(i_time/10); % rotation around Y axis
     // psi = pi/16*(i_time/10); % rotation around Z axis
 
-	for(var i=0;i<360;i=i+60){
+	for(var i=0;i<361;i=i+60){
 		doSetTimeout(i);
 	}
 
 	function doSetTimeout(i){
 		// setTimeout(function() { calculationAndSend(i); }, i*50);
-		setTimeout(function() { calculationAndSend(i); }, i*20);
+		setTimeout(function() { calculationAndSend(i); }, i*15);
 	}
 
 	function calculationAndSend(i){

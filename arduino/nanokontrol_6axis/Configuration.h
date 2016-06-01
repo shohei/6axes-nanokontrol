@@ -38,7 +38,8 @@
 // TC_SetRC(TC2, 1, 6563);
 // TC_SetRC(TC2, 1, 656);//0.001sec: 1000Hz
 // TC_SetRC(TC2, 1, 65);//0.001sec: 1000Hz
-#define AXIS_TIMER 32 
+// #define AXIS_TIMER 32 
+#define AXIS_TIMER 65 
 #define ATC_TIMER 650
 
 ////////////////////////////////////////////////

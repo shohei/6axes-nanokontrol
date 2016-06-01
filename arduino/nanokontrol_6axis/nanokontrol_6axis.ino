@@ -76,6 +76,18 @@ void loop()
     return;
   }
 
+  const char* standby_command = root["standby"];
+  if(standby_command!=NULL){
+    Printer::standby();
+    return;
+  }
+
+  const char* mode_command = root["mode"];
+  if(mode_command!=NULL){
+    Printer::toggleMode();
+    return;
+  }
+
   const char* jog_command = root["jog"];
   if(jog_command!=NULL){
     int jog_command_number = atoi(jog_command);

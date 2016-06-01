@@ -3,6 +3,26 @@
 #include "Configuration.h"
 #include "HAL.h"
 
+void Printer::standby(){ 
+  Preference *state = Preference::getInstance();
+  for(int i=0;i<6;i++){
+    for(int j=0;j<BUF_NUM;j++){
+      //clear all buffer
+      state->buffer[i][j]=0;
+    }
+    state->writeIndex[i]=0;
+    state->readIndex[i]=0;
+    state->ringState[i]=RING_INIT;  
+    state->motor[i].dest = INITIALZ * REQUIRED_PULSE;
+  }
+}
+
+void Printer::toggleMode(){
+
+
+}
+
+
 void Printer::initState(){
   Preference *state = Preference::getInstance(); 
   for(int i=0;i<6;i++){

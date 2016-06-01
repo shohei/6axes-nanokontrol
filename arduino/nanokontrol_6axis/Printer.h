@@ -15,6 +15,8 @@ class Printer {
     static void doJog(int jog_command_number);
     static void updateRingBufferIndex(Preference* state, int i, int jog_or_slider, bool direction, const char* dests[]);
     static void goToInitialZ();
+    static void toggleMode();
+    static void standby();
 };
 
 #endif
