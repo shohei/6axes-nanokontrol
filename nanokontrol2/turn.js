@@ -20,6 +20,8 @@ module.exports = function(port){
 	const lc = constant().lc;
 	const rb = constant().rb;
 	const Pz = constant().Pz;
+	const R_MOVE = constant().R_MOVE;
+
 
     // P = [0.1-i_time/200,0.2+i_time/200,Pz]; % Position Vector of the end effector
     // phi = pi/12*(i_time/10); % rotation around X axis
@@ -39,8 +41,8 @@ module.exports = function(port){
 		var phi = 0; 
 		var theta = 0; 
 		var psi = 0; 
-		var xd = 100*Math.cos(i/180*Math.PI);
-		var yd = 100*Math.sin(i/180*Math.PI);
+		var xd = R_MOVE*Math.cos(i/180*Math.PI);
+		var yd = R_MOVE*Math.sin(i/180*Math.PI);
 		var zd = Pz;
 
 		MySolver.solveInverseMechanism(result,re,rb,lc,D,Pz,xd,yd,zd,phi,theta,psi);
@@ -52,7 +54,8 @@ module.exports = function(port){
 		dest6 = result[5];
 		sentence = "{\"dest1\":\""+dest1+"\",\"dest2\":\""+dest2+"\",\"dest3\":\""+dest3+"\",\"dest4\":\""+dest4+"\",\"dest5\":\""+dest5+"\",\"dest6\":\""+dest6+"\"}\n"
 		console.log(i);
-		console.log(sentence);
+		console.log(phi,theta,psi,xd,yd,zd);
+		// console.log(sentence);
 		port.write(sentence, function(err,bytesWritten){
 			if(err){
 				return console.log('Error: ',err.message);
