@@ -32,6 +32,16 @@
 #define WR_LEAD 1
 #define RD_LEAD 2
 
+////////////////////////////////////////////////
+//ATC WHEEL SETTINGS
+#define SERVO1_PIN 7
+#define SERVO2_PIN 6
+#define SERVO3_PIN 5
+#define ATC_STEP_PIN SERVO1_PIN
+#define ATC_DIR_PIN SERVO2_PIN
+#define ATC_ENABLE_PIN SERVO3_PIN
+#define ATC_CW true
+#define ATC_CCW false
 
 ////////////////////////////////////////////////
 //ENDSTOP SETTINGS

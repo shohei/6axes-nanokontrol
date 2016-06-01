@@ -8,8 +8,8 @@
 #include "Communication.h"
 
 
-void setup()
-{
+void setup(){
+
   Serial.begin(115200);    
   while (!Serial) {
     // wait serial port initialization
@@ -81,7 +81,7 @@ void loop()
   const char* nan_char = "\x4e\x61\x4e\x0";//"NaN"
 
   const char* dests[] = {dest1,dest2,dest3,dest4,dest5,dest6};
-  
+
   //debug
   // Serial.println("float precision?");
   // for(int i=0;i<6;i++){

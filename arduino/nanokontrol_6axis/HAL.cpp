@@ -4,6 +4,7 @@ void HAL::setupTimer(void){
   /* turn on the timer clock in the power management controller */
   pmc_set_writeprotect(false);		 // disable write protection for pmc registers
   pmc_enable_periph_clk(ID_TC7);	 // enable peripheral clock TC7
+  pmc_enable_periph_clk(ID_TC1);   // enable peripheral clock TC1 // for ATC
   /* we want wavesel 01 with RC */
   // TIMER_CLOCK1: 84Mhz/2 = 42.000 MHz
   // TIMER_CLOCK2: 84Mhz/8 = 10.500 MHz
@@ -11,6 +12,7 @@ void HAL::setupTimer(void){
   // TIMER_CLOCK4: 84Mhz/128 = 656.250 KHz
   // TIMER_CLOCK5: SLCK ( slow clock )
   TC_Configure(/* clock */TC2,/* channel */1, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK4); 
+  TC_Configure(/* clock */TC0,/* channel */1, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK4); 
   //652.25 * 0.2(sec) = 131250
   //652.25 * 0.01(sec) = 131250
   // TC_SetRC(TC2, 1, 131200);
@@ -20,14 +22,22 @@ void HAL::setupTimer(void){
   // TC_SetRC(TC2, 1, 65);
   TC_SetRC(TC2, 1, 32);
   TC_Start(TC2, 1);
+
+  TC_SetRC(TC0, 1, 656250);//1sec
+  TC_Start(TC0, 1);
+  pinMode(13,OUTPUT);
 }
 
 void HAL::startTimer(void){
   TC2->TC_CHANNEL[1].TC_IER=TC_IER_CPCS;   // IER = interrupt enable register
   TC2->TC_CHANNEL[1].TC_IDR=~TC_IER_CPCS;  // IDR = interrupt disable register
+
+  TC0->TC_CHANNEL[1].TC_IER=TC_IER_CPCS;   // IER = interrupt enable register
+  TC0->TC_CHANNEL[1].TC_IDR=~TC_IER_CPCS;  // IDR = interrupt disable register
   /* Enable the interrupt in the nested vector interrupt controller */
   /* TC4_IRQn where 4 is the timer number * timer channels (3) + the channel number (=(1*3)+1) for timer1 channel1 */
   NVIC_EnableIRQ(TC7_IRQn);
+  NVIC_EnableIRQ(TC1_IRQn);
 }
 
 void HAL::doSendDirection(int motorNumber, bool isClockWise){
@@ -157,3 +167,12 @@ void TC7_Handler()
   TC_SetRC(TC2, 1, 32);//0.001sec: 1000Hz
 }
 
+
+void TC1_Handler ()
+{
+  TC_GetStatus(TC0, 1);
+  Preference* state = Preference::getInstance();
+  state->homing ^= true;
+  digitalWrite(13,state->homing);
+  TC_SetRC(TC0, 1, 656250);//1sec
+} 
