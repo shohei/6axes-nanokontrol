@@ -15,17 +15,11 @@ void HAL::setupTimer(void){
   TC_Configure(/* clock */TC0,/* channel */1, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK4); 
   //652.25 * 0.2(sec) = 131250
   //652.25 * 0.01(sec) = 131250
-  // TC_SetRC(TC2, 1, 131200);
-  // TC_SetRC(TC2, 1, 656250);//1sec
-  // TC_SetRC(TC2, 1, 6563);//0.01sec: 100Hz
-  // TC_SetRC(TC2, 1, 656);//0.001sec: 1000Hz
-  // TC_SetRC(TC2, 1, 65);
-  TC_SetRC(TC2, 1, 32);
+  TC_SetRC(TC2, 1, AXIS_TIMER);
   TC_Start(TC2, 1);
 
-  TC_SetRC(TC0, 1, 656250);//1sec
+  TC_SetRC(TC0, 1, ATC_TIMER);
   TC_Start(TC0, 1);
-  pinMode(13,OUTPUT);
 }
 
 void HAL::startTimer(void){
@@ -160,11 +154,7 @@ void TC7_Handler()
       } 
     }
   }
-  // TC_SetRC(TC2, 1, 656250);//1sec//debug
-  // TC_SetRC(TC2, 1, 6563);
-  // TC_SetRC(TC2, 1, 656);//0.001sec: 1000Hz
-  // TC_SetRC(TC2, 1, 65);//0.001sec: 1000Hz
-  TC_SetRC(TC2, 1, 32);//0.001sec: 1000Hz
+  TC_SetRC(TC2, 1, AXIS_TIMER);//0.001sec: 1000Hz
 }
 
 
@@ -172,7 +162,9 @@ void TC1_Handler ()
 {
   TC_GetStatus(TC0, 1);
   Preference* state = Preference::getInstance();
-  state->homing ^= true;
-  digitalWrite(13,state->homing);
-  TC_SetRC(TC0, 1, 656250);//1sec
+
+
+
+
+  TC_SetRC(TC0, 1, ATC_TIMER);
 } 
