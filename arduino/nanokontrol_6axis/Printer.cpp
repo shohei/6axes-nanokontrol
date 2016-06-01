@@ -8,6 +8,8 @@ void Printer::initState(){
   for(int i=0;i<6;i++){
     state->motor[i].dest = 0;
     state->motor[i].cur = 0;
+    state->wheel.dest = 0;
+    state->wheel.cur = 0;
     state->readIndex[i] = 0;
     state->writeIndex[i] = 0;
     state->isHomed[i] = false;

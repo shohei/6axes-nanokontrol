@@ -1,4 +1,5 @@
 #include "HAL.h"
+#include "ATC.h"
 
 void HAL::setupTimer(void){
   /* turn on the timer clock in the power management controller */
@@ -161,10 +162,18 @@ void TC7_Handler()
 void TC1_Handler ()
 {
   TC_GetStatus(TC0, 1);
-  Preference* state = Preference::getInstance();
-
-
-
-
+  Preference *state = Preference::getInstance();
+  int _dest = state->wheel.dest;
+  int _cur = state->wheel.cur;
+  //update endstop status
+  if(_cur <_dest){
+    ATC::doSendDirection(CW);
+    ATC::doSendPulse();
+    state->wheel.cur += STEP_RESOLUTION;
+  }else if(_cur > _dest){
+    ATC::doSendDirection(CCW);
+    ATC::doSendPulse();
+    state->wheel.cur -= STEP_RESOLUTION;
+  }
   TC_SetRC(TC0, 1, ATC_TIMER);
 } 

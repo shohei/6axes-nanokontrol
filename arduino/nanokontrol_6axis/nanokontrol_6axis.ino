@@ -6,6 +6,7 @@
 #include "HAL.h"
 #include "Printer.h"
 #include "Communication.h"
+#include "ATC.h"
 
 
 void setup(){
@@ -51,20 +52,30 @@ void loop()
   }
 
   const char* home_command = root["home"];
-  if(!home_command==NULL){
+  if(home_command!=NULL){
     Serial.println("home Z axis");
     Printer::homing();
     return;
   }
 
+  const char* atc_command = root["atc"];
+  if(atc_command!=NULL){
+    if(atc_command=="CW"){
+        ATC::turnCW();
+      } else if(atc_command=="CCW"){
+        ATC::turnCCW();
+      }
+    return;
+  }
+
   const char* dump_command = root["dump"];
-  if(!dump_command==NULL){
+  if(dump_command!=NULL){
     Com::dumpAll();
     return;
   }
 
   const char* jog_command = root["jog"];
-  if(!jog_command==NULL){
+  if(jog_command!=NULL){
     int jog_command_number = atoi(jog_command);
     Printer::doJog(jog_command_number);
     // Com::showStatus();

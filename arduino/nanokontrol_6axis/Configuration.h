@@ -51,6 +51,7 @@
 #define ATC_ENABLE_PIN SERVO3_PIN
 #define ATC_CW true
 #define ATC_CCW false
+#define ATC_JOG 5000
 
 ////////////////////////////////////////////////
 //ENDSTOP SETTINGS

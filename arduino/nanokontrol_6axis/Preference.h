@@ -8,6 +8,11 @@ typedef struct {
   long cur;
 } Motor;
 
+typedef struct {
+  long dest;
+  long cur;
+} Wheel;
+
 class Preference 
 {
   private:
@@ -19,6 +24,7 @@ class Preference
       return state;
     };
     Motor motor[6];
+    Wheel wheel;
     float buffer[6][BUF_NUM];
     int readIndex[6];
     int writeIndex[6];
