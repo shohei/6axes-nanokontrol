@@ -17,7 +17,8 @@ void HAL::setupTimer(void){
   // TC_SetRC(TC2, 1, 656250);//1sec
   // TC_SetRC(TC2, 1, 6563);//0.01sec: 100Hz
   // TC_SetRC(TC2, 1, 656);//0.001sec: 1000Hz
-  TC_SetRC(TC2, 1, 65);
+  // TC_SetRC(TC2, 1, 65);
+  TC_SetRC(TC2, 1, 32);
   TC_Start(TC2, 1);
 }
 
@@ -152,6 +153,7 @@ void TC7_Handler()
   // TC_SetRC(TC2, 1, 656250);//1sec//debug
   // TC_SetRC(TC2, 1, 6563);
   // TC_SetRC(TC2, 1, 656);//0.001sec: 1000Hz
-  TC_SetRC(TC2, 1, 65);//0.001sec: 1000Hz
+  // TC_SetRC(TC2, 1, 65);//0.001sec: 1000Hz
+  TC_SetRC(TC2, 1, 32);//0.001sec: 1000Hz
 }
 

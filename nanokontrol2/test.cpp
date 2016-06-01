@@ -12,19 +12,28 @@ int main(void){
 // - スライダー設置半径rb[mm]    : sqrt(269.7^2-200.5^2)=180.38248
 // - テーブル半径re[mm]               :90mm
 // - テーブル初期高さPz[mm]       :438.17mm
-  float re = 90;
+  float re = 45;
   float D = 68;
   float lc = 268;
-  float rb = 180.38;
+  float rb = 90.2;
+  float Pz = 100;
+  float R_MOVE = 20;
+  // float re = 90;
+  // float D = 68;
+  // float lc = 268;
+  // float rb = 180.38;
   // float Pz = 438.17;
-  float Pz = 300;
+  // float Pz = 300;
 
-  float phi = M_PI/24; //% rotation around X axis
-  float theta = M_PI/12; //% rotation around Y axis
-  float psi = M_PI/16; //% rotation around Z axis
+  float phi = 0; //% rotation around X axis
+  float theta = 0; //% rotation around Y axis
+  float psi = 0; //% rotation around Z axis
+  // float phi = M_PI/24; //% rotation around X axis
+  // float theta = M_PI/12; //% rotation around Y axis
+  // float psi = M_PI/16; //% rotation around Z axis
 
-  float xd = 50;
-  float yd = 50;
+  float xd = R_MOVE;
+  float yd = R_MOVE;
   float zd = Pz;
 
 

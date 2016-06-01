@@ -81,6 +81,13 @@ void loop()
   const char* nan_char = "\x4e\x61\x4e\x0";//"NaN"
 
   const char* dests[] = {dest1,dest2,dest3,dest4,dest5,dest6};
+  
+  //debug
+  // Serial.println("float precision?");
+  // for(int i=0;i<6;i++){
+  //   Serial.println(dests[i]);
+  // }
+  //end of debug
 
   Preference *state = Preference::getInstance(); 
   for(int i=0;i<6;i++){

@@ -19,8 +19,16 @@ module.exports = function(port){
 	const D =  constant().D;
 	const lc = constant().lc;
 	const rb = constant().rb;
-	const Pz = constant().Pz;
+	const zi = constant().zi;
 	const R_MOVE = constant().R_MOVE;
+
+	//Compute initial height: Pz
+	const alpha = Math.asin(D/(2*re));
+	const beta = Math.asin(D/(2*rb));
+	const m = 2*re*Math.cos(Math.PI/3-alpha);
+	const n = 2*rb*Math.cos(Math.PI/3-beta);
+	const h = lc*Math.sqrt(1-Math.pow((m-n)/(2*lc),2));
+	const Pz = h + zi;
 
 
     // P = [0.1-i_time/200,0.2+i_time/200,Pz]; % Position Vector of the end effector
@@ -28,21 +36,21 @@ module.exports = function(port){
     // theta = pi/12*(i_time/10); % rotation around Y axis
     // psi = pi/16*(i_time/10); % rotation around Z axis
 
-	for(var i=0;i<360;i=i+10){
+	for(var i=0;i<360;i=i+60){
 		doSetTimeout(i);
 	}
 
 	function doSetTimeout(i){
 		// setTimeout(function() { calculationAndSend(i); }, i*50);
-		setTimeout(function() { calculationAndSend(i); }, i*10);
+		setTimeout(function() { calculationAndSend(i); }, i*20);
 	}
 
 	function calculationAndSend(i){
 		var phi = 0; 
 		var theta = 0; 
 		var psi = 0; 
-		var xd = R_MOVE*Math.cos(i/180*Math.PI);
-		var yd = R_MOVE*Math.sin(i/180*Math.PI);
+		var xd = R_MOVE*Math.cos(i/(180.0)*Math.PI);
+		var yd = R_MOVE*Math.sin(i/(180.0)*Math.PI);
 		var zd = Pz;
 
 		MySolver.solveInverseMechanism(result,re,rb,lc,D,Pz,xd,yd,zd,phi,theta,psi);
@@ -54,8 +62,7 @@ module.exports = function(port){
 		dest6 = result[5];
 		sentence = "{\"dest1\":\""+dest1+"\",\"dest2\":\""+dest2+"\",\"dest3\":\""+dest3+"\",\"dest4\":\""+dest4+"\",\"dest5\":\""+dest5+"\",\"dest6\":\""+dest6+"\"}\n"
 		console.log(i);
-		console.log(phi,theta,psi,xd,yd,zd);
-		// console.log(sentence);
+		console.log(sentence);
 		port.write(sentence, function(err,bytesWritten){
 			if(err){
 				return console.log('Error: ',err.message);

@@ -22,8 +22,9 @@ module.exports = function(){
 		// re : 90, //直径
 		re : 45,
 		// Pz : 438.17
-		Pz : 100,
-		R_MOVE: 20
+		zi : 100,
+		// R_MOVE: 20
+		R_MOVE: 100
 		// Pz : 0 //for debug
 	}
 }

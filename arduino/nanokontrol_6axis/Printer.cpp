@@ -223,7 +223,7 @@ void Printer::updateRingBufferIndex(Preference* state, int i, int jog_or_slider,
   if(state->ringState[i]==RING_INIT){
     switch(jog_or_slider){
       case SLIDER:
-        state->buffer[i][0] = atoi(dests[i])*REQUIRED_PULSE;
+        state->buffer[i][0] = atof(dests[i])*REQUIRED_PULSE;
         break;
       case JOG:
         switch(direction){
@@ -243,7 +243,7 @@ void Printer::updateRingBufferIndex(Preference* state, int i, int jog_or_slider,
       || (state->ringState[i]==RD_LEAD&&(state->writeIndex[i] < state->readIndex[i]))) {
     switch(jog_or_slider){
       case SLIDER:
-        state->buffer[i][state->writeIndex[i]] = atoi(dests[i])*REQUIRED_PULSE;
+        state->buffer[i][state->writeIndex[i]] = atof(dests[i])*REQUIRED_PULSE;
         break;
       case JOG:
         switch(direction){
