@@ -104,7 +104,7 @@ void Printer::checkEndstop(int motorNumber){
     }
   }
   if(state->isHomed[0]&&state->isHomed[1]&&state->isHomed[2]
-    &&state->isHomed[3]&&state->isHomed[4]&&state->isHomed[5]){
+      &&state->isHomed[3]&&state->isHomed[4]&&state->isHomed[5]){
     Serial.println("All axis homed.");
     for(int i=0;i<6;i++){
       state->isHomed[i] = false;

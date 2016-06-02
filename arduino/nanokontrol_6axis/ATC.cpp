@@ -12,22 +12,22 @@ void ATC::doSendDirection(bool isClockWise){
 }
 
 void ATC::doSendPulse(){
-    WRITE(ATC_STEP_PIN,true);
-    _DELAY_1_9_US;
-    WRITE(ATC_STEP_PIN,false);
-    _DELAY_1_9_US;
+  WRITE(ATC_STEP_PIN,true);
+  _DELAY_1_9_US;
+  WRITE(ATC_STEP_PIN,false);
+  _DELAY_1_9_US;
 }
 
 void ATC::turnCW(){
-	Preference *state = Preference::getInstance();
-	state->wheel.dest += ATC_JOG;
+  Preference *state = Preference::getInstance();
+  state->wheel.dest += ATC_JOG;
   Serial.print("current dest: ");
   Serial.println(state->wheel.dest);
 }
 
 void ATC::turnCCW(){
-	Preference *state = Preference::getInstance();
-	state->wheel.dest -= ATC_JOG;
+  Preference *state = Preference::getInstance();
+  state->wheel.dest -= ATC_JOG;
   Serial.print("current dest: ");
   Serial.println(state->wheel.dest);
 }

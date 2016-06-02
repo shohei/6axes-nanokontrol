@@ -136,9 +136,9 @@ void TC7_Handler()
       HAL::doSendPulse(i);
       state->motor[i].cur += STEP_RESOLUTION;
     }else if(_cur > _dest){
-        HAL::doSendDirection(i,CCW);
-        HAL::doSendPulse(i);
-        state->motor[i].cur -= STEP_RESOLUTION;
+      HAL::doSendDirection(i,CCW);
+      HAL::doSendPulse(i);
+      state->motor[i].cur -= STEP_RESOLUTION;
     }else if(_cur == _dest){
       //update readIndex (but only once!)
       //check if readIndex is behind writeIndex

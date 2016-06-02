@@ -113,22 +113,22 @@
 #define M6_MIN_PIN 34 
 
 enum JOG_COMMAND{ 
-	UP1 = 1,
-	DOWN1= 2,
-	UP2 = 3,
-	DOWN2 = 4,
-	UP3 = 5,
-	DOWN3= 6,
-	UP4 = 7,
-	DOWN4 = 8,
-	UP5 = 9,
-	DOWN5 = 10,
-	UP6 = 11,
-	DOWN6 = 12
+  UP1 = 1,
+  DOWN1= 2,
+  UP2 = 3,
+  DOWN2 = 4,
+  UP3 = 5,
+  DOWN3= 6,
+  UP4 = 7,
+  DOWN4 = 8,
+  UP5 = 9,
+  DOWN5 = 10,
+  UP6 = 11,
+  DOWN6 = 12
 };
 
 enum JOG_OR_SLIDER{
-	SLIDER,JOG	
+  SLIDER,JOG	
 };
 
 
