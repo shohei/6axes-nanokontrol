@@ -21,9 +21,13 @@ void ATC::doSendPulse(){
 void ATC::turnCW(){
 	Preference *state = Preference::getInstance();
 	state->wheel.dest += ATC_JOG;
+  Serial.print("current dest: ");
+  Serial.println(state->wheel.dest);
 }
 
 void ATC::turnCCW(){
 	Preference *state = Preference::getInstance();
 	state->wheel.dest -= ATC_JOG;
+  Serial.print("current dest: ");
+  Serial.println(state->wheel.dest);
 }

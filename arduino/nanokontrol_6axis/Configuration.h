@@ -40,7 +40,8 @@
 // TC_SetRC(TC2, 1, 65);//0.001sec: 1000Hz
 // #define AXIS_TIMER 32 
 #define AXIS_TIMER 65 
-#define ATC_TIMER 650
+// #define ATC_TIMER 650
+#define ATC_TIMER  325
 
 ////////////////////////////////////////////////
 //ATC WHEEL SETTINGS

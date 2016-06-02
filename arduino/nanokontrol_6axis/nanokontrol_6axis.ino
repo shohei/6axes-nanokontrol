@@ -88,8 +88,9 @@ void loop()
     return;
   }
 
+  Preference *state = Preference::getInstance(); 
   const char* jog_command = root["jog"];
-  if(jog_command!=NULL){
+  if(jog_command!=NULL&&state->manualMode){
     int jog_command_number = atoi(jog_command);
     Printer::doJog(jog_command_number);
     // Com::showStatus();
@@ -108,7 +109,6 @@ void loop()
   const char* manual_slider = root["slider"];
   const char* auto_command = root["auto"]; 
 
-  Preference *state = Preference::getInstance(); 
   if(manual_slider!=NULL&&state->manualMode){
     //manual operation
     for(int i=0;i<6;i++){
