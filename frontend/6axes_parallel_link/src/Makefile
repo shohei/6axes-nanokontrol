@@ -1,8 +1,10 @@
 CXX = g++
 LIBSRC = solve_inverse_mechanism.cpp
-SRC = $(LIBSRC) test.cpp
-TARGET = test 
+SRC = $(LIBSRC) test_inverse_mechanism.cpp
+TARGET = test_inverse_mechanism
 LIB = mysolver
+BINDIR = ../bin
+LIBDIR = ../lib
 
 UNAME_S := $(shell uname -s)
 
@@ -10,20 +12,20 @@ UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
 CPPFLAGS = -std=c++11 -Wno-c++11-extensions -I/usr/include/eigen3
 lib:
-	$(CXX) $(CPPFLAGS) -shared -o $(LIB).so $(LIBSRC)
+	$(CXX) $(CPPFLAGS) -shared -o $(LIBDIR)/$(LIB).so $(LIBSRC)
 
 test:
-	$(CXX) $(CPPFLAGS) -o $(TARGET) $(SRC)	
+	$(CXX) $(CPPFLAGS) -o $(BINDIR)/$(TARGET) $(SRC)	
 endif
 
 #OSX
 ifeq ($(UNAME_S),Darwin)
 CPPFLAGS = -std=c++11 -Wno-c++11-extensions 
 lib:
-	$(CXX) $(CPPFLAGS) -dynamiclib -o $(LIB).dylib $(LIBSRC)
+	$(CXX) $(CPPFLAGS) -dynamiclib -o $(LIBDIR)/$(LIB).dylib $(LIBSRC)
 
 test:
-	$(CXX) $(CPPFLAGS) -o $(TARGET) $(SRC)	
+	$(CXX) $(CPPFLAGS) -o $(BINDIR)/$(TARGET) $(SRC)	
 endif
 
 .PHONY: clean
