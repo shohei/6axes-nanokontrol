@@ -17,14 +17,9 @@ module.exports = function(){
     /* prototype 1 */
 		D : 68,
 		lc : 268,
-		// rb : 180.38, //直径
 		rb : 90.2,
-		// re : 90, //直径
 		re : 45,
-		// Pz : 438.17
 		zi : 100,
-		// R_MOVE: 20
 		R_MOVE: 100
-		// Pz : 0 //for debug
 	}
 }

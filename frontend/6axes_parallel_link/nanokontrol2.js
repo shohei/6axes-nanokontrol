@@ -3,7 +3,6 @@ var serialport = require("serialport");
 var SerialPort = serialport.SerialPort
 var port = new SerialPort("/dev/tty.usbmodem1411", {
   baudrate: 115200,
-  // baudrate: 9600,
   parser: serialport.parsers.readline('\n')
 }
 );
@@ -11,9 +10,9 @@ var port = new SerialPort("/dev/tty.usbmodem1411", {
 var step = 20;
 var initialHeight = 100;
 
-var turn = require('./turn');
-var tilt = require('./tilt');
-
+var inverse_mechanism = require('./inverse_mechanism');
+var turn = inverse_mechanism().turn;
+var tilt = inverse_mechanism().tilt;
 
 port.on('open', function () {
   console.log("serial port open");
@@ -244,86 +243,69 @@ nanoKONTROL.connect()
     }
   });
 
-  // device.on('knob:1', function(value){
-    //   console.log("knob:1 >>> "+value);
-    // });
-    //
-    device.on('button:play', function(value){
-      if(value){
-        console.log("button:play >>> "+value);
-        console.log("dumpAll()");
-        sendDump();      
-      }
-    });
+  device.on('button:play', function(value){
+    if(value){
+      console.log("button:play >>> "+value);
+      console.log("dumpAll()");
+      sendDump();      
+    }
+  });
 
-    device.on('button:rec', function(value){
-      if(value){
-        console.log("home axis.");
-        sendHoming();      
-      }
-    });
+  device.on('button:rec', function(value){
+    if(value){
+      console.log("home axis.");
+      sendHoming();      
+    }
+  });
 
 
-    device.on('button:stop', function(value){
-      console.log("button:stop >>> "+value);
-      if(value === false){
-        console.log('exit!!');
-        device.close();
-      }
-    });
+  device.on('button:stop', function(value){
+    console.log("button:stop >>> "+value);
+    if(value === false){
+      console.log('exit!!');
+      device.close();
+    }
+  });
 
-    //PRESET CONTROL//
-    device.on('button:m:1', function(value){
-      if(value){
-        console.log("TURN");
-        turn(port);
-      }
-    });
-    device.on('button:m:2', function(value){
-      if(value){
-        console.log("TILT");
-        tilt(port);
-      }
-    });
-    device.on('button:m:3', function(value){
-      if(value){
-        console.log("STAND BY");
-        sendStandBy();
-      }
-    });
-    device.on('button:m:4', function(value){
-      if(value){
-        console.log("Toggle mode");
-        sendToggleMode();
-      }
-    });
+  //PRESET CONTROL//
+  device.on('button:m:1', function(value){
+    if(value){
+      console.log("TURN");
+      turn(port);
+    }
+  });
+  device.on('button:m:2', function(value){
+    if(value){
+      console.log("TILT");
+      tilt(port);
+    }
+  });
+  device.on('button:m:3', function(value){
+    if(value){
+      console.log("STAND BY");
+      sendStandBy();
+    }
+  });
+  device.on('button:m:4', function(value){
+    if(value){
+      console.log("Toggle mode");
+      sendToggleMode();
+    }
+  });
 
-    device.on('button:marker:next', function(value){
-      if(value){
-        console.log("Rotate ATC: Clockwise");
-        sendATC("CW");      
-      }
-    });
+  device.on('button:marker:next', function(value){
+    if(value){
+      console.log("Rotate ATC: Clockwise");
+      sendATC("CW");      
+    }
+  });
 
-    device.on('button:marker:prev', function(value){
-      if(value){
-        console.log("Rotate ATC: Counter Clockwise");
-        sendATC("CCW");      
-      }
-    });
-    // catch all slider/knob/button event
-    // device.on('slider:*', function(value){
-      //   console.log(this.event+' => '+value);
-      //
-      // });
-      //
-      // device.on('knob:*', function(value){
-        //   console.log(this.event+' => '+value);
-        // });
-        //
-        // device.on('button:**', function(value){
-          //   console.log(this.event+' => '+value);
-          // });
+  device.on('button:marker:prev', function(value){
+    if(value){
+      console.log("Rotate ATC: Counter Clockwise");
+      sendATC("CCW");      
+    }
+  });
 
 })
 .catch(function(err){
