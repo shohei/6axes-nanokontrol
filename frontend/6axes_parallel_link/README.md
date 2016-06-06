@@ -3,6 +3,7 @@
 ```
 $ cd src
 $ make
+$ npm install
 ```
 - constant.js 
  - modify constant
