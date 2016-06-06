@@ -3,3 +3,9 @@
 
 
 
+## Dependencies
+Ubuntu
+eigen3: libeigen3-dev
+libasound: libasound2-dev
+
+
