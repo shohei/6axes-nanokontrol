@@ -7,7 +7,7 @@ $ npm install
 ```
 - constant.js 
  - modify constant
-- inverse_mechanism.js 
+- inverse_kinematics.js 
  - Change parameter: Roll-Pitch-Yo, position vector[x,y,z]
 
 ## Use
