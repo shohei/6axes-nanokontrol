@@ -1,7 +1,7 @@
 CXX = g++
-LIBSRC = solve_inverse_mechanism.cpp
-SRC = $(LIBSRC) test_inverse_mechanism.cpp
-TARGET = test_inverse_mechanism
+LIBSRC = solve_inverse_kinematics.cpp
+SRC = $(LIBSRC) test_inverse_kinematics.cpp
+TARGET = test_inverse_kinematics
 LIB = mysolver
 BINDIR = ../bin
 LIBDIR = ../lib

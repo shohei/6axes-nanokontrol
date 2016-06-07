@@ -10,7 +10,7 @@ var port = new SerialPort("/dev/tty.usbmodem1411", {
 var step = 20;
 var initialHeight = 100;
 
-var inverse_mechanism = require('./inverse_mechanism');
+var inverse_mechanism = require('./inverse_kinematics');
 var turn = inverse_mechanism().turn;
 var tilt = inverse_mechanism().tilt;
 
